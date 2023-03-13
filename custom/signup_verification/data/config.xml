@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="url_singup_views" model="ir.config_parameter">
+            <field name="key">health_signup_verification.url_singup_views</field>
+            <field name="value">/web/signup/views/</field>
+        </record>
+    </data>
+</openerp>

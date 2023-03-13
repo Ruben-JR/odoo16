@@ -1,0 +1,29 @@
+<odoo>
+  <data>
+    <template id="index">
+      <t t-call="web.layout">
+        <t t-set="title">Thank you for registration!</t>
+        <div class="oe_structure">
+          <div class="container" style="margin:32px;">
+            <h2>Thank you for registration!</h2>
+            <h3> We send an email to you with registration link. <br />
+                 Please open that link in your browser to complete registration.
+            </h3>
+          </div>
+        </div>
+      </t>
+    </template>
+
+    <template id="signup" inherit_id="auth_signup.fields" name="Signup Inherit">
+      <div class="form-group field-name" position="after">
+        <div class="form-group field-number">
+          <label for="name">Phone Number</label>
+          <input type="text" name="number" t-att-value="number" id="number"
+            class="form-control form-control-sm"
+            required="required" t-att-readonly="'readonly' if only_passwords else None"
+            t-att-autofocus="'autofocus' if login and not only_passwords else None" />
+        </div>
+      </div>
+    </template>
+  </data>
+</odoo>

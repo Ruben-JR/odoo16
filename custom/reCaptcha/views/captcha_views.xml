@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <template id="login" inherit_id="web.login" name="Login Inherit">
+    <div class="form-group field-password" position="after">
+      <script src='https://www.google.com/recaptcha/api.js'></script>
+      <script type="text/javascript" src="/health_captcha/static/lib/jquery/jquery.js" />
+      <script type="text/javascript" src="/health_captcha/static/src/js/loginCaptcha.js"></script>
+      <div id="captcha" class="imageContainer">
+        <div class="form-group">
+          <div class="g-recaptcha" id="recaptcha-login" data-sitekey="6LdU7CEkAAAAAKKEY3-0XcAnYk1Po2TfKbZtWRh9" data-callback="verifyRecaptchaCallback" data-expired-callback="expiredRecaptchaCallback"></div>
+          <input class="form-control d-none" data-recaptcha="true" />
+          <div class="help-block with-errors" id="err" style='color: red' required="required"></div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <template id="signup" inherit_id="auth_signup.fields" name="Signup Inherit">
+    <div class="form-group field-confirm_password" position="after">
+      <script src='https://www.google.com/recaptcha/api.js'></script>
+      <script type="text/javascript" src="/health_captcha/static/lib/jquery/jquery.js" />
+      <script type="text/javascript" src="/health_captcha/static/src/js/signupCaptcha.js"></script>
+      <div id="captcha" class="imageContainer">
+        <div class="g-recaptcha" data-sitekey="6LdU7CEkAAAAAKKEY3-0XcAnYk1Po2TfKbZtWRh9" data-callback="verifyRecaptchaCallback" data-expired-callback="expiredRecaptchaCallback"></div>
+        <input class="form-control d-none" data-recaptcha="true" />
+        <div class="help-block with-errors" id="err" style='color: red' required="required"></div>
+      </div>
+    </div>
+  </template>
+</odoo>

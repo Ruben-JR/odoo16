@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!-- 
+        <!--
         Purchase withholds computed over VAT *retenciones iva compras
         -->
         <record id="tax_withhold_vat_10" model="account.tax.template">
@@ -166,7 +166,7 @@
                     'minus_report_expression_ids': [ref('tax_report_line_104_731_tag')],
                 }),]"/>
         </record>
-        <!-- 
+        <!--
         Sales withholds computed over VAT *retenciones iva ventas
         -->
         <record id="tax_sale_withhold_vat_10" model="account.tax.template">

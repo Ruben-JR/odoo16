@@ -25,7 +25,7 @@ odoo.define('barcodes.barcode_mobile_tests', function (require) {
             keyCode: keycode,
         });
     }
-    
+
     QUnit.module('Barcodes', {
         before() {
             barcodeService.maxTimeBetweenKeysInMs = 0;
@@ -82,7 +82,7 @@ odoo.define('barcodes.barcode_mobile_tests', function (require) {
                 $element = $form.find('input[name=' + keepFocusedElements[i] + ']');
                 $element.focus();
                 triggerKeyDown('c', $element[0]);
-    
+
                 assert.strictEqual(document.activeElement, $element[0],
                     "input " + keepFocusedElements[i] + " should keep focus");
             }

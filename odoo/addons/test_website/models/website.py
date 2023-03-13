@@ -9,6 +9,8 @@ class Website(models.Model):
 
     def _search_get_details(self, search_type, order, options):
         result = super()._search_get_details(search_type, order, options)
-        if search_type in ['test']:
-            result.append(self.env['test.model']._search_get_detail(self, order, options))
+        if search_type in ["test"]:
+            result.append(
+                self.env["test.model"]._search_get_detail(self, order, options)
+            )
         return result

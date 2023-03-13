@@ -27,4 +27,3 @@ Robin Keunen <robin@keunen.net> https://github.com/robinkeunen
 Victor Champonnois <victor@coopiteasy.be> https://github.com/victor-champonnois
 
 Virginie Dewulf <virginie@coopiteasy.be> https://github.com/vdewulf
-

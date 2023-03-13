@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* event_sale
-# 
+#
 # Translators:
 # Zahed Alfak <tamass4116@gmail.com>, 2023
 # elaheh pourrezaie <elaheh.pourrezaie@hotmail.com>, 2023
@@ -10,7 +10,7 @@
 # Hamid Darabi, 2023
 # Martin Trigaux, 2023
 # Mostafa Barmshory <mostafa.barmshory@gmail.com>, 2023
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta\n"

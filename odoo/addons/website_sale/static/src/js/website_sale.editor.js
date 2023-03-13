@@ -965,7 +965,7 @@ options.registry.ReplaceMedia.include({
     },
     /**
      * Change sequence of product page images
-     * 
+     *
      */
     async setPosition(previewMode, widgetValue, params) {
         this._rpc({
@@ -990,4 +990,3 @@ options.registry.ReplaceMedia.include({
 });
 
 });
-

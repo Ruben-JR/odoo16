@@ -1,5 +1,6 @@
 from odoo.tests.common import TransactionCase
 
+
 class TestCurrencyRates(TransactionCase):
     @classmethod
     def setUpClass(cls):
@@ -48,7 +49,9 @@ class TestCurrencyRates(TransactionCase):
         )
 
         self.assertEqual(
-            self.env["res.currency"].get_currencies_for_spreadsheet(["ProbablyNotACurrencyName?", "MC2"]),
+            self.env["res.currency"].get_currencies_for_spreadsheet(
+                ["ProbablyNotACurrencyName?", "MC2"]
+            ),
             [
                 None,
                 {
@@ -68,18 +71,19 @@ class TestCurrencyRates(TransactionCase):
                 "symbol": "€",
                 "decimalPlaces": 2,
                 "position": "after",
-            }
+            },
         )
         self.assertEqual(
-            self.env["res.currency"].get_company_currency_for_spreadsheet(self.usd_company_id),
+            self.env["res.currency"].get_company_currency_for_spreadsheet(
+                self.usd_company_id
+            ),
             {
                 "code": "USD",
                 "symbol": "$",
                 "decimalPlaces": 2,
                 "position": "before",
-            }
+            },
         )
         self.assertEqual(
-            self.env["res.currency"].get_company_currency_for_spreadsheet(123456),
-            False
+            self.env["res.currency"].get_company_currency_for_spreadsheet(123456), False
         )

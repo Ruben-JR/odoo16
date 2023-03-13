@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* l10n_be
-# 
+#
 # Translators:
 # Jolien De Paepe, 2023
 # Lukas Van Cauter <cvl@odoo.com>, 2023
 # Martin Trigaux, 2023
 # Dylan Kiss, 2023
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"

@@ -314,5 +314,5 @@
                 <filter string="Batch Transfer" name="by_batch_id" context="{'group_by': 'batch_id'}"/>
             </xpath>
         </field>
-    </record>    
+    </record>
 </odoo>

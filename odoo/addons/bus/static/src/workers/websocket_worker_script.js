@@ -20,4 +20,3 @@ import { WebsocketWorker } from "./websocket_worker";
         websocketWorker.registerClient(self);
     }
 })();
-

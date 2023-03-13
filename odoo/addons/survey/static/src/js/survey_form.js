@@ -342,10 +342,10 @@ publicWidget.registry.SurveyFormWidget = publicWidget.Widget.extend(SurveyPreloa
 
     // Custom Events
     // -------------------------------------------------------------------------
-    
+
     /**
      * Changes the tooltip according to the type of the field.
-     * @param {Event} event 
+     * @param {Event} event
      */
     _updateEnterButtonText: function (event) {
         const $target = event.target;

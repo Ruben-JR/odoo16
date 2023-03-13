@@ -17,7 +17,7 @@ try:
     from dbus.mainloop.glib import DBusGMainLoop
 except ImportError:
     DBusGMainLoop = None
-    _logger.error('Could not import library dbus')
+    _logger.error("Could not import library dbus")
 
 drivers = []
 interfaces = {}
@@ -31,46 +31,51 @@ class Manager(Thread):
         """
         server = helpers.get_odoo_server_url()
         if server:
-            subject = helpers.read_file_first_line('odoo-subject.conf')
+            subject = helpers.read_file_first_line("odoo-subject.conf")
             if subject:
-                domain = helpers.get_ip().replace('.', '-') + subject.strip('*')
+                domain = helpers.get_ip().replace(".", "-") + subject.strip("*")
             else:
                 domain = helpers.get_ip()
             iot_box = {
-                'name': socket.gethostname(),
-                'identifier': helpers.get_mac_address(),
-                'ip': domain,
-                'token': helpers.get_token(),
-                'version': helpers.get_version(),
+                "name": socket.gethostname(),
+                "identifier": helpers.get_mac_address(),
+                "ip": domain,
+                "token": helpers.get_token(),
+                "version": helpers.get_version(),
             }
             devices_list = {}
             for device in iot_devices:
                 identifier = iot_devices[device].device_identifier
                 devices_list[identifier] = {
-                    'name': iot_devices[device].device_name,
-                    'type': iot_devices[device].device_type,
-                    'manufacturer': iot_devices[device].device_manufacturer,
-                    'connection': iot_devices[device].device_connection,
+                    "name": iot_devices[device].device_name,
+                    "type": iot_devices[device].device_type,
+                    "manufacturer": iot_devices[device].device_manufacturer,
+                    "connection": iot_devices[device].device_connection,
                 }
-            data = {'params': {'iot_box': iot_box, 'devices': devices_list,}}
+            data = {
+                "params": {
+                    "iot_box": iot_box,
+                    "devices": devices_list,
+                }
+            }
             # disable certifiacte verification
             urllib3.disable_warnings()
-            http = urllib3.PoolManager(cert_reqs='CERT_NONE')
+            http = urllib3.PoolManager(cert_reqs="CERT_NONE")
             try:
                 http.request(
-                    'POST',
+                    "POST",
                     server + "/iot/setup",
-                    body=json.dumps(data).encode('utf8'),
+                    body=json.dumps(data).encode("utf8"),
                     headers={
-                        'Content-type': 'application/json',
-                        'Accept': 'text/plain',
+                        "Content-type": "application/json",
+                        "Accept": "text/plain",
                     },
                 )
             except Exception as e:
-                _logger.error('Could not reach configured server')
-                _logger.error('A error encountered : %s ' % e)
+                _logger.error("Could not reach configured server")
+                _logger.error("A error encountered : %s " % e)
         else:
-            _logger.warning('Odoo server not set')
+            _logger.warning("Odoo server not set")
 
     def run(self):
         """
@@ -78,7 +83,7 @@ class Manager(Thread):
         """
 
         helpers.start_nginx_server()
-        if platform.system() == 'Linux':
+        if platform.system() == "Linux":
             helpers.check_git_branch()
         helpers.check_certificate()
 
@@ -106,6 +111,7 @@ class Manager(Thread):
             except Exception:
                 # No matter what goes wrong, the Manager loop needs to keep running
                 _logger.error(format_exc())
+
 
 # Must be started from main thread
 if DBusGMainLoop:

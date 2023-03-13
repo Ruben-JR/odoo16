@@ -24,7 +24,7 @@ publicWidget.registry.SurveyQuickAccessWidget = publicWidget.Widget.extend({
             // Init event listener
             if (!self.readonly) {
                 $(document).on('keypress', self._onKeyPress.bind(self));
-            }       
+            }
         });
     },
 

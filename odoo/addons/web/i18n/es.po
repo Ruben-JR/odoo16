@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* web
-# 
+#
 # Translators:
 # José Vicente <txusev@gmail.com>, 2022
 # RGB Consulting <odoo@rgbconsulting.com>, 2022
@@ -10,7 +10,7 @@
 # Leonardo J. Caballero G. <leonardocaballero@gmail.com>, 2022
 # jabelchi, 2022
 # David Ramia, 2023
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"

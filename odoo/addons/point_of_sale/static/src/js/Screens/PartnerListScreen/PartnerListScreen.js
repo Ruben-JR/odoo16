@@ -82,7 +82,7 @@ odoo.define('point_of_sale.PartnerListScreen', function(require) {
             res.sort(function (a, b) { return (a.name || '').localeCompare(b.name || '') });
             // the selected partner (if any) is displayed at the top of the list
             if (this.state.selectedPartner) {
-                let indexOfSelectedPartner = res.findIndex( partner => 
+                let indexOfSelectedPartner = res.findIndex( partner =>
                     partner.id === this.state.selectedPartner.id
                 );
                 if (indexOfSelectedPartner !== -1) {

@@ -5,9 +5,9 @@ from odoo import fields, models
 
 
 class ContractType(models.Model):
-    _name = 'hr.contract.type'
-    _description = 'Contract Type'
-    _order = 'sequence'
+    _name = "hr.contract.type"
+    _description = "Contract Type"
+    _order = "sequence"
 
     name = fields.Char(required=True, translate=True)
     sequence = fields.Integer()

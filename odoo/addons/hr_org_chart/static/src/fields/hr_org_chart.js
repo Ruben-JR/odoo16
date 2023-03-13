@@ -44,7 +44,7 @@ class HrOrgChartPopover extends Component {
      */
     async _onEmployeeRedirect(employeeId) {
         const action = await this.orm.call('hr.employee', 'get_formview_action', [employeeId]);
-        this.actionService.doAction(action); 
+        this.actionService.doAction(action);
     }
 }
 HrOrgChartPopover.template = 'hr_org_chart.hr_orgchart_emp_popover';
@@ -128,7 +128,7 @@ export class HrOrgChart extends Field {
      */
     async _onEmployeeRedirect(employeeId) {
         const action = await this.orm.call('hr.employee', 'get_formview_action', [employeeId]);
-        this.actionService.doAction(action); 
+        this.actionService.doAction(action);
     }
 
     async _onEmployeeMoreManager(managerId) {

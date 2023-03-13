@@ -74,7 +74,7 @@
                    <a name="action_view_all_rating" type="object">
                     Customer Ratings
                     </a>
-                </div> 
+                </div>
             </xpath>
         </field>
     </record>

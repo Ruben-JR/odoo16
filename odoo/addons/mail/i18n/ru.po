@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* mail
-# 
+#
 # Translators:
 # Максим Дронь <dronmax@gmail.com>, 2022
 # Alex Puchkov <ap@alteco.co>, 2022
@@ -25,7 +25,7 @@
 # valmasone, 2023
 # Alena Vlasova, 2023
 # Сергей Шебанин <sergey@shebanin.ru>, 2023
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"

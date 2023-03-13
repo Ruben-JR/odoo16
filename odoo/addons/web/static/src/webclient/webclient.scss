@@ -44,7 +44,7 @@ tfoot {
 kbd {
   border: 1px solid $o-gray-200;
   box-shadow: $kbd-box-shadow;
-}  
+}
 
 //== Backgound light colors variations (bootstrap extensions)
 @each $-name, $-bg-color in $theme-colors {

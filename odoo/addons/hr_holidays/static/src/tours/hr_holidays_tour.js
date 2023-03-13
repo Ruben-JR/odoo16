@@ -12,7 +12,7 @@ tour.register('hr_holidays_tour', {
     rainbowManMessage: _t("Congrats, we can see that your request has been validated."),
     test: false
 }, [
-    tour.stepUtils.showAppsMenuItem(), 
+    tour.stepUtils.showAppsMenuItem(),
     {
         trigger: '.o_app[data-menu-xmlid="hr_holidays.menu_hr_holidays_root"]',
         content: _t("Let's discover the Time Off application"),

@@ -30,7 +30,7 @@
     &:before {
         border-bottom-color: var(--daterangerpicker__arrow-border-color, #{$dropdown-border-color});
     }
-    
+
     &:after {
         border-bottom-color: var(--daterangerpicker__arrow-background-color, #{$dropdown-bg});
     }

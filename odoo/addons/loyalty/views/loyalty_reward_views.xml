@@ -97,7 +97,7 @@
 
                                     <t t-if="record.discount">
                                         <a><field name="discount"/><field name="discount_mode"/> discount <t t-if="record.discount_max_amount.raw_value > 0">( Max <field name="discount_max_amount"/> )</t></a>
-                                    </t> 
+                                    </t>
 
                                     <t t-if="record.discount_applicability.raw_value === 'specific'">
                                         <br/>
@@ -113,7 +113,7 @@
                                         </t>
                                         <t t-if="record.discount_product_tag_id.raw_value">
                                             <div class="d-flex"><i class="fa fa-tags fa-fw" title="Product Tags"/> <field name="discount_product_tag_id" class="d-inline"/></div>
-                                        </t>  
+                                        </t>
                                         <t t-if="record.discount_product_domain.raw_value &amp;&amp; record.discount_product_domain.raw_value !== '[]'" groups="base.group_no_one">
                                             <div class="d-flex"><i class="fa fa-search fa-fw" title="Product Domain"/> <field name="discount_product_domain" class="d-inline"/></div>
                                         </t>
@@ -139,7 +139,7 @@
                                     </t>
                                     <t t-if="record.reward_product_tag_id.raw_value">
                                         <div class="d-flex"><i class="fa fa-tags fa-fw" title="Product Tags"/> <field name="reward_product_tag_id" class="d-inline"/></div>
-                                    </t> 
+                                    </t>
                                 </t>
                             </div>
 

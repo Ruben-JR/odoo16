@@ -2,17 +2,17 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    'name': 'SMS on Events',
-    'version': '1.0',
-    'category': 'Marketing/Events',
-    'description': """Schedule SMS in event management""",
-    'depends': ['event', 'sms'],
-    'data': [
-        'data/sms_data.xml',
-        'security/ir.model.access.csv',
-        'security/sms_security.xml',
+    "name": "SMS on Events",
+    "version": "1.0",
+    "category": "Marketing/Events",
+    "description": """Schedule SMS in event management""",
+    "depends": ["event", "sms"],
+    "data": [
+        "data/sms_data.xml",
+        "security/ir.model.access.csv",
+        "security/sms_security.xml",
     ],
-    'installable': True,
-    'auto_install': True,
-    'license': 'LGPL-3',
+    "installable": True,
+    "auto_install": True,
+    "license": "LGPL-3",
 }

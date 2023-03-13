@@ -83,8 +83,8 @@
                     <div class="button" t-on-click="closePos" title="Visit the Backend but keep session open">Backend</div>
                     <div class="button" t-att-class="{'disabled': !canCancel()}" t-on-click="cancel">Discard</div>
                     <!-- Download Sale Details -->
-                    <div class="small button icon" 
-                        t-on-click="downloadSalesReport" 
+                    <div class="small button icon"
+                        t-on-click="downloadSalesReport"
                         title="Download a report with all the sales of the current PoS Session">
                             <i class="fa fa-download" role="img"/>
                     </div>

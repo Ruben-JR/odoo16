@@ -1035,7 +1035,7 @@
                 };
                 parentRightEdge = this.parentEl[0].clientWidth + this.parentEl.offset().left;
             }
-            
+
             switch (drops) {
             case 'auto':
                 containerTop = this.element.offset().top + this.element.outerHeight() - parentOffset.top;

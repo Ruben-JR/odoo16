@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* crm_livechat
-# 
+#
 # Translators:
 # Arnau Ros, 2022
 # Manel Fernandez Ramirez <manelfera@outlook.com>, 2022
@@ -10,7 +10,7 @@
 # marcescu, 2022
 # Farouk Jabiri, 2022
 # Ivan Espinola, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~15.3\n"

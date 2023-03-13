@@ -5,7 +5,7 @@ from odoo import api, fields, models
 
 
 class ResConfigSettings(models.TransientModel):
-    _inherit = 'res.config.settings'
+    _inherit = "res.config.settings"
 
     module_event_sale = fields.Boolean("Tickets")
     module_website_event_meet = fields.Boolean("Discussion Rooms")
@@ -18,11 +18,11 @@ class ResConfigSettings(models.TransientModel):
     module_website_event_sale = fields.Boolean("Online Ticketing")
     module_event_booth = fields.Boolean("Booth Management")
 
-    @api.onchange('module_website_event_track')
+    @api.onchange("module_website_event_track")
     def _onchange_module_website_event_track(self):
-        """ Reset sub-modules, otherwise you may have track to False but still
+        """Reset sub-modules, otherwise you may have track to False but still
         have track_live or track_quiz to True, meaning track will come back due
-        to dependencies of modules. """
+        to dependencies of modules."""
         for config in self:
             if not config.module_website_event_track:
                 config.module_website_event_track_live = False

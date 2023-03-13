@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* barcodes
-# 
+#
 # Translators:
 # Ayhan KIZILTAN <akiziltan76@hotmail.com>, 2022
 # Yedigen, 2022
@@ -13,7 +13,7 @@
 # Tugay Hatıl <tugayh@projetgrup.com>, 2022
 # Umur Akın <umura@projetgrup.com>, 2022
 # Ahmet Altinisik <aaltinisik@altinkaya.com.tr>, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.5alpha1\n"

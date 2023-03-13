@@ -14,14 +14,19 @@ _logger = logging.getLogger(__name__)
 
 
 class BuckarooController(http.Controller):
-    _return_url = '/payment/buckaroo/return'
-    _webhook_url = '/payment/buckaroo/webhook'
+    _return_url = "/payment/buckaroo/return"
+    _webhook_url = "/payment/buckaroo/webhook"
 
     @http.route(
-        _return_url, type='http', auth='public', methods=['POST'], csrf=False, save_session=False
+        _return_url,
+        type="http",
+        auth="public",
+        methods=["POST"],
+        csrf=False,
+        save_session=False,
     )
     def buckaroo_return_from_checkout(self, **raw_data):
-        """ Process the notification data sent by Buckaroo after redirection from checkout.
+        """Process the notification data sent by Buckaroo after redirection from checkout.
 
         The route is flagged with `save_session=False` to prevent Odoo from assigning a new session
         to the user if they are redirected to this route with a POST request. Indeed, as the session
@@ -33,23 +38,28 @@ class BuckarooController(http.Controller):
 
         :param dict raw_data: The un-formatted notification data
         """
-        _logger.info("handling redirection from Buckaroo with data:\n%s", pprint.pformat(raw_data))
+        _logger.info(
+            "handling redirection from Buckaroo with data:\n%s",
+            pprint.pformat(raw_data),
+        )
         data = self._normalize_data_keys(raw_data)
 
         # Check the integrity of the notification
-        received_signature = data.get('brq_signature')
-        tx_sudo = request.env['payment.transaction'].sudo()._get_tx_from_notification_data(
-            'buckaroo', data
+        received_signature = data.get("brq_signature")
+        tx_sudo = (
+            request.env["payment.transaction"]
+            .sudo()
+            ._get_tx_from_notification_data("buckaroo", data)
         )
         self._verify_notification_signature(raw_data, received_signature, tx_sudo)
 
         # Handle the notification data
-        tx_sudo._handle_notification_data('buckaroo', data)
-        return request.redirect('/payment/status')
+        tx_sudo._handle_notification_data("buckaroo", data)
+        return request.redirect("/payment/status")
 
-    @http.route(_webhook_url, type='http', auth='public', methods=['POST'], csrf=False)
+    @http.route(_webhook_url, type="http", auth="public", methods=["POST"], csrf=False)
     def buckaroo_webhook(self, **raw_data):
-        """ Process the notification data sent by Buckaroo to the webhook.
+        """Process the notification data sent by Buckaroo to the webhook.
 
         See https://www.pronamic.nl/wp-content/uploads/2013/04/BPE-3.0-Gateway-HTML.1.02.pdf.
 
@@ -57,25 +67,32 @@ class BuckarooController(http.Controller):
         :return: An empty string to acknowledge the notification
         :rtype: str
         """
-        _logger.info("notification received from Buckaroo with data:\n%s", pprint.pformat(raw_data))
+        _logger.info(
+            "notification received from Buckaroo with data:\n%s",
+            pprint.pformat(raw_data),
+        )
         data = self._normalize_data_keys(raw_data)
         try:
             # Check the integrity of the notification
-            received_signature = data.get('brq_signature')
-            tx_sudo = request.env['payment.transaction'].sudo()._get_tx_from_notification_data(
-                'buckaroo', data
+            received_signature = data.get("brq_signature")
+            tx_sudo = (
+                request.env["payment.transaction"]
+                .sudo()
+                ._get_tx_from_notification_data("buckaroo", data)
             )
             self._verify_notification_signature(raw_data, received_signature, tx_sudo)
 
             # Handle the notification data
-            tx_sudo._handle_notification_data('buckaroo', data)
+            tx_sudo._handle_notification_data("buckaroo", data)
         except ValidationError:  # Acknowledge the notification to avoid getting spammed
-            _logger.exception("unable to handle the notification data; skipping to acknowledge")
-        return ''
+            _logger.exception(
+                "unable to handle the notification data; skipping to acknowledge"
+            )
+        return ""
 
     @staticmethod
     def _normalize_data_keys(data):
-        """ Set all keys of a dictionary to lower-case.
+        """Set all keys of a dictionary to lower-case.
 
         As Buckaroo parameters names are case insensitive, we can convert everything to lower-case
         to easily detected the presence of a parameter by checking the lower-case key only.
@@ -88,7 +105,7 @@ class BuckarooController(http.Controller):
 
     @staticmethod
     def _verify_notification_signature(notification_data, received_signature, tx_sudo):
-        """ Check that the received signature matches the expected one.
+        """Check that the received signature matches the expected one.
 
         :param dict notification_data: The notification data
         :param str received_signature: The signature received with the notification data

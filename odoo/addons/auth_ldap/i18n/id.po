@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * auth_ldap
-# 
+#
 # Translators:
 # Bonny Useful <bonny.useful@gmail.com>, 2017
 # Febrasari Almania <febrasari.almania@gmail.com>, 2017

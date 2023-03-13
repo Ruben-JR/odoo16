@@ -29,7 +29,7 @@ class _Outcome(object):
         except SkipTest as e:
             self.success = False
             self.result.addSkip(test_case, str(e))
-        except: # pylint: disable=bare-except
+        except:  # pylint: disable=bare-except
             exc_info = sys.exc_info()
             self.success = False
 
@@ -63,7 +63,9 @@ class _Outcome(object):
             current_frame = current_frame.f_back
 
         if not common_frame:  # not really useful but safer
-            _logger.warning('No common frame found with current stack, displaying full stack')
+            _logger.warning(
+                "No common frame found with current stack, displaying full stack"
+            )
             tb = initial_tb
         else:
             # remove the tb_frames until the common_frame is reached (keep the current_frame tb since the line is more accurate)
@@ -73,7 +75,9 @@ class _Outcome(object):
         # add all current frame elements under the common_frame to tb
         current_frame = common_frame.f_back
         while current_frame:
-            tb = Traceback(tb, current_frame, current_frame.f_lasti, current_frame.f_lineno)
+            tb = Traceback(
+                tb, current_frame, current_frame.f_lasti, current_frame.f_lineno
+            )
             current_frame = current_frame.f_back
 
         # remove traceback root part (odoo_bin, main, loading, ...), as
@@ -82,33 +86,39 @@ class _Outcome(object):
         # method since the error does not comme especially from the test method.
         while tb:
             code = tb.tb_frame.f_code
-            if code.co_filename.endswith('/case.py') and code.co_name in ('_callTestMethod', '_callSetUp', '_callTearDown', '_callCleanup'):
+            if code.co_filename.endswith("/case.py") and code.co_name in (
+                "_callTestMethod",
+                "_callSetUp",
+                "_callTearDown",
+                "_callCleanup",
+            ):
                 return tb.tb_next
             tb = tb.tb_next
 
-        _logger.warning('No root frame found, displaying full stacks')
+        _logger.warning("No root frame found, displaying full stacks")
         return initial_tb  # this shouldn't be reached
 
 
 class TestCase(_TestCase):
     _class_cleanups = []  # needed, backport for versions < 3.8
     __unittest_skip__ = False
-    __unittest_skip_why__ = ''
+    __unittest_skip_why__ = ""
     _moduleSetUpFailed = False
 
     # pylint: disable=super-init-not-called
-    def __init__(self, methodName='runTest'):
+    def __init__(self, methodName="runTest"):
         """Create an instance of the class that will use the named test
-           method when executed. Raises a ValueError if the instance does
-           not have a method with the specified name.
+        method when executed. Raises a ValueError if the instance does
+        not have a method with the specified name.
         """
         self._testMethodName = methodName
         self._outcome = None
-        if methodName != 'runTest' and not hasattr(self, methodName):
+        if methodName != "runTest" and not hasattr(self, methodName):
             # we allow instantiation with no explicit method name
             # but not an *incorrect* or missing method name
-            raise ValueError("no such test method in %s: %s" %
-                             (self.__class__, methodName))
+            raise ValueError(
+                "no such test method in %s: %s" % (self.__class__, methodName)
+            )
         self._cleanups = []
         self._subtest = None
 
@@ -116,12 +126,12 @@ class TestCase(_TestCase):
         # instances of said type in more detail to generate a more useful
         # error message.
         self._type_equality_funcs = {}
-        self.addTypeEqualityFunc(dict, 'assertDictEqual')
-        self.addTypeEqualityFunc(list, 'assertListEqual')
-        self.addTypeEqualityFunc(tuple, 'assertTupleEqual')
-        self.addTypeEqualityFunc(set, 'assertSetEqual')
-        self.addTypeEqualityFunc(frozenset, 'assertSetEqual')
-        self.addTypeEqualityFunc(str, 'assertMultiLineEqual')
+        self.addTypeEqualityFunc(dict, "assertDictEqual")
+        self.addTypeEqualityFunc(list, "assertListEqual")
+        self.addTypeEqualityFunc(tuple, "assertTupleEqual")
+        self.addTypeEqualityFunc(set, "assertSetEqual")
+        self.addTypeEqualityFunc(frozenset, "assertSetEqual")
+        self.addTypeEqualityFunc(str, "assertMultiLineEqual")
 
     def addCleanup(self, function, *args, **kwargs):
         """Add a function, with arguments, to be called when the test is
@@ -150,7 +160,10 @@ class TestCase(_TestCase):
         """
         parent = self._subtest
         if parent:
-            params = {**params, **{k: v for k, v in parent.params.items() if k not in params}}
+            params = {
+                **params,
+                **{k: v for k, v in parent.params.items() if k not in params},
+            }
         self._subtest = _SubTest(self, msg, params)
         try:
             with self._outcome.testPartExecutor(self._subtest, isTest=True):
@@ -193,11 +206,17 @@ class TestCase(_TestCase):
         testMethod = getattr(self, self._testMethodName)
 
         skip = False
-        skip_why = ''
+        skip_why = ""
         try:
             skip = self.__class__.__unittest_skip__ or testMethod.__unittest_skip__
-            skip_why = self.__class__.__unittest_skip_why__ or testMethod.__unittest_skip_why__ or ''
-        except AttributeError:  # testMethod may not have a __unittest_skip__ or __unittest_skip_why__
+            skip_why = (
+                self.__class__.__unittest_skip_why__
+                or testMethod.__unittest_skip_why__
+                or ""
+            )
+        except (
+            AttributeError
+        ):  # testMethod may not have a __unittest_skip__ or __unittest_skip_why__
             pass
         if skip:
             result.addSkip(self, skip_why)
@@ -248,7 +267,6 @@ class TestCase(_TestCase):
 
 
 class _SubTest(TestCase):
-
     def __init__(self, test_case, message, params):
         super().__init__()
         self._message = message
@@ -264,11 +282,11 @@ class _SubTest(TestCase):
         if self._message is not _subtest_msg_sentinel:
             parts.append("[{}]".format(self._message))
         if self.params:
-            params_desc = ', '.join(
-                "{}={!r}".format(k, v)
-                for (k, v) in self.params.items())
+            params_desc = ", ".join(
+                "{}={!r}".format(k, v) for (k, v) in self.params.items()
+            )
             parts.append("({})".format(params_desc))
-        return " ".join(parts) or '(<subtest>)'
+        return " ".join(parts) or "(<subtest>)"
 
     def id(self):
         return "{} {}".format(self.test_case.id(), self._subDescription())

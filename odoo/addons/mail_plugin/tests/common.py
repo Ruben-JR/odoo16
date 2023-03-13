@@ -18,13 +18,16 @@ def mock_auth_method_outlook(login):
 
     :param login: Login of the user used for the authentication
     """
+
     def patched_auth_method_outlook(*args, **kwargs):
-        request.update_env(user=request.env['res.users'].search([('login', '=', login)], limit=1))
+        request.update_env(
+            user=request.env["res.users"].search([("login", "=", login)], limit=1)
+        )
 
     with patch(
-            'odoo.addons.mail_plugin.models.ir_http.IrHttp'
-            '._auth_method_outlook',
-            new=patched_auth_method_outlook):
+        "odoo.addons.mail_plugin.models.ir_http.IrHttp" "._auth_method_outlook",
+        new=patched_auth_method_outlook,
+    ):
         yield
 
 
@@ -37,7 +40,7 @@ class TestMailPluginControllerCommon(HttpCase):
             groups="base.group_user,base.group_partner_manager",
         )
 
-    @mock_auth_method_outlook('employee')
+    @mock_auth_method_outlook("employee")
     def mock_plugin_partner_get(self, name, email, patched_iap_enrich):
         """Simulate a HTTP call to /partner/get with the given email and name.
 
@@ -68,7 +71,7 @@ class TestMailPluginControllerCommon(HttpCase):
 
         return result.json().get("result", {})
 
-    @mock_auth_method_outlook('employee')
+    @mock_auth_method_outlook("employee")
     def mock_enrich_and_create_company(self, partner_id, patched_iap_enrich):
         """Simulate a HTTP call to /partner/enrich_and_create_company on the given partner.
 

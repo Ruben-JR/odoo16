@@ -66,7 +66,7 @@ odoo.define('point_of_sale.tour.ProductScreen', function (require) {
     ProductScreen.do.clickSubcategory('Chairs');
     ProductScreen.check.productIsDisplayed('Letter Tray');
     ProductScreen.do.clickHomeCategory();
-    
+
     // Add two orderlines and update quantity
     ProductScreen.do.clickDisplayedProduct('Whiteboard Pen');
     ProductScreen.do.clickDisplayedProduct('Wall Shelf Unit');

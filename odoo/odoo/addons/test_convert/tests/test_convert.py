@@ -14,25 +14,18 @@ from odoo.tools.convert import xml_import, _eval_xml
 Field = E.field
 Value = E.value
 
+
 class TestEvalXML(common.TransactionCase):
     def eval_xml(self, node, obj=None):
         return _eval_xml(obj, node, self.env)
 
     def test_char(self):
-        self.assertEqual(
-            self.eval_xml(Field("foo")),
-            "foo")
-        self.assertEqual(
-            self.eval_xml(Field("None")),
-            "None")
+        self.assertEqual(self.eval_xml(Field("foo")), "foo")
+        self.assertEqual(self.eval_xml(Field("None")), "None")
 
     def test_int(self):
-        self.assertIsNone(
-            self.eval_xml(Field("None", type='int')),
-            "what the fuck?")
-        self.assertEqual(
-            self.eval_xml(Field(" 42  ", type="int")),
-            42)
+        self.assertIsNone(self.eval_xml(Field("None", type="int")), "what the fuck?")
+        self.assertEqual(self.eval_xml(Field(" 42  ", type="int")), 42)
 
         with self.assertRaises(ValueError):
             self.eval_xml(Field("4.82", type="int"))
@@ -41,9 +34,7 @@ class TestEvalXML(common.TransactionCase):
             self.eval_xml(Field("Whelp", type="int"))
 
     def test_float(self):
-        self.assertEqual(
-            self.eval_xml(Field("4.78", type="float")),
-            4.78)
+        self.assertEqual(self.eval_xml(Field("4.78", type="float")), 4.78)
 
         with self.assertRaises(ValueError):
             self.eval_xml(Field("None", type="float"))
@@ -52,32 +43,34 @@ class TestEvalXML(common.TransactionCase):
             self.eval_xml(Field("Foo", type="float"))
 
     def test_list(self):
-        self.assertEqual(
-            self.eval_xml(Field(type="list")),
-            [])
+        self.assertEqual(self.eval_xml(Field(type="list")), [])
 
         self.assertEqual(
-            self.eval_xml(Field(
-                Value("foo"),
-                Value("5", type="int"),
-                Value("4.76", type="float"),
-                Value("None", type="int"),
-                type="list"
-            )),
-            ["foo", 5, 4.76, None])
+            self.eval_xml(
+                Field(
+                    Value("foo"),
+                    Value("5", type="int"),
+                    Value("4.76", type="float"),
+                    Value("None", type="int"),
+                    type="list",
+                )
+            ),
+            ["foo", 5, 4.76, None],
+        )
 
     def test_file(self):
-        Obj = collections.namedtuple('Obj', ['module', 'idref'])
-        obj = Obj('test_convert', None)
+        Obj = collections.namedtuple("Obj", ["module", "idref"])
+        obj = Obj("test_convert", None)
         self.assertEqual(
-            self.eval_xml(Field('test_file.txt', type='file'), obj),
-            'test_convert,test_file.txt')
+            self.eval_xml(Field("test_file.txt", type="file"), obj),
+            "test_convert,test_file.txt",
+        )
 
         with self.assertRaises(IOError):
-            self.eval_xml(Field('test_nofile.txt', type='file'), obj)
+            self.eval_xml(Field("test_nofile.txt", type="file"), obj)
 
     def test_function(self):
-        obj = xml_import(self.cr, 'test_convert', None, 'init')
+        obj = xml_import(self.cr, "test_convert", None, "init")
 
         # pass args in eval
         xml = E.function(
@@ -104,7 +97,8 @@ class TestEvalXML(common.TransactionCase):
 
         # pass args in child elements
         xml = E.function(
-            E.value(eval="1"), E.value(eval="2"),
+            E.value(eval="1"),
+            E.value(eval="2"),
             model="test_convert.usered",
             name="model_method",
         )
@@ -115,7 +109,8 @@ class TestEvalXML(common.TransactionCase):
         self.assertEqual(kwargs, {})
 
         xml = E.function(
-            E.value(eval="1"), E.value(eval="2"),
+            E.value(eval="1"),
+            E.value(eval="2"),
             model="test_convert.usered",
             name="method",
         )
@@ -126,11 +121,12 @@ class TestEvalXML(common.TransactionCase):
         self.assertEqual(kwargs, {})
 
     def test_function_kwargs(self):
-        obj = xml_import(self.cr, 'test_convert', None, 'init')
+        obj = xml_import(self.cr, "test_convert", None, "init")
 
         # pass args and kwargs in child elements
         xml = E.function(
-            E.value(eval="1"), E.value(name="foo", eval="2"),
+            E.value(eval="1"),
+            E.value(name="foo", eval="2"),
             model="test_convert.usered",
             name="model_method",
         )
@@ -138,10 +134,11 @@ class TestEvalXML(common.TransactionCase):
         self.assertEqual(rec.env.context, self.env.context)
         self.assertEqual(rec.ids, [])
         self.assertEqual(args, (1,))
-        self.assertEqual(kwargs, {'foo': 2})
+        self.assertEqual(kwargs, {"foo": 2})
 
         xml = E.function(
-            E.value(eval="1"), E.value(name="foo", eval="2"),
+            E.value(eval="1"),
+            E.value(name="foo", eval="2"),
             model="test_convert.usered",
             name="method",
         )
@@ -149,33 +146,35 @@ class TestEvalXML(common.TransactionCase):
         self.assertEqual(rec.env.context, self.env.context)
         self.assertEqual(rec.ids, [1])
         self.assertEqual(args, ())
-        self.assertEqual(kwargs, {'foo': 2})
+        self.assertEqual(kwargs, {"foo": 2})
 
         # pass args and context in kwargs
         xml = E.function(
-            E.value(eval="1"), E.value(name="context", eval="{'foo': 2}"),
+            E.value(eval="1"),
+            E.value(name="context", eval="{'foo': 2}"),
             model="test_convert.usered",
             name="model_method",
         )
         rec, args, kwargs = self.eval_xml(xml, obj)
-        self.assertEqual(rec.env.context, {'foo': 2})
+        self.assertEqual(rec.env.context, {"foo": 2})
         self.assertEqual(rec.ids, [])
         self.assertEqual(args, (1,))
         self.assertEqual(kwargs, {})
 
         xml = E.function(
-            E.value(eval="1"), E.value(name="context", eval="{'foo': 2}"),
+            E.value(eval="1"),
+            E.value(name="context", eval="{'foo': 2}"),
             model="test_convert.usered",
             name="method",
         )
         rec, args, kwargs = self.eval_xml(xml, obj)
-        self.assertEqual(rec.env.context, {'foo': 2})
+        self.assertEqual(rec.env.context, {"foo": 2})
         self.assertEqual(rec.ids, [1])
         self.assertEqual(args, ())
         self.assertEqual(kwargs, {})
 
     def test_function_function(self):
-        obj = xml_import(self.cr, 'test_convert', None, 'init')
+        obj = xml_import(self.cr, "test_convert", None, "init")
 
         xml = E.function(
             E.function(model="test_convert.usered", name="search", eval="[[]]"),
@@ -190,7 +189,7 @@ class TestEvalXML(common.TransactionCase):
 
     def test_o2m_sub_records(self):
         # patch the model's class with a proxy that copies the argument
-        Model = self.registry['test_convert.test_model']
+        Model = self.registry["test_convert.test_model"]
         call_args = []
 
         def _load_records(self, data_list, update=False):
@@ -198,10 +197,11 @@ class TestEvalXML(common.TransactionCase):
             # pylint: disable=bad-super-call
             return super(Model, self)._load_records(data_list, update=update)
 
-        self.patch(Model, '_load_records', _load_records)
+        self.patch(Model, "_load_records", _load_records)
 
         # import a record with a subrecord
-        xml = ET.fromstring("""
+        xml = ET.fromstring(
+            """
             <record id="test_convert.test_o2m_record" model="test_convert.test_model">
                 <field name="usered_ids">
                     <record id="test_convert.test_o2m_subrecord" model="test_convert.usered">
@@ -209,15 +209,19 @@ class TestEvalXML(common.TransactionCase):
                     </record>
                 </field>
             </record>
-        """.strip())
-        obj = xml_import(self.cr, 'test_convert', None, 'init')
+        """.strip()
+        )
+        obj = xml_import(self.cr, "test_convert", None, "init")
         obj._tag_record(xml)
 
         # check that field 'usered_ids' is not passed
         self.assertEqual(len(call_args), 1)
         for data in call_args[0]:
-            self.assertNotIn('usered_ids', data['values'],
-                             "Unexpected value in O2M When loading XML with sub records")
+            self.assertNotIn(
+                "usered_ids",
+                data["values"],
+                "Unexpected value in O2M When loading XML with sub records",
+            )
 
     @unittest.skip("not tested")
     def test_xml(self):

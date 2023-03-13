@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* utm
-# 
+#
 # Translators:
 # Hamid Darabi, 2023
 # Zahed Alfak <tamass4116@gmail.com>, 2023
@@ -9,7 +9,7 @@
 # Faraz Sadri Alamdari <ifarazir@gmail.com>, 2023
 # Martin Trigaux, 2023
 # Hanna Kheradroosta, 2023
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta\n"

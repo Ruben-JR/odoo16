@@ -19,7 +19,7 @@ class TSConfig(Command):
         return [
             mod.split(os.path.sep)[-2]
             for mname in MANIFEST_NAMES
-            for mod in glob.glob(os.path.join(path, f'*/{mname}'))
+            for mod in glob.glob(os.path.join(path, f"*/{mname}"))
         ]
 
     def clean_path(self, path):
@@ -36,19 +36,21 @@ class TSConfig(Command):
     def run(self, cmdargs):
         parser = argparse.ArgumentParser(
             prog="%s %s" % (sys.argv[0].split(os.path.sep)[-1], self.command_name),
-            description=self.__doc__
+            description=self.__doc__,
         )
-        parser.add_argument('--addons-path', type=str, nargs=1, dest="paths")
+        parser.add_argument("--addons-path", type=str, nargs=1, dest="paths")
         args = parser.parse_args(args=cmdargs)
 
-        paths = list(map(self.clean_path, args.paths[0].split(',')))
+        paths = list(map(self.clean_path, args.paths[0].split(",")))
         modules = {}
         owl_path = ""
         for path in paths:
             for module in self.get_module_list(path):
                 modules[module] = self.prefix_suffix_path(module, path, "/static/src/*")
                 if module == "web":
-                    owl_path = self.prefix_suffix_path(module, path, "/static/lib/owl/owl.js")
+                    owl_path = self.prefix_suffix_path(
+                        module, path, "/static/lib/owl/owl.js"
+                    )
 
         content = self.generate_file_content(modules, paths)
         content["compilerOptions"]["paths"]["@odoo/owl"] = [owl_path]
@@ -56,22 +58,20 @@ class TSConfig(Command):
         print(json.dumps(content, indent=2))
 
     def generate_imports(self, modules):
-        return {
-            f'@{module}/*': [path]
-            for module, path in modules.items()
-        }
+        return {f"@{module}/*": [path] for module, path in modules.items()}
 
     def generate_file_content(self, modules, paths):
         return {
-            'compilerOptions': {
+            "compilerOptions": {
                 "baseUrl": ".",
                 "target": "es2019",
                 "checkJs": True,
                 "allowJs": True,
                 "noEmit": True,
                 "typeRoots": list(map(lambda p: p + "/web/tooling/types", paths)),
-                "paths": self.generate_imports(modules)
-            }, "exclude": self.generate_excludes()
+                "paths": self.generate_imports(modules),
+            },
+            "exclude": self.generate_excludes(),
         }
 
     def generate_excludes(self):

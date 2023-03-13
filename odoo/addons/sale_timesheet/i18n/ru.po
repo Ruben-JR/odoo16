@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* sale_timesheet
-# 
+#
 # Translators:
 # Vasiliy Korobatov <korobatov@gmail.com>, 2022
 # ILMIR <karamov@it-projects.info>, 2022
@@ -15,7 +15,7 @@
 # Irina Fedulova <istartlin@gmail.com>, 2022
 # Сергей Шебанин <sergey@shebanin.ru>, 2022
 # Ivan Kropotkin <yelizariev@itpp.dev>, 2023
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"

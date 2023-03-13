@@ -13,4 +13,4 @@ Karl Southern karl@theangryangel.co.uk https://github.com/theangryangel
 List of contributors:
 
 Karl Southern karl@theangryangel.co.uk https://github.com/theangryangel
-Karl Southern karl@glo.systems 
+Karl Southern karl@glo.systems

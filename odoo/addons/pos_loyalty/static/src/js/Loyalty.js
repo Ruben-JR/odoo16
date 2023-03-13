@@ -1028,7 +1028,7 @@ const PosLoyaltyOrder = (Order) => class PosLoyaltyOrder extends Order {
     /**
      * Applies a reward to the order, `_updateRewards` is expected to be called right after.
      *
-     * @param {loyalty.reward} reward 
+     * @param {loyalty.reward} reward
      * @param {Integer} coupon_id
      * @param {Object} args Reward options
      * @returns True if everything went right or an error message

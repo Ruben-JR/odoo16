@@ -15,14 +15,19 @@ _logger = logging.getLogger(__name__)
 
 
 class SipsController(http.Controller):
-    _return_url = '/payment/sips/return/'
-    _webhook_url = '/payment/sips/webhook/'
+    _return_url = "/payment/sips/return/"
+    _webhook_url = "/payment/sips/webhook/"
 
     @http.route(
-        _return_url, type='http', auth='public', methods=['POST'], csrf=False, save_session=False
+        _return_url,
+        type="http",
+        auth="public",
+        methods=["POST"],
+        csrf=False,
+        save_session=False,
     )
     def sips_return_from_checkout(self, **data):
-        """ Process the notification data sent by SIPS after redirection from checkout.
+        """Process the notification data sent by SIPS after redirection from checkout.
 
         The route is flagged with `save_session=False` to prevent Odoo from assigning a new session
         to the user if they are redirected to this route with a POST request. Indeed, as the session
@@ -34,43 +39,53 @@ class SipsController(http.Controller):
 
         :param dict data: The notification data
         """
-        _logger.info("handling redirection from SIPS with data:\n%s", pprint.pformat(data))
+        _logger.info(
+            "handling redirection from SIPS with data:\n%s", pprint.pformat(data)
+        )
 
         # Check the integrity of the notification
-        tx_sudo = request.env['payment.transaction'].sudo()._get_tx_from_notification_data(
-            'sips', data
+        tx_sudo = (
+            request.env["payment.transaction"]
+            .sudo()
+            ._get_tx_from_notification_data("sips", data)
         )
         self._verify_notification_signature(data, tx_sudo)
 
         # Handle the notification data
-        tx_sudo._handle_notification_data('sips', data)
-        return request.redirect('/payment/status')
+        tx_sudo._handle_notification_data("sips", data)
+        return request.redirect("/payment/status")
 
-    @http.route(_webhook_url, type='http', auth='public', methods=['POST'], csrf=False)
+    @http.route(_webhook_url, type="http", auth="public", methods=["POST"], csrf=False)
     def sips_webhook(self, **data):
-        """ Process the notification data sent by SIPS to the webhook.
+        """Process the notification data sent by SIPS to the webhook.
 
         :param dict data: The notification data
         :return: An empty string to acknowledge the notification
         :rtype: str
         """
-        _logger.info("notification received from SIPS with data:\n%s", pprint.pformat(data))
+        _logger.info(
+            "notification received from SIPS with data:\n%s", pprint.pformat(data)
+        )
         try:
             # Check the integrity of the notification
-            tx_sudo = request.env['payment.transaction'].sudo()._get_tx_from_notification_data(
-                'sips', data
+            tx_sudo = (
+                request.env["payment.transaction"]
+                .sudo()
+                ._get_tx_from_notification_data("sips", data)
             )
             self._verify_notification_signature(data, tx_sudo)
 
             # Handle the notification data
-            tx_sudo._handle_notification_data('sips', data)
+            tx_sudo._handle_notification_data("sips", data)
         except ValidationError:
-            _logger.exception("unable to handle the notification data; skipping to acknowledge")
-        return ''
+            _logger.exception(
+                "unable to handle the notification data; skipping to acknowledge"
+            )
+        return ""
 
     @staticmethod
     def _verify_notification_signature(notification_data, tx_sudo):
-        """ Check that the received signature matches the expected one.
+        """Check that the received signature matches the expected one.
 
         :param dict notification_data: The notification data
         :param recordset tx_sudo: The sudoed transaction referenced by the notification data, as a
@@ -79,13 +94,15 @@ class SipsController(http.Controller):
         :raise: :class:`werkzeug.exceptions.Forbidden` if the signatures don't match
         """
         # Retrieve the received signature from the data
-        received_signature = notification_data.get('Seal')
+        received_signature = notification_data.get("Seal")
         if not received_signature:
             _logger.warning("received notification with missing signature")
             raise Forbidden()
 
         # Compare the received signature with the expected signature computed from the data
-        expected_signature = tx_sudo.provider_id._sips_generate_shasign(notification_data['Data'])
+        expected_signature = tx_sudo.provider_id._sips_generate_shasign(
+            notification_data["Data"]
+        )
         if not hmac.compare_digest(received_signature, expected_signature):
             _logger.warning("received notification with invalid signature")
             raise Forbidden()

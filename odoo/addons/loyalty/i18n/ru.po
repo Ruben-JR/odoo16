@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* loyalty
-# 
+#
 # Translators:
 # Viktor Pogrebniak <vp@aifil.ru>, 2022
 # Alex Puchkov <ap@alteco.co>, 2022
@@ -14,7 +14,7 @@
 # ILMIR <karamov@it-projects.info>, 2022
 # Сергей Шебанин <sergey@shebanin.ru>, 2022
 # Martin Trigaux, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"

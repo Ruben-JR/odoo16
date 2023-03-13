@@ -9,7 +9,6 @@ from odoo.addons.website.tests.test_website_visitor import MockVisitor
 
 
 class TestCrmFullCommon(TestCrmCommon, MockIAPReveal, MockVisitor):
-
     @classmethod
     def setUpClass(cls):
         super(TestCrmFullCommon, cls).setUpClass()
@@ -26,18 +25,22 @@ class TestCrmFullCommon(TestCrmCommon, MockIAPReveal, MockVisitor):
         # Customers
         # ------------------------------------------------------------
 
-        country_be = cls.env.ref('base.be')
-        cls.env['res.lang']._activate_lang('fr_BE')
+        country_be = cls.env.ref("base.be")
+        cls.env["res.lang"]._activate_lang("fr_BE")
 
-        cls.partners = cls.env['res.partner'].create([
-            {'country_id': country_be.id,
-             'email': 'partner.email.%02d@test.example.com' % idx,
-             'function': 'Noisy Customer',
-             'lang': 'fr_BE',
-             'mobile': '04569999%02d' % idx,
-             'name': 'PartnerCustomer',
-             'phone': '04560000%02d' % idx,
-             'street': 'Super Street, %092d' % idx,
-             'zip': '1400',
-            } for idx in range(0, 10)
-        ])
+        cls.partners = cls.env["res.partner"].create(
+            [
+                {
+                    "country_id": country_be.id,
+                    "email": "partner.email.%02d@test.example.com" % idx,
+                    "function": "Noisy Customer",
+                    "lang": "fr_BE",
+                    "mobile": "04569999%02d" % idx,
+                    "name": "PartnerCustomer",
+                    "phone": "04560000%02d" % idx,
+                    "street": "Super Street, %092d" % idx,
+                    "zip": "1400",
+                }
+                for idx in range(0, 10)
+            ]
+        )

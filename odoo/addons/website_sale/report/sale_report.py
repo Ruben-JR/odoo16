@@ -4,13 +4,13 @@ from odoo import api, fields, models
 
 
 class SaleReport(models.Model):
-    _inherit = 'sale.report'
+    _inherit = "sale.report"
 
-    website_id = fields.Many2one('website', readonly=True)
+    website_id = fields.Many2one("website", readonly=True)
 
     def _select_additional_fields(self):
         res = super()._select_additional_fields()
-        res['website_id'] = "s.website_id"
+        res["website_id"] = "s.website_id"
         return res
 
     def _group_by_sale(self):

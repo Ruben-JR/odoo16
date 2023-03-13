@@ -21,7 +21,6 @@ from odf.text import P
 
 
 class ODSReader(object):
-
     # loads the file
     def __init__(self, file=None, content=None, clonespannedcolumns=None):
         if not content:
@@ -54,13 +53,13 @@ class ODSReader(object):
                     repeat = cell.getAttribute("numbercolumnsrepeated")
                 if not repeat:
                     repeat = 1
-                    spanned = int(cell.getAttribute('numbercolumnsspanned') or 0)
+                    spanned = int(cell.getAttribute("numbercolumnsspanned") or 0)
                     # clone spanned cells
                     if self.clonespannedcolumns is not None and spanned > 1:
                         repeat = spanned
 
                 ps = cell.getElementsByType(P)
-                textContent = u""
+                textContent = ""
 
                 # for each text/text:span node
                 for p in ps:
@@ -68,10 +67,10 @@ class ODSReader(object):
                         if n.nodeType == 1 and n.tagName == "text:span":
                             for c in n.childNodes:
                                 if c.nodeType == 3:
-                                    textContent = u'{}{}'.format(textContent, n.data)
+                                    textContent = "{}{}".format(textContent, n.data)
 
                         if n.nodeType == 3:
-                            textContent = u'{}{}'.format(textContent, n.data)
+                            textContent = "{}{}".format(textContent, n.data)
 
                 if textContent:
                     if not textContent.startswith("#"):  # ignore comments cells
@@ -85,7 +84,7 @@ class ODSReader(object):
             if arrCells:
                 arrRows.append(arrCells)
 
-            #else:
+            # else:
             #    print ("Empty or commented row (", row_comment, ")")
 
         self.SHEETS[name] = arrRows

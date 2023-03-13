@@ -606,7 +606,7 @@ $o-mail-thread-window-zindex: $zindex-modal + 1 !default;
 .o_PublicLivechatMessage {
     display: flex;
     position: relative;
-    
+
     &.o-isVisitorTheAuthor {
         flex-direction: row-reverse !important;
     }
@@ -648,7 +648,7 @@ $o-mail-thread-window-zindex: $zindex-modal + 1 !default;
         justify-content: flex-end;
         margin-left: map-get($spacers, 4);
     }
-    
+
     &.o-isOperatorTheAuthor {
         margin-right: map-get($spacers, 4);
     }
@@ -664,7 +664,7 @@ $o-mail-thread-window-zindex: $zindex-modal + 1 !default;
     &.o-isVisitorTheAuthor {
         margin-left: map-get($spacers, 2);
     }
-    
+
     &.o-isOperatorTheAuthor {
         margin-right: map-get($spacers, 2);
     }

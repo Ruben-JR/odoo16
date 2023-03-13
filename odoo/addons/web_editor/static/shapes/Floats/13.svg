@@ -22,7 +22,7 @@
 		}
 		@keyframes zig_02 {
 			0%, 100% {transform: translate(0, 0);}
-			50%      {transform: translate(-30%, 0);}	
+			50%      {transform: translate(-30%, 0);}
 		}
 		@keyframes triangle_01 {
 			0%, 100% {transform: translate(0, 0) rotate(0deg);}
@@ -50,7 +50,7 @@
 			polyline,
 			polygon,
 			rect {transform: scale(2);}
-			
+
 			/* Disable rotate animations on thumbnail to prevent an issue in Firefox */
 			#half_circle_01,
 			#square_02,

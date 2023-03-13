@@ -46,7 +46,7 @@ export class PartnerAutoCompleteCharField extends CharField {
                 options: async (request) => {
                     // Lazyload jsvat only if the component is being used.
                     await loadJS("/partner_autocomplete/static/lib/jsvat.js");
-                    
+
                     if (this.validateSearchTerm(request)) {
                         const suggestions = await this.partner_autocomplete.autocomplete(request, this.isVAT(request));
                         suggestions.forEach((suggestion) => {

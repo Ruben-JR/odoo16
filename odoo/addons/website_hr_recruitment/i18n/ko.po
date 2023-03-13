@@ -1,12 +1,12 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* website_hr_recruitment
-# 
+#
 # Translators:
 # Martin Trigaux, 2022
 # Heesoo Choi, 2022
 # Sarah Park, 2023
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta\n"

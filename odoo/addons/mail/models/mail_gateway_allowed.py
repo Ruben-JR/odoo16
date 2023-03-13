@@ -17,25 +17,30 @@ class MailGatewayAllowed(models.Model):
     won't apply to them.
     """
 
-    _description = 'Mail Gateway Allowed'
-    _name = 'mail.gateway.allowed'
+    _description = "Mail Gateway Allowed"
+    _name = "mail.gateway.allowed"
 
-    email = fields.Char('Email Address')
+    email = fields.Char("Email Address")
     email_normalized = fields.Char(
-        string='Normalized Email', compute='_compute_email_normalized', store=True, index=True)
+        string="Normalized Email",
+        compute="_compute_email_normalized",
+        store=True,
+        index=True,
+    )
 
-    @api.depends('email')
+    @api.depends("email")
     def _compute_email_normalized(self):
         for record in self:
             record.email_normalized = tools.email_normalize(record.email)
 
     @api.model
     def get_empty_list_help(self, help_message):
-        get_param = self.env['ir.config_parameter'].sudo().get_param
-        LOOP_MINUTES = int(get_param('mail.gateway.loop.minutes', 120))
-        LOOP_THRESHOLD = int(get_param('mail.gateway.loop.threshold', 20))
+        get_param = self.env["ir.config_parameter"].sudo().get_param
+        LOOP_MINUTES = int(get_param("mail.gateway.loop.minutes", 120))
+        LOOP_THRESHOLD = int(get_param("mail.gateway.loop.threshold", 20))
 
-        return _('''
+        return _(
+            """
             <p class="o_view_nocontent_smiling_face">
                 Add addresses to the Allowed List
             </p><p>
@@ -44,4 +49,7 @@ class MailGatewayAllowed(models.Model):
                 minutes. If there are some addresses from which you need to receive very frequent
                 updates, you can however add them below and Odoo will let them go through.
             </p>
-        ''', LOOP_THRESHOLD, LOOP_MINUTES)
+        """,
+            LOOP_THRESHOLD,
+            LOOP_MINUTES,
+        )

@@ -28,7 +28,7 @@
             <rect width="7" height="7" rx="2" x="58" y="14" fill="#3aadaa"/>
             <rect width="20" height="20" fill="#9ccde4" x="5" y="3"/>
         </g>
-    </defs> 
+    </defs>
     <use href="#product_horizontal_card_item" y="5" x="5"/>
     <use href="#product_horizontal_card_shirt" y="12" x="13"/>
     <use href="#product_horizontal_card_item" y="5" x="85"/>

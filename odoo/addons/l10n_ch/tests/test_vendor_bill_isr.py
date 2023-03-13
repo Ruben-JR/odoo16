@@ -13,7 +13,7 @@ ISR_REFERENCE_NO_ZEROS = "1 23456 78903"
 ISR_REFERENCE_BAD = "11 11111 11111 11111 11111 11111"
 
 
-@tagged('post_install_l10n', 'post_install', '-at_install')
+@tagged("post_install_l10n", "post_install", "-at_install")
 class TestVendorBillISR(common.TransactionCase):
     """Check we can encode Vendor bills with ISR references
 
@@ -35,30 +35,38 @@ class TestVendorBillISR(common.TransactionCase):
         cls.supplier2 = cls.env["res.partner"].create({"name": "Supplier postal"})
         cls.supplier3 = cls.env["res.partner"].create({"name": "Supplier IBAN"})
 
-        cls.bank_acc_isr = cls.env['res.partner.bank'].create({
-            "acc_number": "ISR 01-162-8 Supplier ISR",
-            "partner_id": cls.supplier1.id,
-            "l10n_ch_postal": CH_ISR_SUBSCRIPTION,
-        })
-        cls.bank_acc_postal = cls.env['res.partner.bank'].create({
-            "acc_number": CH_POSTAL,
-            "partner_id": cls.supplier2.id,
-            "l10n_ch_postal": CH_POSTAL,
-        })
-        cls.bank_acc_iban = cls.env['res.partner.bank'].create({
-            "acc_number": CH_IBAN,
-            "partner_id": cls.supplier2.id,
-            "l10n_ch_postal": False,
-        })
+        cls.bank_acc_isr = cls.env["res.partner.bank"].create(
+            {
+                "acc_number": "ISR 01-162-8 Supplier ISR",
+                "partner_id": cls.supplier1.id,
+                "l10n_ch_postal": CH_ISR_SUBSCRIPTION,
+            }
+        )
+        cls.bank_acc_postal = cls.env["res.partner.bank"].create(
+            {
+                "acc_number": CH_POSTAL,
+                "partner_id": cls.supplier2.id,
+                "l10n_ch_postal": CH_POSTAL,
+            }
+        )
+        cls.bank_acc_iban = cls.env["res.partner.bank"].create(
+            {
+                "acc_number": CH_IBAN,
+                "partner_id": cls.supplier2.id,
+                "l10n_ch_postal": False,
+            }
+        )
 
     def test_isr_ref(self):
         """Enter ISR reference with ISR subscription account number
 
         The vendor bill can be saved.
         """
-        self.env.company.country_id = self.env.ref('base.ch')
-        form = Form(self.env["account.move"].with_context(
-            default_move_type="in_invoice"), view="l10n_ch.isr_invoice_form")
+        self.env.company.country_id = self.env.ref("base.ch")
+        form = Form(
+            self.env["account.move"].with_context(default_move_type="in_invoice"),
+            view="l10n_ch.isr_invoice_form",
+        )
         form.partner_id = self.supplier1
         form.partner_bank_id = self.bank_acc_isr
 
@@ -74,9 +82,11 @@ class TestVendorBillISR(common.TransactionCase):
 
         The vendor bill can be saved.
         """
-        self.env.company.country_id = self.env.ref('base.ch')
-        form = Form(self.env["account.move"].with_context(
-            default_move_type="in_invoice"), view="l10n_ch.isr_invoice_form")
+        self.env.company.country_id = self.env.ref("base.ch")
+        form = Form(
+            self.env["account.move"].with_context(default_move_type="in_invoice"),
+            view="l10n_ch.isr_invoice_form",
+        )
         form.partner_id = self.supplier1
         form.partner_bank_id = self.bank_acc_isr
 
@@ -93,9 +103,11 @@ class TestVendorBillISR(common.TransactionCase):
 
         The vendor bill can be saved.
         """
-        self.env.company.country_id = self.env.ref('base.ch')
-        form = Form(self.env["account.move"].with_context(
-            default_move_type="in_invoice"), view="l10n_ch.isr_invoice_form")
+        self.env.company.country_id = self.env.ref("base.ch")
+        form = Form(
+            self.env["account.move"].with_context(default_move_type="in_invoice"),
+            view="l10n_ch.isr_invoice_form",
+        )
         form.partner_id = self.supplier1
         form.partner_bank_id = self.bank_acc_isr
 
@@ -108,9 +120,11 @@ class TestVendorBillISR(common.TransactionCase):
         """Mistype ISR reference with ISR subscription account number
         Check it will show the warning
         """
-        self.env.company.country_id = self.env.ref('base.ch')
-        form = Form(self.env["account.move"].with_context(
-            default_move_type="in_invoice"), view="l10n_ch.isr_invoice_form")
+        self.env.company.country_id = self.env.ref("base.ch")
+        form = Form(
+            self.env["account.move"].with_context(default_move_type="in_invoice"),
+            view="l10n_ch.isr_invoice_form",
+        )
         form.partner_id = self.supplier1
         form.partner_bank_id = self.bank_acc_isr
 

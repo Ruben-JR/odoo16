@@ -1,12 +1,12 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* mass_mailing_event_track
-# 
+#
 # Translators:
 # marcescu, 2022
 # José Cabrera Lozano <jose.cabrera@edukative.es>, 2022
 # Manel Fernandez Ramirez <manelfera@outlook.com>, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0+e\n"

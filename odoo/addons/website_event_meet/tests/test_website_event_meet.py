@@ -9,17 +9,22 @@ from odoo.tests import Form
 
 
 class TestWebsiteEventMeet(EventCase):
-
     @classmethod
     def setUpClass(cls):
         super(TestWebsiteEventMeet, cls).setUpClass()
-        cls.event_0 = cls.env['event.event'].create({
-            'name': 'TestEvent',
-            'auto_confirm': True,
-            'date_begin': fields.Datetime.to_string(datetime.today() + timedelta(days=1)),
-            'date_end': fields.Datetime.to_string(datetime.today() + timedelta(days=15)),
-            'date_tz': 'Europe/Brussels',
-        })
+        cls.event_0 = cls.env["event.event"].create(
+            {
+                "name": "TestEvent",
+                "auto_confirm": True,
+                "date_begin": fields.Datetime.to_string(
+                    datetime.today() + timedelta(days=1)
+                ),
+                "date_end": fields.Datetime.to_string(
+                    datetime.today() + timedelta(days=15)
+                ),
+                "date_tz": "Europe/Brussels",
+            }
+        )
 
     def test_meeting_room_create(self):
         """Test that the field of the mixin are automatically filled."""
@@ -35,11 +40,9 @@ class TestWebsiteEventMeet(EventCase):
 
         # Try to create a meeting room without filling the related field
         # It must create the `chat.room` with the default value
-        meeting_room = self.env["event.meeting.room"].create({
-            "name": "Test 2",
-            "event_id": self.event_0.id,
-            "target_audience": "dev"
-        })
+        meeting_room = self.env["event.meeting.room"].create(
+            {"name": "Test 2", "event_id": self.event_0.id, "target_audience": "dev"}
+        )
         self.assertTrue(meeting_room.chat_room_id)
         self.assertTrue(meeting_room.chat_room_id.name)
         self.assertEqual(meeting_room.chat_room_id.max_capacity, "8")
@@ -48,28 +51,36 @@ class TestWebsiteEventMeet(EventCase):
 
     def test_meeting_room_copy(self):
         """Test the duplication of the meeting room."""
-        meeting_room_1 = self.env["event.meeting.room"].create({
-            "name": "Test meeting room",
-            "event_id": self.event_0.id,
-            "target_audience": "dev",
-            "room_max_capacity": "20",
-        })
-        self.assertEqual(meeting_room_1.room_name, 'odoo-room-test-meeting-room')
+        meeting_room_1 = self.env["event.meeting.room"].create(
+            {
+                "name": "Test meeting room",
+                "event_id": self.event_0.id,
+                "target_audience": "dev",
+                "room_max_capacity": "20",
+            }
+        )
+        self.assertEqual(meeting_room_1.room_name, "odoo-room-test-meeting-room")
         meeting_room_2 = meeting_room_1.copy()
-        self.assertEqual(meeting_room_2.room_name, 'odoo-room-test-meeting-room-1')
+        self.assertEqual(meeting_room_2.room_name, "odoo-room-test-meeting-room-1")
 
         chat_room_1 = meeting_room_1.chat_room_id
         chat_room_2 = meeting_room_2.chat_room_id
 
         self.assertTrue(chat_room_1)
         self.assertTrue(chat_room_2)
-        self.assertNotEqual(chat_room_1.id, chat_room_2.id, "Must create a new chat room")
-        self.assertNotEqual(chat_room_1.name, chat_room_2.name, "Must generate a new chat room name")
-        self.assertEqual(chat_room_1.max_capacity, "20", "Must set the max capacity on the chat room")
+        self.assertNotEqual(
+            chat_room_1.id, chat_room_2.id, "Must create a new chat room"
+        )
+        self.assertNotEqual(
+            chat_room_1.name, chat_room_2.name, "Must generate a new chat room name"
+        )
+        self.assertEqual(
+            chat_room_1.max_capacity, "20", "Must set the max capacity on the chat room"
+        )
         self.assertEqual(chat_room_2.max_capacity, "20", "Must copy the max capacity")
 
         meeting_room_3 = meeting_room_1.copy()
-        self.assertEqual(meeting_room_3.room_name, 'odoo-room-test-meeting-room-2')
+        self.assertEqual(meeting_room_3.room_name, "odoo-room-test-meeting-room-2")
         # Ensure room_max_capacity is copied to new meeting room
         self.assertEqual(meeting_room_3.room_max_capacity, "20")
         # Ensure max_capacity in linked chat room is same
@@ -77,12 +88,14 @@ class TestWebsiteEventMeet(EventCase):
 
     def test_meeting_room_unlink(self):
         """Test the duplication of the meeting room."""
-        meeting_room = self.env["event.meeting.room"].create({
-            "name": "Test meeting room",
-            "event_id": self.event_0.id,
-            "target_audience": "dev",
-            "room_max_capacity": "20",
-        })
+        meeting_room = self.env["event.meeting.room"].create(
+            {
+                "name": "Test meeting room",
+                "event_id": self.event_0.id,
+                "target_audience": "dev",
+                "room_max_capacity": "20",
+            }
+        )
 
         self.assertTrue(meeting_room.chat_room_id)
         chat_room_id = meeting_room.chat_room_id.id

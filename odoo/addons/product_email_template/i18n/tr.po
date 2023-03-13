@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* product_email_template
-# 
+#
 # Translators:
 # abc Def <hdogan1974@gmail.com>, 2022
 # Martin Trigaux, 2022
@@ -9,7 +9,7 @@
 # Ediz Duman <neps1192@gmail.com>, 2022
 # Yedigen, 2022
 # Ayhan KIZILTAN <akiziltan76@hotmail.com>, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.5alpha1\n"

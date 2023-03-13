@@ -103,7 +103,7 @@ export class BomOverviewComponent extends Component {
             await this.getBomData();
         }
     }
-    
+
     async onChangeVariant(variantId) {
         if (this.state.currentVariantId != variantId) {
             this.state.currentVariantId = variantId;

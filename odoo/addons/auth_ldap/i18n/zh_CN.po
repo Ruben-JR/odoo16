@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* auth_ldap
-# 
+#
 # Translators:
 # Martin Trigaux, 2019
 # Jeffery CHEN <jeffery9@gmail.com>, 2019
@@ -9,7 +9,7 @@
 # guohuadeng <guohuadeng@hotmail.com>, 2019
 # kun zhang <re.z@qq.com>, 2019
 # inspur qiuguodong <qiuguodong@inspur.com>, 2019
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.4\n"

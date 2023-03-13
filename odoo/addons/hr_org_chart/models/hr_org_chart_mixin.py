@@ -8,9 +8,12 @@ class HrEmployeeBase(models.AbstractModel):
     _inherit = "hr.employee.base"
 
     child_all_count = fields.Integer(
-        'Indirect Subordinates Count',
-        compute='_compute_subordinates', recursive=True, store=False,
-        compute_sudo=True)
+        "Indirect Subordinates Count",
+        compute="_compute_subordinates",
+        recursive=True,
+        store=False,
+        compute_sudo=True,
+    )
 
     def _get_subordinates(self, parents=None):
         """
@@ -26,12 +29,15 @@ class HrEmployeeBase(models.AbstractModel):
         indirect_subordinates = self.env[self._name]
         parents |= self
         direct_subordinates = self.child_ids - parents
-        child_subordinates = direct_subordinates._get_subordinates(parents=parents) if direct_subordinates else self.browse()
+        child_subordinates = (
+            direct_subordinates._get_subordinates(parents=parents)
+            if direct_subordinates
+            else self.browse()
+        )
         indirect_subordinates |= child_subordinates
         return indirect_subordinates | direct_subordinates
 
-
-    @api.depends('child_ids', 'child_ids.child_all_count')
+    @api.depends("child_ids", "child_ids.child_all_count")
     def _compute_subordinates(self):
         for employee in self:
             employee.subordinate_ids = employee._get_subordinates()

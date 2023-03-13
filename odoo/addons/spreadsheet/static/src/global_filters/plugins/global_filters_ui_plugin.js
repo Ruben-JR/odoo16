@@ -4,7 +4,7 @@
  * @typedef {import("@spreadsheet/data_sources/metadata_repository").Field} Field
  * @typedef {import("./global_filters_core_plugin").GlobalFilter} GlobalFilter
  * @typedef {import("./global_filters_core_plugin").FieldMatching} FieldMatching
- 
+
  */
 
 import { _t } from "@web/core/l10n/translation";

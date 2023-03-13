@@ -50,7 +50,7 @@
         </linearGradient>
         <clipPath id="screen_path">
             <polygon points="95.21 12.06 724.55 174.88 758.06 199.6 773.35 231.37 778.76 265.15 791.29 2360.2 752.55 2434.45 76.86 2439.21 63.88 41.21 95.21 12.06"/>
-        </clipPath>        
+        </clipPath>
         <path id="filterPath" d="M0.119,0.0049,0.9057,0.0705l0.0419,0.01,0.0191,0.0128,0.0068,0.0136,0.0157,0.8444-0.0484,0.0299-0.8446,0.0019-0.0163-0.9665Z"/>
     </defs>
     <svg viewBox="0 0 1 1" id="preview" preserveAspectRatio="none">

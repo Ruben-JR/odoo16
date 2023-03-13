@@ -6,62 +6,62 @@ from odoo.exceptions import ValidationError
 
 
 class AccountAnalyticLine(models.Model):
-    _name = 'account.analytic.line'
-    _description = 'Analytic Line'
-    _order = 'date desc, id desc'
+    _name = "account.analytic.line"
+    _description = "Analytic Line"
+    _order = "date desc, id desc"
     _check_company_auto = True
 
     name = fields.Char(
-        'Description',
+        "Description",
         required=True,
     )
     date = fields.Date(
-        'Date',
+        "Date",
         required=True,
         index=True,
         default=fields.Date.context_today,
     )
     amount = fields.Monetary(
-        'Amount',
+        "Amount",
         required=True,
         default=0.0,
     )
     unit_amount = fields.Float(
-        'Quantity',
+        "Quantity",
         default=0.0,
     )
     product_uom_id = fields.Many2one(
-        'uom.uom',
-        string='Unit of Measure',
+        "uom.uom",
+        string="Unit of Measure",
         domain="[('category_id', '=', product_uom_category_id)]",
     )
     product_uom_category_id = fields.Many2one(
-        related='product_uom_id.category_id',
-        string='UoM Category',
+        related="product_uom_id.category_id",
+        string="UoM Category",
         readonly=True,
     )
     account_id = fields.Many2one(
-        'account.analytic.account',
-        'Analytic Account',
+        "account.analytic.account",
+        "Analytic Account",
         required=True,
-        ondelete='restrict',
+        ondelete="restrict",
         index=True,
         check_company=True,
     )
     partner_id = fields.Many2one(
-        'res.partner',
-        string='Partner',
+        "res.partner",
+        string="Partner",
         check_company=True,
     )
     user_id = fields.Many2one(
-        'res.users',
-        string='User',
-        default=lambda self: self.env.context.get('user_id', self.env.user.id),
+        "res.users",
+        string="User",
+        default=lambda self: self.env.context.get("user_id", self.env.user.id),
         index=True,
     )
     company_id = fields.Many2one(
-        'res.company',
-        string='Company',
+        "res.company",
+        string="Company",
         required=True,
         readonly=True,
         default=lambda self: self.env.company,
@@ -74,19 +74,26 @@ class AccountAnalyticLine(models.Model):
         compute_sudo=True,
     )
     plan_id = fields.Many2one(
-        'account.analytic.plan',
-        related='account_id.plan_id',
+        "account.analytic.plan",
+        related="account_id.plan_id",
         store=True,
         readonly=True,
         compute_sudo=True,
     )
     category = fields.Selection(
-        [('other', 'Other')],
-        default='other',
+        [("other", "Other")],
+        default="other",
     )
 
-    @api.constrains('company_id', 'account_id')
+    @api.constrains("company_id", "account_id")
     def _check_company_id(self):
         for line in self:
-            if line.account_id.company_id and line.company_id.id != line.account_id.company_id.id:
-                raise ValidationError(_('The selected account belongs to another company than the one you\'re trying to create an analytic item for'))
+            if (
+                line.account_id.company_id
+                and line.company_id.id != line.account_id.company_id.id
+            ):
+                raise ValidationError(
+                    _(
+                        "The selected account belongs to another company than the one you're trying to create an analytic item for"
+                    )
+                )

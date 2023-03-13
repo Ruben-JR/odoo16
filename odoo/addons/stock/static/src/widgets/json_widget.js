@@ -7,7 +7,7 @@ import { useService } from "@web/core/utils/hooks";
 const { Component, onWillStart, onWillUpdateProps } = owl;
 
 export class JsonPopOver extends Component {
-    
+
     setup(){
         this.jsonValue = JSON.parse(this.props.value);
         onWillUpdateProps(nextProps => {

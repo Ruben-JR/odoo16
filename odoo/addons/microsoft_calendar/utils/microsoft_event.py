@@ -22,11 +22,14 @@ class MicrosoftEvent(abc.Set):
             if isinstance(item, self.__class__):
                 self._events[item.id] = item._events[item.id]
             elif isinstance(item, Mapping):
-                self._events[item.get('id')] = item
+                self._events[item.get("id")] = item
             else:
-                raise ValueError("Only %s or iterable of dict are supported" % self.__class__.__name__)
+                raise ValueError(
+                    "Only %s or iterable of dict are supported"
+                    % self.__class__.__name__
+                )
 
-    def __iter__(self) -> Iterator['MicrosoftEvent']:
+    def __iter__(self) -> Iterator["MicrosoftEvent"]:
         return iter(MicrosoftEvent([vals]) for vals in self._events.values())
 
     def __contains__(self, microsoft_event):
@@ -41,14 +44,14 @@ class MicrosoftEvent(abc.Set):
     def __getattr__(self, name):
         # ensure_one
         try:
-            event, = self._events.keys()
+            (event,) = self._events.keys()
         except ValueError:
             raise ValueError("Expected singleton: %s" % self)
         event_id = list(self._events.keys())[0]
         return self._events[event_id].get(name)
 
     def __repr__(self):
-        return '%s%s' % (self.__class__.__name__, self.ids)
+        return "%s%s" % (self.__class__.__name__, self.ids)
 
     @property
     def ids(self):
@@ -100,11 +103,17 @@ class MicrosoftEvent(abc.Set):
         unmapped_events = self.filter(lambda e: e.id not in mapped_events)
 
         model_env = force_model if force_model is not None else self._get_model(env)
-        odoo_events = model_env.with_context(active_test=False).search([
-            '|',
-            ('ms_universal_event_id', "in", unmapped_events.uids),
-            ('ms_organizer_event_id', "in", unmapped_events.ids)
-        ]).with_env(env)
+        odoo_events = (
+            model_env.with_context(active_test=False)
+            .search(
+                [
+                    "|",
+                    ("ms_universal_event_id", "in", unmapped_events.uids),
+                    ("ms_organizer_event_id", "in", unmapped_events.ids),
+                ]
+            )
+            .with_env(env)
+        )
 
         # 1. try to match unmapped events with Odoo events using their iCalUId
         unmapped_events_with_uids = unmapped_events.filter(lambda e: e.iCalUId)
@@ -114,7 +123,7 @@ class MicrosoftEvent(abc.Set):
         for ms_event in unmapped_events_with_uids:
             odoo_id = mapping.get(ms_event.iCalUId)
             if odoo_id:
-                ms_event._events[ms_event.id]['_odoo_id'] = odoo_id
+                ms_event._events[ms_event.id]["_odoo_id"] = odoo_id
                 mapped_events.append(ms_event.id)
 
         # 2. try to match unmapped events with Odoo events using their id
@@ -124,15 +133,17 @@ class MicrosoftEvent(abc.Set):
         for ms_event in unmapped_events:
             odoo_event = mapping.get(ms_event.id)
             if odoo_event:
-                ms_event._events[ms_event.id]['_odoo_id'] = odoo_event.id
+                ms_event._events[ms_event.id]["_odoo_id"] = odoo_event.id
                 mapped_events.append(ms_event.id)
 
                 # don't forget to also set the global event ID on the Odoo event to ease
                 # and improve reliability of future mappings
-                odoo_event.write({
-                    'microsoft_id': combine_ids(ms_event.id, ms_event.iCalUId),
-                    'need_sync_m': False,
-                })
+                odoo_event.write(
+                    {
+                        "microsoft_id": combine_ids(ms_event.id, ms_event.iCalUId),
+                        "need_sync_m": False,
+                    }
+                )
 
         return self.filter(lambda e: e.id in mapped_events)
 
@@ -149,17 +160,22 @@ class MicrosoftEvent(abc.Set):
         """
         if self.isOrganizer:
             return env.user.id
-        if self.organizer.get('emailAddress') and self.organizer.get('emailAddress').get('address'):
+        if self.organizer.get("emailAddress") and self.organizer.get(
+            "emailAddress"
+        ).get("address"):
             # Warning: In Microsoft: 1 email = 1 user; but in Odoo several users might have the same email
-            user = env['res.users'].search([('email', '=', self.organizer.get('emailAddress').get('address'))], limit=1)
+            user = env["res.users"].search(
+                [("email", "=", self.organizer.get("emailAddress").get("address"))],
+                limit=1,
+            )
             return user.id if user else False
         return False
 
-    def filter(self, func) -> 'MicrosoftEvent':
+    def filter(self, func) -> "MicrosoftEvent":
         return MicrosoftEvent(e for e in self if func(e))
 
     def is_recurrence(self):
-        return self.type == 'seriesMaster'
+        return self.type == "seriesMaster"
 
     def is_recurrent(self):
         return bool(self.seriesMasterId or self.is_recurrence())
@@ -170,63 +186,66 @@ class MicrosoftEvent(abc.Set):
     def get_recurrence(self):
         if not self.recurrence:
             return {}
-        pattern = self.recurrence['pattern']
-        range = self.recurrence['range']
+        pattern = self.recurrence["pattern"]
+        range = self.recurrence["range"]
         end_type_dict = {
-            'endDate': 'end_date',
-            'noEnd': 'forever',
-            'numbered': 'count',
+            "endDate": "end_date",
+            "noEnd": "forever",
+            "numbered": "count",
         }
         type_dict = {
-            'absoluteMonthly': 'monthly',
-            'relativeMonthly': 'monthly',
-            'absoluteYearly': 'yearly',
-            'relativeYearly': 'yearly',
+            "absoluteMonthly": "monthly",
+            "relativeMonthly": "monthly",
+            "absoluteYearly": "yearly",
+            "relativeYearly": "yearly",
         }
         index_dict = {
-            'first': '1',
-            'second': '2',
-            'third': '3',
-            'fourth': '4',
-            'last': '-1',
+            "first": "1",
+            "second": "2",
+            "third": "3",
+            "fourth": "4",
+            "last": "-1",
         }
-        rrule_type = type_dict.get(pattern['type'], pattern['type'])
-        interval = pattern['interval']
-        if rrule_type == 'yearly':
+        rrule_type = type_dict.get(pattern["type"], pattern["type"])
+        interval = pattern["interval"]
+        if rrule_type == "yearly":
             interval *= 12
         result = {
-            'rrule_type': rrule_type,
-            'end_type': end_type_dict.get(range['type'], False),
-            'interval': interval,
-            'count': range['numberOfOccurrences'],
-            'day': pattern['dayOfMonth'],
-            'byday': index_dict.get(pattern['index'], False),
-            'until': range['type'] == 'endDate' and range['endDate'],
+            "rrule_type": rrule_type,
+            "end_type": end_type_dict.get(range["type"], False),
+            "interval": interval,
+            "count": range["numberOfOccurrences"],
+            "day": pattern["dayOfMonth"],
+            "byday": index_dict.get(pattern["index"], False),
+            "until": range["type"] == "endDate" and range["endDate"],
         }
 
         month_by_dict = {
-            'absoluteMonthly': 'date',
-            'relativeMonthly': 'day',
-            'absoluteYearly': 'date',
-            'relativeYearly': 'day',
+            "absoluteMonthly": "date",
+            "relativeMonthly": "day",
+            "absoluteYearly": "date",
+            "relativeYearly": "day",
         }
-        month_by = month_by_dict.get(pattern['type'], False)
+        month_by = month_by_dict.get(pattern["type"], False)
         if month_by:
-            result['month_by'] = month_by
+            result["month_by"] = month_by
 
         # daysOfWeek contains the full name of the day, the fields contain the first 3 letters (mon, tue, etc)
-        week_days = [x[:3] for x in pattern.get('daysOfWeek', [])]
-        for week_day in ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']:
+        week_days = [x[:3] for x in pattern.get("daysOfWeek", [])]
+        for week_day in ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]:
             result[week_day] = week_day in week_days
         if week_days:
-            result['weekday'] = week_days[0].upper()
+            result["weekday"] = week_days[0].upper()
         return result
 
     def is_cancelled(self):
         return bool(self.isCancelled) or self.is_removed()
 
     def is_removed(self):
-        return self.__getattr__('@removed') and self.__getattr__('@removed').get('reason') == 'deleted'
+        return (
+            self.__getattr__("@removed")
+            and self.__getattr__("@removed").get("reason") == "deleted"
+        )
 
     def is_recurrence_outlier(self):
         return self.type == "exception"
@@ -234,25 +253,31 @@ class MicrosoftEvent(abc.Set):
     def cancelled(self):
         return self.filter(lambda e: e.is_cancelled())
 
-    def match_with_odoo_events(self, env) -> 'MicrosoftEvent':
+    def match_with_odoo_events(self, env) -> "MicrosoftEvent":
         """
         Match Outlook events (self) with existing Odoo events, and return the list of matched events
         """
         # first, try to match recurrences
         # Note that when a recurrence is removed, there is no field in Outlook data to identify
         # the item as a recurrence, so select all deleted items by default.
-        recurrence_candidates = self.filter(lambda x: x.is_recurrence() or x.is_removed())
-        mapped_recurrences = recurrence_candidates._load_odoo_ids_from_db(env, force_model=env["calendar.recurrence"])
+        recurrence_candidates = self.filter(
+            lambda x: x.is_recurrence() or x.is_removed()
+        )
+        mapped_recurrences = recurrence_candidates._load_odoo_ids_from_db(
+            env, force_model=env["calendar.recurrence"]
+        )
 
         # then, try to match events
-        events_candidates = (self - mapped_recurrences).filter(lambda x: not x.is_recurrence())
+        events_candidates = (self - mapped_recurrences).filter(
+            lambda x: not x.is_recurrence()
+        )
         mapped_events = events_candidates._load_odoo_ids_from_db(env)
 
         return mapped_recurrences | mapped_events
 
     def _get_model(self, env):
         if all(e.is_recurrence() for e in self):
-            return env['calendar.recurrence']
+            return env["calendar.recurrence"]
         if all(not e.is_recurrence() for e in self):
-            return env['calendar.event']
+            return env["calendar.event"]
         raise TypeError("Mixing Microsoft events and Microsoft recurrences")

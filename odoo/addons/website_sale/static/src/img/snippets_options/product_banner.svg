@@ -38,6 +38,6 @@
             <use href="#product_banner_watch" y="18" x="170"/>
             <use href="#product_banner_pants" y="18" x="195"/>
         </g>
-    </defs> 
+    </defs>
     <use href="#product_banner_item" y="5" x="5"/>
 </svg>

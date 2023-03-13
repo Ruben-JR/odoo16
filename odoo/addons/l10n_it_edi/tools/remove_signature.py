@@ -15,12 +15,15 @@ except ImportError:
 
 
 def remove_signature(content):
-    """ Remove the PKCS#7 envelope from given content, making a '.xml.p7m' file content readable as it was '.xml'.
-        As OpenSSL may not be installed, in that case a warning is issued and None is returned. """
+    """Remove the PKCS#7 envelope from given content, making a '.xml.p7m' file content readable as it was '.xml'.
+    As OpenSSL may not be installed, in that case a warning is issued and None is returned.
+    """
 
     # Prevent using the library if it had import errors
     if not ssl_crypto:
-        _logger.warning("Error reading the content, check if the OpenSSL library is installed for for PKCS#7 envelope extraction.")
+        _logger.warning(
+            "Error reading the content, check if the OpenSSL library is installed for for PKCS#7 envelope extraction."
+        )
         return None
 
     # Load some tools from the library
@@ -39,7 +42,9 @@ def remove_signature(content):
         try:
             loaded_data = ssl_crypto.load_pkcs7_data(ssl_crypto.FILETYPE_ASN1, content)
         except ssl_crypto.Error:
-            _logger.warning("Error reading the content, PKCS#7 signature missing or invalid. Content will be tentatively used as it is.")
+            _logger.warning(
+                "Error reading the content, PKCS#7 signature missing or invalid. Content will be tentatively used as it is."
+            )
             return content
 
     # Verify the signature

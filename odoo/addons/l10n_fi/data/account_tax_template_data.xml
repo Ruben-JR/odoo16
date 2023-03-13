@@ -396,7 +396,7 @@
         <field name="name">24% incl</field>
         <field name="description">24% incl</field>
         <field name="price_include" eval="1" />
-        <field name="include_base_amount" eval="1" />        
+        <field name="include_base_amount" eval="1" />
         <field name="amount">24.0</field>
         <field name="tax_group_id" ref="tax_group_24"/>
         <field name="type_tax_use">purchase</field>
@@ -428,7 +428,7 @@
         <field name="name">14% incl</field>
         <field name="description">14% incl</field>
         <field name="price_include" eval="1" />
-        <field name="include_base_amount" eval="1" />        
+        <field name="include_base_amount" eval="1" />
         <field name="amount">14.0</field>
         <field name="tax_group_id" ref="tax_group_14"/>
         <field name="type_tax_use">purchase</field>
@@ -460,7 +460,7 @@
         <field name="name">10% incl</field>
         <field name="description">10% incl</field>
         <field name="price_include" eval="1" />
-        <field name="include_base_amount" eval="1" />        
+        <field name="include_base_amount" eval="1" />
         <field name="amount">10.0</field>
         <field name="tax_group_id" ref="tax_group_10"/>
         <field name="type_tax_use">purchase</field>

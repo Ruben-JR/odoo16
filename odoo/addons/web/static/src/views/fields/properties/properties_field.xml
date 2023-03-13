@@ -45,7 +45,7 @@
                             />
                         </div>
                     </div>
-                    <div 
+                    <div
                         t-if="propertiesList.length % props.columns === propertiesListGroup_index"
                         t-attf-class="o_field_property_add {{props.columns !== 1 ? 'g-col-2' : ''}}">
                         <button

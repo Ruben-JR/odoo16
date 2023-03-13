@@ -3,9 +3,7 @@ from odoo.tests.common import TransactionCase
 
 class TestSpreadsheetDashboard(TransactionCase):
     def test_create_with_default_values(self):
-        group = self.env["spreadsheet.dashboard.group"].create(
-            {"name": "a group"}
-        )
+        group = self.env["spreadsheet.dashboard.group"].create({"name": "a group"})
         dashboard = self.env["spreadsheet.dashboard"].create(
             {
                 "name": "a dashboard",

@@ -3,18 +3,18 @@
 
 
 {
-    'name': 'Associations Management',
-    'version': '0.1',
-    'category': 'Marketing',
-    'description': """
+    "name": "Associations Management",
+    "version": "0.1",
+    "category": "Marketing",
+    "description": """
 This module is to configure modules related to an association.
 ==============================================================
 
-It installs the profile for associations to manage events, registrations, memberships, 
+It installs the profile for associations to manage events, registrations, memberships,
 membership products (schemes).
     """,
-    'depends': ['base_setup', 'membership', 'event'],
-    'data': ['views/association_views.xml'],
-    'installable': True,
-    'license': 'LGPL-3',
+    "depends": ["base_setup", "membership", "event"],
+    "data": ["views/association_views.xml"],
+    "installable": True,
+    "license": "LGPL-3",
 }

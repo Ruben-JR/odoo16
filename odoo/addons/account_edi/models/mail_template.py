@@ -29,7 +29,7 @@ class MailTemplate(models.Model):
         if not (attachment_sudo.res_model and attachment_sudo.res_id):
             # do not return system attachment not linked to a record
             return {}
-        return {'attachment_ids': [attachment_sudo.id]}
+        return {"attachment_ids": [attachment_sudo.id]}
 
     def generate_email(self, res_ids, fields):
         res = super().generate_email(res_ids, fields)
@@ -39,16 +39,16 @@ class MailTemplate(models.Model):
             res_ids = [res_ids]
             multi_mode = False
 
-        if self.model not in ['account.move', 'account.payment']:
+        if self.model not in ["account.move", "account.payment"]:
             return res
 
         records = self.env[self.model].browse(res_ids)
         for record in records:
-            record_data = (res[record.id] if multi_mode else res)
+            record_data = res[record.id] if multi_mode else res
             for doc in record.edi_document_ids:
-                record_data.setdefault('attachments', [])
+                record_data.setdefault("attachments", [])
                 attachments = self._get_edi_attachments(doc)
-                record_data['attachment_ids'] += attachments.get('attachment_ids', [])
-                record_data['attachments'] += attachments.get('attachments', [])
+                record_data["attachment_ids"] += attachments.get("attachment_ids", [])
+                record_data["attachments"] += attachments.get("attachments", [])
 
         return res

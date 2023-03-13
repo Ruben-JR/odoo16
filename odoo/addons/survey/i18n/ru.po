@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* survey
-# 
+#
 # Translators:
 # Константин Коровин <korovin74@gmail.com>, 2022
 # Диляра Дельтаева <dilya.kz93@gmail.com>, 2022
@@ -20,7 +20,7 @@
 # Максим Дронь <dronmax@gmail.com>, 2022
 # Martin Trigaux, 2022
 # Alena Vlasova, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"

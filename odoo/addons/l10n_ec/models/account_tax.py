@@ -5,7 +5,6 @@ from odoo import fields, models
 
 
 class AccountTax(models.Model):
-
     _inherit = "account.tax"
 
     l10n_ec_code_base = fields.Char(
@@ -23,7 +22,6 @@ class AccountTax(models.Model):
 
 
 class AccountTaxTemplate(models.Model):
-
     _inherit = "account.tax.template"
 
     def _get_tax_vals(self, company, tax_template_to_tax):

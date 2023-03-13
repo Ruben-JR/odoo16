@@ -6,9 +6,7 @@ try:
     from odoo.tools.rendering_tools import template_env_globals
     from odoo.addons.http_routing.models.ir_http import slug
 
-    template_env_globals.update({
-        'slug': slug
-    })
+    template_env_globals.update({"slug": slug})
 except ImportError:
     pass
 

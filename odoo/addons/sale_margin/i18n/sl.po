@@ -1,12 +1,12 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* sale_margin
-# 
+#
 # Translators:
 # Matjaz Mozetic <m.mozetic@matmoz.si>, 2022
 # Tadej Lupšina <tadej@hbs.si>, 2022
 # Martin Trigaux, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~14.4\n"

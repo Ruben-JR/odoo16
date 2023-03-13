@@ -41,7 +41,7 @@ export class MrpShouldConsumeOwl extends FloatField {
             ...this.nodeOptions,
         });
     }
-} 
+}
 
 MrpShouldConsumeOwl.template = "mrp.ShouldConsume";
 MrpShouldConsumeOwl.displayName = "MRP Should Consume";

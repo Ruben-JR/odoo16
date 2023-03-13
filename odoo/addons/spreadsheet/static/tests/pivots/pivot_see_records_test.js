@@ -89,4 +89,3 @@ QUnit.test("Can open see records on measure headers", async function (assert) {
     await root.action(env);
     assert.verifySteps(["doAction"]);
 });
-

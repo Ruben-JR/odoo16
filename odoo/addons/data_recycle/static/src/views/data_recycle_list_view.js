@@ -29,4 +29,3 @@ registry.category('views').add('data_recycle_list', {
     Controller: DataRecycleListController,
     buttonTemplate: 'DataRecycle.buttons',
 });
-

@@ -16,11 +16,11 @@ _logger = logging.getLogger(__name__)
 
 
 class PaymentTransaction(models.Model):
-    _inherit = 'payment.transaction'
+    _inherit = "payment.transaction"
 
     @api.model
-    def _compute_reference(self, provider_code, prefix=None, separator='-', **kwargs):
-        """ Override of `payment` to ensure that APS' requirements for references are satisfied.
+    def _compute_reference(self, provider_code, prefix=None, separator="-", **kwargs):
+        """Override of `payment` to ensure that APS' requirements for references are satisfied.
 
         APS' requirements for transaction are as follows:
         - References can only be made of alphanumeric characters and/or '-' and '_'.
@@ -34,13 +34,15 @@ class PaymentTransaction(models.Model):
         :return: The unique reference for the transaction.
         :rtype: str
         """
-        if provider_code == 'aps':
+        if provider_code == "aps":
             prefix = payment_utils.singularize_reference_prefix()
 
-        return super()._compute_reference(provider_code, prefix=prefix, separator=separator, **kwargs)
+        return super()._compute_reference(
+            provider_code, prefix=prefix, separator=separator, **kwargs
+        )
 
     def _get_specific_rendering_values(self, processing_values):
-        """ Override of `payment` to return APS-specific processing values.
+        """Override of `payment` to return APS-specific processing values.
 
         Note: self.ensure_one() from `_get_processing_values`
 
@@ -49,32 +51,36 @@ class PaymentTransaction(models.Model):
         :rtype: dict
         """
         res = super()._get_specific_rendering_values(processing_values)
-        if self.provider_code != 'aps':
+        if self.provider_code != "aps":
             return res
 
-        converted_amount = payment_utils.to_minor_currency_units(self.amount, self.currency_id)
+        converted_amount = payment_utils.to_minor_currency_units(
+            self.amount, self.currency_id
+        )
         base_url = self.provider_id.get_base_url()
         rendering_values = {
-            'command': 'PURCHASE',
-            'access_code': self.provider_id.aps_access_code,
-            'merchant_identifier': self.provider_id.aps_merchant_identifier,
-            'merchant_reference': self.reference,
-            'amount': str(converted_amount),
-            'currency': self.currency_id.name,
-            'language': self.partner_lang[:2],
-            'customer_email': self.partner_id.email_normalized,
-            'return_url': urls.url_join(base_url, APSController._return_url),
+            "command": "PURCHASE",
+            "access_code": self.provider_id.aps_access_code,
+            "merchant_identifier": self.provider_id.aps_merchant_identifier,
+            "merchant_reference": self.reference,
+            "amount": str(converted_amount),
+            "currency": self.currency_id.name,
+            "language": self.partner_lang[:2],
+            "customer_email": self.partner_id.email_normalized,
+            "return_url": urls.url_join(base_url, APSController._return_url),
         }
-        rendering_values.update({
-            'signature': self.provider_id._aps_calculate_signature(
-                rendering_values, incoming=False
-            ),
-            'api_url': self.provider_id._aps_get_api_url(),
-        })
+        rendering_values.update(
+            {
+                "signature": self.provider_id._aps_calculate_signature(
+                    rendering_values, incoming=False
+                ),
+                "api_url": self.provider_id._aps_get_api_url(),
+            }
+        )
         return rendering_values
 
     def _get_tx_from_notification_data(self, provider_code, notification_data):
-        """ Override of `payment` to find the transaction based on APS data.
+        """Override of `payment` to find the transaction based on APS data.
 
         :param str provider_code: The code of the provider that handled the transaction.
         :param dict notification_data: The notification data sent by the provider.
@@ -84,16 +90,17 @@ class PaymentTransaction(models.Model):
         :raise ValidationError: If the data match no transaction.
         """
         tx = super()._get_tx_from_notification_data(provider_code, notification_data)
-        if provider_code != 'aps' or len(tx) == 1:
+        if provider_code != "aps" or len(tx) == 1:
             return tx
 
-        reference = notification_data.get('merchant_reference')
+        reference = notification_data.get("merchant_reference")
         if not reference:
             raise ValidationError(
-                "APS: " + _("Received data with missing reference %(ref)s.", ref=reference)
+                "APS: "
+                + _("Received data with missing reference %(ref)s.", ref=reference)
             )
 
-        tx = self.search([('reference', '=', reference), ('provider_code', '=', 'aps')])
+        tx = self.search([("reference", "=", reference), ("provider_code", "=", "aps")])
         if not tx:
             raise ValidationError(
                 "APS: " + _("No transaction found matching reference %s.", reference)
@@ -102,7 +109,7 @@ class PaymentTransaction(models.Model):
         return tx
 
     def _process_notification_data(self, notification_data):
-        """ Override of `payment' to process the transaction based on APS data.
+        """Override of `payment' to process the transaction based on APS data.
 
         Note: self.ensure_one()
 
@@ -111,27 +118,33 @@ class PaymentTransaction(models.Model):
         :raise ValidationError: If inconsistent data are received.
         """
         super()._process_notification_data(notification_data)
-        if self.provider_code != 'aps':
+        if self.provider_code != "aps":
             return
 
-        self.provider_reference = notification_data.get('fort_id')
+        self.provider_reference = notification_data.get("fort_id")
 
-        status = notification_data.get('status')
+        status = notification_data.get("status")
         if not status:
-            raise ValidationError("APS: " + _("Received data with missing payment state."))
+            raise ValidationError(
+                "APS: " + _("Received data with missing payment state.")
+            )
 
-        if status in PAYMENT_STATUS_MAPPING['pending']:
+        if status in PAYMENT_STATUS_MAPPING["pending"]:
             self._set_pending()
-        elif status in PAYMENT_STATUS_MAPPING['done']:
+        elif status in PAYMENT_STATUS_MAPPING["done"]:
             self._set_done()
         else:  # Classify unsupported payment state as `error` tx state.
-            status_description = notification_data.get('response_message')
+            status_description = notification_data.get("response_message")
             _logger.info(
                 "Received data with invalid payment status (%(status)s) and reason '%(reason)s' "
                 "for transaction with reference %(ref)s",
-                {'status': status, 'reason': status_description, 'ref': self.reference},
+                {"status": status, "reason": status_description, "ref": self.reference},
             )
-            self._set_error("APS: " + _(
-                "Received invalid transaction status %(status)s and reason '%(reason)s'.",
-                status=status, reason=status_description
-            ))
+            self._set_error(
+                "APS: "
+                + _(
+                    "Received invalid transaction status %(status)s and reason '%(reason)s'.",
+                    status=status,
+                    reason=status_description,
+                )
+            )

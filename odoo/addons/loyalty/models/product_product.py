@@ -4,13 +4,22 @@
 from odoo import _, models
 from odoo.exceptions import ValidationError
 
+
 class ProductProduct(models.Model):
-    _inherit = 'product.product'
+    _inherit = "product.product"
 
     def write(self, vals):
-        if not vals.get('active', True) and any(product.active for product in self):
+        if not vals.get("active", True) and any(product.active for product in self):
             # Prevent archiving products used for giving rewards
-            rewards = self.env['loyalty.reward'].sudo().search([('discount_line_product_id', 'in', self.ids)], limit=1)
+            rewards = (
+                self.env["loyalty.reward"]
+                .sudo()
+                .search([("discount_line_product_id", "in", self.ids)], limit=1)
+            )
             if rewards:
-                raise ValidationError(_("This product may not be archived. It is being used for an active promotion program."))
+                raise ValidationError(
+                    _(
+                        "This product may not be archived. It is being used for an active promotion program."
+                    )
+                )
         return super().write(vals)

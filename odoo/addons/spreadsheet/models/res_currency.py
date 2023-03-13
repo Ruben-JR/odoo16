@@ -19,7 +19,9 @@ class ResCurrency(models.Model):
         )
         result = []
         for currency_name in currency_names:
-            currency = next(filter(lambda curr: curr.name == currency_name, currencies), None)
+            currency = next(
+                filter(lambda curr: curr.name == currency_name, currencies), None
+            )
             if currency:
                 currency_data = {
                     "code": currency.name,
@@ -42,7 +44,11 @@ class ResCurrency(models.Model):
         :company_id int: Id of the company
         :return: dict of the form `{ "code": str, "symbol": str, "decimalPlaces": int, "position":str }`
         """
-        company = self.env["res.company"].browse(company_id) if company_id else self.env.company
+        company = (
+            self.env["res.company"].browse(company_id)
+            if company_id
+            else self.env.company
+        )
         if not company.exists():
             return False
         currency = company.currency_id

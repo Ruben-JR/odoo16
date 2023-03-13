@@ -12,36 +12,39 @@ _logger = logging.getLogger(__name__)
 
 
 class TestResConfig(TransactionCase):
-
     def setUp(self):
         super(TestResConfig, self).setUp()
-        self.ResConfig = self.env['res.config.settings']
+        self.ResConfig = self.env["res.config.settings"]
 
         # Define the test values
-        self.menu_xml_id = 'base.menu_action_res_users'
-        self.full_field_name = 'res.partner.lang'
+        self.menu_xml_id = "base.menu_action_res_users"
+        self.full_field_name = "res.partner.lang"
         self.error_msg = "WarningRedirect test string: %(field:res.partner.lang)s - %(menu:base.menu_action_res_users)s."
-        self.error_msg_wo_menu = "WarningRedirect test string: %(field:res.partner.lang)s."
+        self.error_msg_wo_menu = (
+            "WarningRedirect test string: %(field:res.partner.lang)s."
+        )
         # Note: see the get_config_warning() doc for a better example
 
         # Fetch the expected values
         menu = self.env.ref(self.menu_xml_id)
 
-        model_name, field_name = self.full_field_name.rsplit('.', 1)
+        model_name, field_name = self.full_field_name.rsplit(".", 1)
 
         self.expected_path = menu.complete_name
         self.expected_action_id = menu.action.id
-        self.expected_name = self.env[model_name].fields_get([field_name])[field_name]['string']
+        self.expected_name = self.env[model_name].fields_get([field_name])[field_name][
+            "string"
+        ]
         self.expected_final_error_msg = self.error_msg % {
-            'field:res.partner.lang': self.expected_name,
-            'menu:base.menu_action_res_users': self.expected_path
+            "field:res.partner.lang": self.expected_name,
+            "menu:base.menu_action_res_users": self.expected_path,
         }
         self.expected_final_error_msg_wo_menu = self.error_msg_wo_menu % {
-            'field:res.partner.lang': self.expected_name,
+            "field:res.partner.lang": self.expected_name,
         }
 
     def test_00_get_option_path(self):
-        """ The get_option_path() method should return a tuple containing a string and an integer """
+        """The get_option_path() method should return a tuple containing a string and an integer"""
         res = self.ResConfig.get_option_path(self.menu_xml_id)
 
         # Check types
@@ -55,7 +58,7 @@ class TestResConfig(TransactionCase):
         self.assertEqual(res[1], self.expected_action_id)
 
     def test_10_get_option_name(self):
-        """ The get_option_name() method should return a string """
+        """The get_option_name() method should return a string"""
         res = self.ResConfig.get_option_name(self.full_field_name)
 
         # Check type
@@ -65,7 +68,7 @@ class TestResConfig(TransactionCase):
         self.assertEqual(res, self.expected_name)
 
     def test_20_get_config_warning(self):
-        """ The get_config_warning() method should return a RedirectWarning """
+        """The get_config_warning() method should return a RedirectWarning"""
         res = self.ResConfig.get_config_warning(self.error_msg)
 
         # Check type
@@ -76,7 +79,7 @@ class TestResConfig(TransactionCase):
         self.assertEqual(res.args[1], self.expected_action_id)
 
     def test_30_get_config_warning_wo_menu(self):
-        """ The get_config_warning() method should return a Warning exception """
+        """The get_config_warning() method should return a Warning exception"""
         res = self.ResConfig.get_config_warning(self.error_msg_wo_menu)
 
         # Check type
@@ -92,13 +95,15 @@ class TestResConfig(TransactionCase):
         Here we briefly ensure the view sent by the server to the web client has the right architecture,
         the right blocks with the right classes in the right order.
         This tests is to ensure the specification/requirements are listed and tested server side, and
-        if a change occurs in future development, this test will need to be adapted to specify these changes."""
-        view = self.env['ir.ui.view'].create({
-            'name': 'foo',
-            'type': 'form',
-            'model': 'res.config.settings',
-            'inherit_id': self.env.ref('base.res_config_settings_view_form').id,
-            'arch': """
+        if a change occurs in future development, this test will need to be adapted to specify these changes.
+        """
+        view = self.env["ir.ui.view"].create(
+            {
+                "name": "foo",
+                "type": "form",
+                "model": "res.config.settings",
+                "inherit_id": self.env.ref("base.res_config_settings_view_form").id,
+                "arch": """
                 <xpath expr="//div[hasclass('settings')]" position="inside">
                     <t groups="base.group_system">
                         <div class="app_settings_block" data-string="Foo" string="Foo" data-key="foo">
@@ -107,26 +112,33 @@ class TestResConfig(TransactionCase):
                     </t>
                 </xpath>
             """,
-        })
-        arch = self.env['res.config.settings'].get_view(view.id)['arch']
+            }
+        )
+        arch = self.env["res.config.settings"].get_view(view.id)["arch"]
         tree = etree.fromstring(arch)
-        self.assertTrue(tree.xpath("""
+        self.assertTrue(
+            tree.xpath(
+                """
             //form[@class="oe_form_configuration o_base_settings"]
             /div[@class="o_setting_container"]
             /div[@class="settings"]
             /div[@class="app_settings_block"][@data-key="foo"]
-        """), 'The res.config.settings form view architecture is not what is expected by the web client.')
+        """
+            ),
+            "The res.config.settings form view architecture is not what is expected by the web client.",
+        )
 
     def test_50_view_expected_architecture_t_node_groups(self):
         """Tests the behavior of the res.config.settings form view postprocessing when a block `app_settings_block`
         is wrapped in a `<t groups="...">`, which is used when you need to display an app settings section
         only for users part of two groups at the same time."""
-        view = self.env['ir.ui.view'].create({
-            'name': 'foo',
-            'type': 'form',
-            'model': 'res.config.settings',
-            'inherit_id': self.env.ref('base.res_config_settings_view_form').id,
-            'arch': """
+        view = self.env["ir.ui.view"].create(
+            {
+                "name": "foo",
+                "type": "form",
+                "model": "res.config.settings",
+                "inherit_id": self.env.ref("base.res_config_settings_view_form").id,
+                "arch": """
                 <xpath expr="//div[hasclass('settings')]" position="inside">
                     <t groups="base.group_system">
                         <div class="app_settings_block" data-string="Foo"
@@ -136,28 +148,38 @@ class TestResConfig(TransactionCase):
                     </t>
                 </xpath>
             """,
-        })
+            }
+        )
         with self.debug_mode():
-            arch = self.env['res.config.settings'].get_view(view.id)['arch']
+            arch = self.env["res.config.settings"].get_view(view.id)["arch"]
             tree = etree.fromstring(arch)
             # The <t> must be removed from the structure
-            self.assertFalse(tree.xpath('//t'), 'The `<t groups="...">` block must not remain in the view')
-            self.assertTrue(tree.xpath("""
+            self.assertFalse(
+                tree.xpath("//t"),
+                'The `<t groups="...">` block must not remain in the view',
+            )
+            self.assertTrue(
+                tree.xpath(
+                    """
                 //div[@class="settings"]
                 /div[@class="app_settings_block"][@data-key="foo"]
-            """), 'The `class="app_settings_block"` block must be a direct child of the `class="settings"` block')
+            """
+                ),
+                'The `class="app_settings_block"` block must be a direct child of the `class="settings"` block',
+            )
 
 
-@tagged('post_install', '-at_install')
+@tagged("post_install", "-at_install")
 class TestResConfigExecute(TransactionCase):
-
     def test_01_execute_res_config(self):
         """
         Try to create and execute all res_config models. Target settings that can't be
         loaded or saved and avoid remaining methods `get_default_foo` or `set_foo` that
         won't be executed is foo != `fields`
         """
-        all_config_settings = self.env['ir.model'].search([('name', 'like', 'config.settings')])
+        all_config_settings = self.env["ir.model"].search(
+            [("name", "like", "config.settings")]
+        )
         for config_settings in all_config_settings:
             _logger.info("Testing %s" % (config_settings.name))
             self.env[config_settings.name].create({}).execute()
@@ -169,31 +191,41 @@ class TestResConfigExecute(TransactionCase):
         a conditional view inheritance of res.config.settings view is also able to
         open & save the settings (considering the added conditional content)
         """
-        ResUsers = self.env['res.users']
-        group_system = self.env.ref('base.group_system')
-        self.settings_view = self.env.ref('base.res_config_settings_view_form')
-        settings_only_user = ResUsers.create({
-            'name': 'Sleepy Joe',
-            'login': 'sleepy',
-            'groups_id': [Command.link(group_system.id)],
-        })
+        ResUsers = self.env["res.users"]
+        group_system = self.env.ref("base.group_system")
+        self.settings_view = self.env.ref("base.res_config_settings_view_form")
+        settings_only_user = ResUsers.create(
+            {
+                "name": "Sleepy Joe",
+                "login": "sleepy",
+                "groups_id": [Command.link(group_system.id)],
+            }
+        )
 
         _logger.info("Testing settings access for group %s", group_system.full_name)
         forbidden_models = self._test_user_settings_fields_access(settings_only_user)
         self._test_user_settings_view_save(settings_only_user)
 
         for model in forbidden_models:
-            _logger.warning("Settings user doesn\'t have read access to the model %s", model)
+            _logger.warning(
+                "Settings user doesn't have read access to the model %s", model
+            )
 
-        settings_view_conditional_groups = self.env['ir.ui.view'].search([
-            ('model', '=', 'res.config.settings'),
-        ]).groups_id
+        settings_view_conditional_groups = (
+            self.env["ir.ui.view"]
+            .search(
+                [
+                    ("model", "=", "res.config.settings"),
+                ]
+            )
+            .groups_id
+        )
 
         # Semi hack to recover part of the coverage lost when the groups_id
         # were moved from the views records to the view nodes (with groups attributes)
-        groups_data = self.env['res.groups'].get_groups_by_application()
+        groups_data = self.env["res.groups"].get_groups_by_application()
         for group_data in groups_data:
-            if group_data[1] == 'selection' and group_data[3] != (100, 'Other'):
+            if group_data[1] == "selection" and group_data[3] != (100, "Other"):
                 manager_group = group_data[2][-1]
                 settings_view_conditional_groups += manager_group
         settings_view_conditional_groups -= group_system  # Already tested above
@@ -202,9 +234,9 @@ class TestResConfigExecute(TransactionCase):
             group_name = group.full_name
             _logger.info("Testing settings access for group %s", group_name)
             create_values = {
-                'name': f'Test {group_name}',
-                'login': group_name,
-                'groups_id': [Command.link(group_system.id), Command.link(group.id)]
+                "name": f"Test {group_name}",
+                "login": group_name,
+                "groups_id": [Command.link(group_system.id), Command.link(group.id)],
             }
             user = ResUsers.create(create_values)
             self._test_user_settings_view_save(user)
@@ -212,14 +244,16 @@ class TestResConfigExecute(TransactionCase):
 
             for model, fields in forbidden_models_fields.items():
                 _logger.warning(
-                    "Settings + %s user doesn\'t have read access to the model %s"
+                    "Settings + %s user doesn't have read access to the model %s"
                     "linked to settings records by the field(s) %s",
-                    group_name, model, ", ".join(str(field) for field in fields)
+                    group_name,
+                    model,
+                    ", ".join(str(field) for field in fields),
                 )
 
     def _test_user_settings_fields_access(self, user):
         """Verify that settings user are able to create & save settings."""
-        settings = self.env['res.config.settings'].with_user(user).create({})
+        settings = self.env["res.config.settings"].with_user(user).create({})
 
         # Save the settings
         settings.set_values()
@@ -227,10 +261,12 @@ class TestResConfigExecute(TransactionCase):
         # Check user has access to all models of relational fields in view
         # because the webclient makes a name_get request for all specified records
         # even if they are not shown to the user.
-        settings_view_arch = etree.fromstring(settings.get_view(view_id=self.settings_view.id)['arch'])
+        settings_view_arch = etree.fromstring(
+            settings.get_view(view_id=self.settings_view.id)["arch"]
+        )
         seen_fields = set()
-        for node in settings_view_arch.iterdescendants(tag='field'):
-            fname = node.get('name')
+        for node in settings_view_arch.iterdescendants(tag="field"):
+            fname = node.get("name")
             if fname not in settings._fields:
                 # fname isn't a settings fields, but the field of a model
                 # linked to settings through a relational field
@@ -245,8 +281,11 @@ class TestResConfigExecute(TransactionCase):
 
         forbidden_models_fields = defaultdict(set)
         for model in models_to_check:
-            has_read_access = self.env[model].with_user(user).check_access_rights(
-                'read', raise_exception=False)
+            has_read_access = (
+                self.env[model]
+                .with_user(user)
+                .check_access_rights("read", raise_exception=False)
+            )
             if not has_read_access:
                 forbidden_models_fields[model] = models_to_check[model]
 
@@ -254,7 +293,7 @@ class TestResConfigExecute(TransactionCase):
 
     def _test_user_settings_view_save(self, user):
         """Verify that settings user are able to save the settings form."""
-        ResConfigSettings = self.env['res.config.settings'].with_user(user)
+        ResConfigSettings = self.env["res.config.settings"].with_user(user)
 
         settings_form = Form(ResConfigSettings)
         settings_form.save()

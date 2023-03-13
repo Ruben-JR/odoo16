@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* base_automation
-# 
+#
 # Translators:
 # Miika Nissi <miika.nissi@tawasta.fi>, 2022
 # Teemu Ahonen <teemu.ahonen@web-veistamo.fi>, 2022
@@ -14,7 +14,7 @@
 # Tuomo Aura <tuomo.aura@web-veistamo.fi>, 2022
 # Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2022
 # Kari Lindgren <kari.lindgren@emsystems.fi>, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.5alpha1\n"

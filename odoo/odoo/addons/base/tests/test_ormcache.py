@@ -7,9 +7,9 @@ from odoo.tools import get_cache_key_counter
 
 class TestOrmcache(TransactionCase):
     def test_ormcache(self):
-        """ Test the effectiveness of the ormcache() decorator. """
-        IMD = self.env['ir.model.data']
-        XMLID = 'base.group_no_one'
+        """Test the effectiveness of the ormcache() decorator."""
+        IMD = self.env["ir.model.data"]
+        XMLID = "base.group_no_one"
 
         # retrieve the cache, its key and stat counter
         cache, key, counter = get_cache_key_counter(IMD._xmlid_lookup, XMLID)

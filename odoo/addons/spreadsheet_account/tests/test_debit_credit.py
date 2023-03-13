@@ -131,7 +131,10 @@ class SpreadsheetAccountingFunctionsTest(AccountTestInvoicingCommon):
                             "range_type": "year",
                             "year": 2022,
                         },
-                        "codes": [self.account_revenue_c1.code, self.account_expense_c1.code],
+                        "codes": [
+                            self.account_revenue_c1.code,
+                            self.account_expense_c1.code,
+                        ],
                         "company_id": None,
                         "include_unposted": True,
                     }
@@ -175,7 +178,10 @@ class SpreadsheetAccountingFunctionsTest(AccountTestInvoicingCommon):
                             "range_type": "year",
                             "year": 2022,
                         },
-                        "codes": [self.account_revenue_c1.code, self.account_expense_c1.code],
+                        "codes": [
+                            self.account_revenue_c1.code,
+                            self.account_expense_c1.code,
+                        ],
                         "company_id": None,
                         "include_unposted": True,
                     }

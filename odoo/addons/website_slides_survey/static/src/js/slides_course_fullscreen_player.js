@@ -23,5 +23,3 @@ Fullscreen.include({
     },
 });
 });
-
-

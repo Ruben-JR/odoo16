@@ -2570,8 +2570,8 @@ export function peek(arr) {
     return arr[arr.length - 1];
 }
 /**
- * Check user OS 
- * @returns {boolean} 
+ * Check user OS
+ * @returns {boolean}
  */
 export function isMacOS() {
     return window.navigator.userAgent.includes('Mac');

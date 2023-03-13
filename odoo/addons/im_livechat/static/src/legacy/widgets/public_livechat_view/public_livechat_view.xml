@@ -19,7 +19,7 @@
         <i class="o_mail_thread_loading_icon fa fa-circle-o-notch fa-spin"/>
         <span>Please wait...</span>
     </div>
-    
+
     <!--
         @param {mail.model.AbstractThread} thread
         @param {Object} options
@@ -192,7 +192,7 @@
             <t t-call="im_livechat.legacy.mail.MessagesSeparator"/>
         </t>
     </t>
-    
+
     <!--
         @param {Object} options
         @param {boolean} [options.loadMoreOnScroll]
@@ -207,7 +207,7 @@
             </t>
         </div>
     </t>
-    
+
     <!--
         @param {string} status
         @param {integer|undefined} [partnerID]
@@ -215,7 +215,7 @@
     <t t-name="im_livechat.legacy.mail.UserStatus">
         <span t-att-class="partnerID ? 'o_updatable_im_status' : ''" t-att-data-partner-id="partnerID"/>
     </t>
-    
+
     <t t-name="im_livechat.legacy.mail.MessagesSeparator">
         <div class="o_thread_new_messages_separator">
             <span class="o_thread_separator_label">New messages</span>

@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* website_sale_delivery_mondialrelay
-# 
+#
 # Translators:
 # jabelchi, 2022
 # Martin Trigaux, 2022
 # marcescu, 2022
 # Ivan Espinola, 2023
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.5alpha1\n"

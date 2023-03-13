@@ -13,10 +13,10 @@ patch(X2ManyFieldDialog.prototype, 'chatbot_script_step_sequence', {
      * Dirty patching of the 'X2ManyFieldDialog'.
      * It is done to force the "save and new" to close the dialog first, and then click again on
      * the "Add a line" link.
-     * 
+     *
      * This is the only way (or at least the least complicated) to correctly compute the sequence
      * field, which is crucial when creating chatbot.steps, as they depend on each other.
-     * 
+     *
      */
     async save({ saveAndNew }) {
         if (this.record.resModel !== 'chatbot.script.step') {

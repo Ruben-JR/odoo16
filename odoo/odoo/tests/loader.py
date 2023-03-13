@@ -12,11 +12,11 @@ from .result import OdooTestResult
 
 
 def get_test_modules(module):
-    """ Return a list of module for the addons potentially containing tests to
-    feed unittest.TestLoader.loadTestsFromModule() """
-    results = _get_tests_modules(importlib.util.find_spec(f'odoo.addons.{module}'))
+    """Return a list of module for the addons potentially containing tests to
+    feed unittest.TestLoader.loadTestsFromModule()"""
+    results = _get_tests_modules(importlib.util.find_spec(f"odoo.addons.{module}"))
 
-    upgrade_spec = importlib.util.find_spec(f'odoo.upgrade.{module}')
+    upgrade_spec = importlib.util.find_spec(f"odoo.upgrade.{module}")
     if upgrade_spec:
         results += _get_tests_modules(upgrade_spec)
 
@@ -24,7 +24,7 @@ def get_test_modules(module):
 
 
 def _get_tests_modules(mod):
-    spec = importlib.util.find_spec('.tests', mod.name)
+    spec = importlib.util.find_spec(".tests", mod.name)
     if not spec:
         return []
 
@@ -32,18 +32,18 @@ def _get_tests_modules(mod):
     return [
         mod_obj
         for name, mod_obj in inspect.getmembers(tests_mod, inspect.ismodule)
-        if name.startswith('test_')
+        if name.startswith("test_")
     ]
 
 
-def make_suite(module_names, position='at_install'):
-    """ Creates a test suite for all the tests in the specified modules,
+def make_suite(module_names, position="at_install"):
+    """Creates a test suite for all the tests in the specified modules,
     filtered by the provided ``position`` and the current test tags
 
     :param list[str] module_names: modules to load tests from
     :param str position: "at_install" or "post_install"
     """
-    config_tags = TagsSelector(tools.config['test_tags'])
+    config_tags = TagsSelector(tools.config["test_tags"])
     position_tag = TagsSelector(position)
     tests = (
         t
@@ -58,6 +58,7 @@ def make_suite(module_names, position='at_install'):
 def run_suite(suite, module_name=None):
     # avoid dependency hell
     from ..modules import module
+
     module.current_test = module_name
     threading.current_thread().testing = True
 
@@ -87,7 +88,7 @@ def unwrap_suite(test):
 
     subtests = list(test)
     ## custom test suite (no test cases)
-    #if not len(subtests):
+    # if not len(subtests):
     #    yield test
     #    return
 

@@ -221,7 +221,7 @@ QUnit.module("ActionSwiper", ({ beforeEach }) => {
             Parent.components = { ActionSwiper };
             Parent.template = xml`
                 <div class="d-flex">
-                    <ActionSwiper 
+                    <ActionSwiper
                         onRightSwipe = "{
                             action: onRightSwipe,
                             icon: 'fa-circle',
@@ -357,7 +357,7 @@ QUnit.module("ActionSwiper", ({ beforeEach }) => {
             Parent.components = { ActionSwiper };
             Parent.template = xml`
                 <div class="d-flex">
-                    <ActionSwiper 
+                    <ActionSwiper
                         onRightSwipe = "{
                             action: onRightSwipe,
                             icon: 'fa-circle',
@@ -495,7 +495,7 @@ QUnit.module("ActionSwiper", ({ beforeEach }) => {
             Parent.components = { ActionSwiper };
             Parent.template = xml`
                 <div class="d-flex">
-                    <ActionSwiper 
+                    <ActionSwiper
                         onRightSwipe = "{
                             action: onRightSwipe,
                             icon: 'fa-circle',

@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * payment_authorize
-# 
+#
 # Translators:
 # oon arfiandwi (OonID) <oon.arfiandwi@gmail.com>, 2017
 # Wahyu Setiawan <wahyusetiaaa@gmail.com>, 2017

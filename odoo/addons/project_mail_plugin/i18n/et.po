@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* project_mail_plugin
-# 
+#
 # Translators:
 # Rivo Zängov <eraser@eraser.ee>, 2022
 # Martin Trigaux, 2022
 # Anna, 2023
 # Leaanika Randmets, 2023
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~15.4\n"

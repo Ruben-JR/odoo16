@@ -31,7 +31,7 @@
             <rect width="12" height="1" x="45" y="53" fill="#fff"/>
             <rect width="70" height="30" fill="#9ccde4"/>
         </g>
-    </defs> 
+    </defs>
     <use href="#product_view_detail_item" y="5" x="5"/>
     <use href="#product_view_detail_item" y="5" x="85"/>
     <use href="#product_view_detail_item" y="5" x="165"/>

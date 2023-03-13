@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* delivery_mondialrelay
-# 
+#
 # Translators:
 # Константин Коровин <korovin74@gmail.com>, 2022
 # Диляра Дельтаева <dilya.kz93@gmail.com>, 2022
@@ -9,7 +9,7 @@
 # Martin Trigaux, 2022
 # Иван Дроздов <hiraetari@gmail.com>, 2022
 # Irina Fedulova <istartlin@gmail.com>, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.5alpha1\n"

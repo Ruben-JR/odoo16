@@ -12,8 +12,8 @@ _match_asset_file_url_regex = re.compile(r"^/(\w+)/(.+?)(\.custom\.(.+))?\.(\w+)
 
 
 class Assets(models.AbstractModel):
-    _name = 'web_editor.assets'
-    _description = 'Assets Utils'
+    _name = "web_editor.assets"
+    _description = "Assets Utils"
 
     @api.model
     def reset_asset(self, url, bundle):
@@ -66,31 +66,34 @@ class Assets(models.AbstractModel):
             # If not, create a new attachment to copy the original scss/js file
             # content, with its modifications
             new_attach = {
-                'name': url.split("/")[-1],
-                'type': "binary",
-                'mimetype': (file_type == 'js' and 'text/javascript' or 'text/scss'),
-                'datas': datas,
-                'url': custom_url,
+                "name": url.split("/")[-1],
+                "type": "binary",
+                "mimetype": (file_type == "js" and "text/javascript" or "text/scss"),
+                "datas": datas,
+                "url": custom_url,
             }
             new_attach.update(self._save_asset_hook())
             self.env["ir.attachment"].create(new_attach)
 
             # Create an asset with the new attachment
-            IrAsset = self.env['ir.asset']
+            IrAsset = self.env["ir.asset"]
             new_asset = {
-                'path': custom_url,
-                'target': url,
-                'directive': 'replace',
+                "path": custom_url,
+                "target": url,
+                "directive": "replace",
                 **self._save_asset_hook(),
             }
             target_asset = self._get_custom_asset(url)
             if target_asset:
-                new_asset['name'] = target_asset.name + ' override'
-                new_asset['bundle'] = target_asset.bundle
-                new_asset['sequence'] = target_asset.sequence
+                new_asset["name"] = target_asset.name + " override"
+                new_asset["bundle"] = target_asset.bundle
+                new_asset["sequence"] = target_asset.sequence
             else:
-                new_asset['name'] = '%s: replace %s' % (bundle, custom_url.split('/')[-1])
-                new_asset['bundle'] = IrAsset._get_related_bundle(url, bundle)
+                new_asset["name"] = "%s: replace %s" % (
+                    bundle,
+                    custom_url.split("/")[-1],
+                )
+                new_asset["bundle"] = IrAsset._get_related_bundle(url, bundle)
             IrAsset.create(new_asset)
 
         self.env["ir.qweb"].clear_caches()
@@ -133,7 +136,7 @@ class Assets(models.AbstractModel):
 
         # If the file is not yet customized, the content is found by reading
         # the local file
-        with misc.file_open(url.strip('/'), 'rb', filter_ext=EXTENSIONS) as f:
+        with misc.file_open(url.strip("/"), "rb", filter_ext=EXTENSIONS) as f:
             return f.read()
 
     @api.model
@@ -162,10 +165,10 @@ class Assets(models.AbstractModel):
         if not m:
             return False
         return {
-            'module': m.group(1),
-            'resource_path': "%s.%s" % (m.group(2), m.group(5)),
-            'customized': bool(m.group(3)),
-            'bundle': m.group(4) or False
+            "module": m.group(1),
+            "resource_path": "%s.%s" % (m.group(2), m.group(5)),
+            "customized": bool(m.group(3)),
+            "bundle": m.group(4) or False,
         }
 
     @api.model
@@ -186,7 +189,7 @@ class Assets(models.AbstractModel):
         return "%s.custom.%s.%s" % (parts[0], bundle_xmlid, parts[1])
 
     @api.model
-    def _get_custom_attachment(self, custom_url, op='='):
+    def _get_custom_attachment(self, custom_url, op="="):
         """
         Fetch the ir.attachment record related to the given customized asset.
 
@@ -197,7 +200,7 @@ class Assets(models.AbstractModel):
         Returns:
             ir.attachment()
         """
-        assert op in ('in', '='), 'Invalid operator'
+        assert op in ("in", "="), "Invalid operator"
         return self.env["ir.attachment"].search([("url", op, custom_url)])
 
     @api.model
@@ -212,8 +215,8 @@ class Assets(models.AbstractModel):
         Returns:
             ir.asset()
         """
-        url = custom_url[1:] if custom_url.startswith(('/', '\\')) else custom_url
-        return self.env['ir.asset'].search([('path', 'like', url)])
+        url = custom_url[1:] if custom_url.startswith(("/", "\\")) else custom_url
+        return self.env["ir.asset"].search([("path", "like", url)])
 
     @api.model
     def _save_asset_hook(self):

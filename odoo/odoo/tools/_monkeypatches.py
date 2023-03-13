@@ -8,6 +8,7 @@ except ImportError:
     pass
 else:
     from lxml import etree
+
     # xlrd.xlsx supports defusedxml, defusedxml's etree interface is broken
     # (missing ElementTree and thus ElementTree.iter) which causes a fallback to
     # Element.getiterator(), triggering a warning before 3.9 and an error from 3.9.
@@ -21,4 +22,6 @@ else:
     xlsx.ET_has_iterparse = True
     xlsx.Element_has_iter = True
 
-FileStorage.save = lambda self, dst, buffer_size=1<<20: copyfileobj(self.stream, dst, buffer_size)
+FileStorage.save = lambda self, dst, buffer_size=1 << 20: copyfileobj(
+    self.stream, dst, buffer_size
+)

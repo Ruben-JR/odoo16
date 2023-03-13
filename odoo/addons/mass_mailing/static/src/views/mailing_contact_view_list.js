@@ -31,4 +31,4 @@ registry.category('views').add('mailing_contact_list', {
     ...listView,
     Controller: MailingContactListController,
     buttonTemplate: 'MailingContactListView.buttons',
-}); 
+});

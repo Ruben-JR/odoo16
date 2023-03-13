@@ -14,32 +14,35 @@ _logger = logging.getLogger(__name__)
 
 
 class PaymentProvider(models.Model):
-    _inherit = 'payment.provider'
+    _inherit = "payment.provider"
 
     code = fields.Selection(
-        selection_add=[('mollie', 'Mollie')], ondelete={'mollie': 'set default'}
+        selection_add=[("mollie", "Mollie")], ondelete={"mollie": "set default"}
     )
     mollie_api_key = fields.Char(
         string="Mollie API Key",
         help="The Test or Live API Key depending on the configuration of the provider",
-        required_if_provider="mollie", groups="base.group_system"
+        required_if_provider="mollie",
+        groups="base.group_system",
     )
 
-    #=== BUSINESS METHODS ===#
+    # === BUSINESS METHODS ===#
 
     @api.model
     def _get_compatible_providers(self, *args, currency_id=None, **kwargs):
-        """ Override of payment to unlist Mollie providers for unsupported currencies. """
-        providers = super()._get_compatible_providers(*args, currency_id=currency_id, **kwargs)
+        """Override of payment to unlist Mollie providers for unsupported currencies."""
+        providers = super()._get_compatible_providers(
+            *args, currency_id=currency_id, **kwargs
+        )
 
-        currency = self.env['res.currency'].browse(currency_id).exists()
+        currency = self.env["res.currency"].browse(currency_id).exists()
         if currency and currency.name not in SUPPORTED_CURRENCIES:
-            providers = providers.filtered(lambda p: p.code != 'mollie')
+            providers = providers.filtered(lambda p: p.code != "mollie")
 
         return providers
 
-    def _mollie_make_request(self, endpoint, data=None, method='POST'):
-        """ Make a request at mollie endpoint.
+    def _mollie_make_request(self, endpoint, data=None, method="POST"):
+        """Make a request at mollie endpoint.
 
         Note: self.ensure_one()
 
@@ -52,22 +55,26 @@ class PaymentProvider(models.Model):
         """
         self.ensure_one()
         endpoint = f'/v2/{endpoint.strip("/")}'
-        url = urls.url_join('https://api.mollie.com/', endpoint)
+        url = urls.url_join("https://api.mollie.com/", endpoint)
 
-        odoo_version = service.common.exp_version()['server_version']
-        module_version = self.env.ref('base.module_payment_mollie').installed_version
+        odoo_version = service.common.exp_version()["server_version"]
+        module_version = self.env.ref("base.module_payment_mollie").installed_version
         headers = {
             "Accept": "application/json",
-            "Authorization": f'Bearer {self.mollie_api_key}',
+            "Authorization": f"Bearer {self.mollie_api_key}",
             "Content-Type": "application/json",
             # See https://docs.mollie.com/integration-partners/user-agent-strings
-            "User-Agent": f'Odoo/{odoo_version} MollieNativeOdoo/{module_version}',
+            "User-Agent": f"Odoo/{odoo_version} MollieNativeOdoo/{module_version}",
         }
 
         try:
-            response = requests.request(method, url, json=data, headers=headers, timeout=60)
+            response = requests.request(
+                method, url, json=data, headers=headers, timeout=60
+            )
             response.raise_for_status()
         except requests.exceptions.RequestException:
             _logger.exception("unable to communicate with Mollie: %s", url)
-            raise ValidationError("Mollie: " + _("Could not establish the connection to the API."))
+            raise ValidationError(
+                "Mollie: " + _("Could not establish the connection to the API.")
+            )
         return response.json()

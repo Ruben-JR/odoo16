@@ -19,7 +19,7 @@ export class TimeOffDashboard extends Component {
             await this.loadDashboardData();
         });
     }
-    
+
     async loadDashboardData() {
         const context = {};
         if (this.props.employeeId !== null) {

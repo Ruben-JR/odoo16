@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* sale_project
-# 
+#
 # Translators:
 # Piia Paurson <piia@avalah.ee>, 2022
 # Egon Raamat <egon@avalah.ee>, 2022
@@ -14,7 +14,7 @@
 # Triine Aavik <triine@avalah.ee>, 2022
 # Jana Jaakson, 2023
 # Leaanika Randmets, 2023
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"

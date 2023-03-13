@@ -4,10 +4,10 @@ from odoo import models
 
 
 class PaymentLinkWizard(models.TransientModel):
-    _inherit = 'payment.link.wizard'
+    _inherit = "payment.link.wizard"
 
     def _get_additional_link_values(self):
-        """ Override of `payment` to add `invoice_id` to the payment link values.
+        """Override of `payment` to add `invoice_id` to the payment link values.
 
         The other values related to the invoice are directly read from the invoice.
 
@@ -17,10 +17,10 @@ class PaymentLinkWizard(models.TransientModel):
         :rtype: dict
         """
         res = super()._get_additional_link_values()
-        if self.res_model != 'account.move':
+        if self.res_model != "account.move":
             return res
 
         # Invoice-related fields are retrieved in the controller.
         return {
-            'invoice_id': self.res_id,
+            "invoice_id": self.res_id,
         }

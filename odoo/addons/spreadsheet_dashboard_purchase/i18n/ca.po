@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* spreadsheet_dashboard_purchase
-# 
+#
 # Translators:
 # Carles Antoli <carlesantoli@hotmail.com>, 2022
 # M Palau <mpalau@tda.ad>, 2022
@@ -13,7 +13,7 @@
 # Cristian Cruz, 2022
 # Arnau Ros, 2022
 # Ivan Espinola, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"

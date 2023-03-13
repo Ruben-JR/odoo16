@@ -15,18 +15,18 @@ from .. import sql_db
 
 __unittest = True
 
-STDOUT_LINE = '\nStdout:\n%s'
-STDERR_LINE = '\nStderr:\n%s'
+STDOUT_LINE = "\nStdout:\n%s"
+STDERR_LINE = "\nStderr:\n%s"
 
 
-stats_logger = logging.getLogger('odoo.tests.stats')
+stats_logger = logging.getLogger("odoo.tests.stats")
 
 
 class Stat(NamedTuple):
     time: float = 0.0
     queries: int = 0
 
-    def __add__(self, other: 'Stat') -> 'Stat':
+    def __add__(self, other: "Stat") -> "Stat":
         if other == 0:
             return self
 
@@ -38,8 +38,10 @@ class Stat(NamedTuple):
             self.queries + other.queries,
         )
 
+
 _logger = logging.getLogger(__name__)
-_TEST_ID = re.compile(r"""
+_TEST_ID = re.compile(
+    r"""
 ^
 odoo\.addons\.
 (?P<module>[^.]+)
@@ -48,7 +50,9 @@ odoo\.addons\.
 \.
 (?P<method>[^.]+)
 $
-""", re.VERBOSE)
+""",
+    re.VERBOSE,
+)
 
 
 class OdooTestResult(object):
@@ -87,7 +91,7 @@ class OdooTestResult(object):
     def startTest(self, test):
         "Called when the given test is about to be run"
         self.testsRun += 1
-        self.log(logging.INFO, 'Starting %s ...', self.getDescription(test), test=test)
+        self.log(logging.INFO, "Starting %s ...", self.getDescription(test), test=test)
         self.time_start = time.time()
         self.queries_start = sql_db.sql_counter
 
@@ -131,7 +135,13 @@ class OdooTestResult(object):
     def addSkip(self, test, reason):
         """Called when a test is skipped."""
         self.skipped += 1
-        self.log(logging.INFO, 'skipped %s : %s', self.getDescription(test), reason, test=test)
+        self.log(
+            logging.INFO,
+            "skipped %s : %s",
+            self.getDescription(test),
+            reason,
+            test=test,
+        )
 
     def wasSuccessful(self):
         """Tells whether or not this result was a success."""
@@ -153,13 +163,14 @@ class OdooTestResult(object):
         else:
             length = None
         tb_e = traceback.TracebackException(
-            exctype, value, tb, limit=length, capture_locals=self.tb_locals)
+            exctype, value, tb, limit=length, capture_locals=self.tb_locals
+        )
         msgLines = list(tb_e.format())
 
-        return ''.join(msgLines)
+        return "".join(msgLines)
 
     def _is_relevant_tb_level(self, tb):
-        return '__unittest' in tb.tb_frame.f_globals
+        return "__unittest" in tb.tb_frame.f_globals
 
     def _count_relevant_tb_levels(self, tb):
         length = 0
@@ -169,12 +180,16 @@ class OdooTestResult(object):
         return length
 
     def __repr__(self):
-        return ("<%s.%s run=%i errors=%i failures=%i>" %
-                (self.__class__.__module__, self.__class__.__qualname__, self.testsRun, len(self.errors_count), len(self.failures_count)))
+        return "<%s.%s run=%i errors=%i failures=%i>" % (
+            self.__class__.__module__,
+            self.__class__.__qualname__,
+            self.testsRun,
+            len(self.errors_count),
+            len(self.failures_count),
+        )
 
     def __str__(self):
-        return f'{self.failures_count} failed, {self.errors_count} error(s) of {self.testsRun} tests'
-
+        return f"{self.failures_count} failed, {self.errors_count} error(s) of {self.testsRun} tests"
 
     @contextlib.contextmanager
     def soft_fail(self):
@@ -187,7 +202,7 @@ class OdooTestResult(object):
             self.had_failure = False
 
     def update(self, other):
-        """ Merges an other test result into this one, only updates contents
+        """Merges an other test result into this one, only updates contents
 
         :type other: OdooTestResult
         """
@@ -197,7 +212,17 @@ class OdooTestResult(object):
         self.skipped += other.skipped
         self.stats.update(other.stats)
 
-    def log(self, level, msg, *args, test=None, exc_info=None, extra=None, stack_info=False, caller_infos=None):
+    def log(
+        self,
+        level,
+        msg,
+        *args,
+        test=None,
+        exc_info=None,
+        extra=None,
+        stack_info=False,
+        caller_infos=None,
+    ):
         """
         ``test`` is the running test case, ``caller_infos`` is
         (fn, lno, func, sinfo) (logger.findCaller format), see logger.log for
@@ -216,7 +241,9 @@ class OdooTestResult(object):
         # order to provide useful location information (the problematic spot
         # inside the test function), so use lower-level functions instead
         if logger.isEnabledFor(level):
-            record = logger.makeRecord(logger.name, level, fn, lno, msg, args, exc_info, func, extra, sinfo)
+            record = logger.makeRecord(
+                logger.name, level, fn, lno, msg, args, exc_info, func, extra, sinfo
+            )
             logger.handle(record)
 
     def log_stats(self):
@@ -228,31 +255,40 @@ class OdooTestResult(object):
         counts = collections.Counter()
         for test, stat in self.stats.items():
             r = _TEST_ID.match(test)
-            if not r: # upgrade has tests at weird paths, ignore them
+            if not r:  # upgrade has tests at weird paths, ignore them
                 continue
 
-            stats_tree[r['module']] += stat
-            counts[r['module']] += 1
+            stats_tree[r["module"]] += stat
+            counts[r["module"]] += 1
             if details:
-                stats_tree['%(module)s.%(class)s' % r] += stat
-                stats_tree['%(module)s.%(class)s.%(method)s' % r] += stat
+                stats_tree["%(module)s.%(class)s" % r] += stat
+                stats_tree["%(module)s.%(class)s.%(method)s" % r] += stat
 
         if details:
-            stats_logger.debug('Detailed Tests Report:\n%s', ''.join(
-                f'\t{test}: {stats.time:.2f}s {stats.queries} queries\n'
-                for test, stats in sorted(stats_tree.items())
-            ))
+            stats_logger.debug(
+                "Detailed Tests Report:\n%s",
+                "".join(
+                    f"\t{test}: {stats.time:.2f}s {stats.queries} queries\n"
+                    for test, stats in sorted(stats_tree.items())
+                ),
+            )
         else:
             for module, stat in sorted(stats_tree.items()):
                 stats_logger.info(
                     "%s: %d tests %.2fs %d queries",
-                    module, counts[module],
-                    stat.time, stat.queries
+                    module,
+                    counts[module],
+                    stat.time,
+                    stat.queries,
                 )
 
     def getDescription(self, test):
         if isinstance(test, case._SubTest):
-            return 'Subtest %s.%s %s' % (test.test_case.__class__.__qualname__, test.test_case._testMethodName, test._subDescription())
+            return "Subtest %s.%s %s" % (
+                test.test_case.__class__.__qualname__,
+                test.test_case._testMethodName,
+                test._subDescription(),
+            )
         if isinstance(test, case.TestCase):
             # since we have the module name in the logger, this will avoid to duplicate module info in log line
             # we only apply this for TestCase since we can receive error handler or other special case
@@ -274,8 +310,18 @@ class OdooTestResult(object):
     def logError(self, flavour, test, error):
         err = self._exc_info_to_string(error, test)
         caller_infos = self.getErrorCallerInfo(error, test)
-        self.log(logging.INFO, '=' * 70, test=test, caller_infos=caller_infos)  # keep this as info !!!!!!
-        self.log(logging.ERROR, "%s: %s\n%s", flavour, self.getDescription(test), err, test=test, caller_infos=caller_infos)
+        self.log(
+            logging.INFO, "=" * 70, test=test, caller_infos=caller_infos
+        )  # keep this as info !!!!!!
+        self.log(
+            logging.ERROR,
+            "%s: %s\n%s",
+            flavour,
+            self.getDescription(test),
+            err,
+            test=test,
+            caller_infos=caller_infos,
+        )
 
     def getErrorCallerInfo(self, error, test):
         """
@@ -309,7 +355,7 @@ class OdooTestResult(object):
         #
         while error_traceback:
             code = error_traceback.tb_frame.f_code
-            if code.co_name in (test._testMethodName, 'setUp', 'tearDown'):
+            if code.co_name in (test._testMethodName, "setUp", "tearDown"):
                 method_tb = error_traceback
             if code.co_filename == filename:
                 file_tb = error_traceback

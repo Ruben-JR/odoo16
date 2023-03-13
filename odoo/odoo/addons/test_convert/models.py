@@ -3,11 +3,12 @@
 
 from odoo import api, fields, models
 
+
 class TestModel(models.Model):
-    _name = 'test_convert.test_model'
+    _name = "test_convert.test_model"
     _description = "Test Convert Model"
 
-    usered_ids = fields.One2many('test_convert.usered', 'test_id')
+    usered_ids = fields.One2many("test_convert.usered", "test_id")
 
     @api.model
     def action_test_date(self, today_date):
@@ -21,14 +22,17 @@ class TestModel(models.Model):
     def action_test_timezone(self, timezone):
         return True
 
+
 class Usered(models.Model):
-    _name = 'test_convert.usered'
+    _name = "test_convert.usered"
     _description = "z test model ignore"
 
     name = fields.Char()
-    user_id = fields.Many2one('res.users', default=lambda self: self.env.user)
-    test_id = fields.Many2one('test_convert.test_model')
-    tz = fields.Char(default=lambda self: self.env.context.get('tz') or self.env.user.tz)
+    user_id = fields.Many2one("res.users", default=lambda self: self.env.user)
+    test_id = fields.Many2one("test_convert.test_model")
+    tz = fields.Char(
+        default=lambda self: self.env.context.get("tz") or self.env.user.tz
+    )
 
     @api.model
     def model_method(self, *args, **kwargs):

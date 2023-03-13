@@ -13,14 +13,18 @@ _logger = logging.getLogger(__name__)
 
 
 class PayUMoneyController(http.Controller):
-    _return_url = '/payment/payumoney/return'
+    _return_url = "/payment/payumoney/return"
 
     @http.route(
-        _return_url, type='http', auth='public', methods=['GET', 'POST'], csrf=False,
-        save_session=False
+        _return_url,
+        type="http",
+        auth="public",
+        methods=["GET", "POST"],
+        csrf=False,
+        save_session=False,
     )
     def payumoney_return_from_checkout(self, **data):
-        """ Process the notification data sent by PayUmoney after redirection from checkout.
+        """Process the notification data sent by PayUmoney after redirection from checkout.
 
         See https://developer.payumoney.com/redirect/.
 
@@ -34,21 +38,25 @@ class PayUMoneyController(http.Controller):
 
         :param dict data: The notification data
         """
-        _logger.info("handling redirection from PayU money with data:\n%s", pprint.pformat(data))
+        _logger.info(
+            "handling redirection from PayU money with data:\n%s", pprint.pformat(data)
+        )
 
         # Check the integrity of the notification
-        tx_sudo = request.env['payment.transaction'].sudo()._get_tx_from_notification_data(
-            'payumoney', data
+        tx_sudo = (
+            request.env["payment.transaction"]
+            .sudo()
+            ._get_tx_from_notification_data("payumoney", data)
         )
         self._verify_notification_signature(data, tx_sudo)
 
         # Handle the notification data
-        tx_sudo._handle_notification_data('payumoney', data)
-        return request.redirect('/payment/status')
+        tx_sudo._handle_notification_data("payumoney", data)
+        return request.redirect("/payment/status")
 
     @staticmethod
     def _verify_notification_signature(notification_data, tx_sudo):
-        """ Check that the received signature matches the expected one.
+        """Check that the received signature matches the expected one.
 
         :param dict notification_data: The notification data
         :param recordset tx_sudo: The sudoed transaction referenced by the notification data, as a
@@ -57,7 +65,7 @@ class PayUMoneyController(http.Controller):
         :raise: :class:`werkzeug.exceptions.Forbidden` if the signatures don't match
         """
         # Retrieve the received signature from the data
-        received_signature = notification_data.get('hash')
+        received_signature = notification_data.get("hash")
         if not received_signature:
             _logger.warning("received notification with missing signature")
             raise Forbidden()

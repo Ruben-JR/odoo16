@@ -4,14 +4,16 @@ from odoo.addons.bus.websocket import wsrequest
 
 
 class IrWebsocket(models.AbstractModel):
-    _inherit = 'ir.websocket'
+    _inherit = "ir.websocket"
 
     def _get_im_status(self, data):
         im_status = super()._get_im_status(data)
-        if 'mail.guest' in data:
-            im_status['guests'] = self.env['mail.guest'].sudo().with_context(active_test=False).search_read(
-                [('id', 'in', data['mail.guest'])],
-                ['im_status']
+        if "mail.guest" in data:
+            im_status["guests"] = (
+                self.env["mail.guest"]
+                .sudo()
+                .with_context(active_test=False)
+                .search_read([("id", "in", data["mail.guest"])], ["im_status"])
             )
         return im_status
 
@@ -22,8 +24,8 @@ class IrWebsocket(models.AbstractModel):
         #  request.
         req = request or wsrequest
         channels = list(channels)  # do not alter original list
-        guest_sudo = self.env['mail.guest']._get_guest_from_request(req).sudo()
-        mail_channels = self.env['mail.channel']
+        guest_sudo = self.env["mail.guest"]._get_guest_from_request(req).sudo()
+        mail_channels = self.env["mail.channel"]
         if req.session.uid:
             partner = self.env.user.partner_id
             mail_channels = partner.channel_ids
@@ -43,7 +45,11 @@ class IrWebsocket(models.AbstractModel):
             #  retrieve the current guest. Let's retrieve the proper
             #  request.
             req = request or wsrequest
-            guest_sudo = self.env['mail.guest']._get_guest_from_request(req).sudo()
+            guest_sudo = self.env["mail.guest"]._get_guest_from_request(req).sudo()
             if not guest_sudo:
                 return
-            guest_sudo.env['bus.presence'].update(inactivity_period, identity_field='guest_id', identity_value=guest_sudo.id)
+            guest_sudo.env["bus.presence"].update(
+                inactivity_period,
+                identity_field="guest_id",
+                identity_value=guest_sudo.id,
+            )

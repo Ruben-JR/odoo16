@@ -3,15 +3,16 @@
 
 from odoo import api, models, fields
 
+
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
 
-    expense_id = fields.Many2one('hr.expense', string='Expense')
+    expense_id = fields.Many2one("hr.expense", string="Expense")
 
-    @api.depends('is_expense')
+    @api.depends("is_expense")
     def _compute_purchase_price(self):
         date_today = fields.Date.context_today(self)
-        expense_lines = self.filtered('expense_id')
+        expense_lines = self.filtered("expense_id")
         for line in expense_lines:
             if line.expense_id.product_has_cost:
                 product_cost = line.expense_id.untaxed_amount / line.expense_id.quantity
@@ -27,7 +28,8 @@ class SaleOrderLine(models.Model):
                     to_currency=to_currency,
                     company=line.company_id or self.env.company,
                     date=line.order_id.date_order or date_today,
-                    round=False)
+                    round=False,
+                )
             else:
                 line.purchase_price = product_cost
         return super(SaleOrderLine, self - expense_lines)._compute_purchase_price()

@@ -64,7 +64,7 @@ export class BomOverviewComponentsBlock extends Component {
 
     get childIds() {
         return this.hasComponents ? this.data.components.map(c => this.getIdentifier(c)) : [];
-    } 
+    }
 
     get identifier() {
         return this.getIdentifier(this.data);

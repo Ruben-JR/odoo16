@@ -87,7 +87,7 @@ export class ReceptionReportMain extends Component {
         const reportFile = 'stock.report_reception_report_label';
         const modelIds = [];
         const quantities = [];
-        
+
         for (const lines of Object.values(this.state.sourcesToLines)) {
             for (const line of lines) {
                 if (!line.is_assigned) continue;

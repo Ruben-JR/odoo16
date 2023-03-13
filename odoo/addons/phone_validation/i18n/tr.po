@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* phone_validation
-# 
+#
 # Translators:
 # Ramiz Deniz Öner <deniz@denizoner.com>, 2022
 # Ahmet Altinisik <aaltinisik@altinkaya.com.tr>, 2022
@@ -17,7 +17,7 @@
 # Ediz Duman <neps1192@gmail.com>, 2022
 # Murat Kaplan <muratk@projetgrup.com>, 2022
 # Nadir Gazioglu <nadirgazioglu@gmail.com>, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.5alpha1\n"

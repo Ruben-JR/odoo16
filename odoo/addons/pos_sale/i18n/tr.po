@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* pos_sale
-# 
+#
 # Translators:
 # omerfarukcakmak <omerfarukckmk@protonmail.com>, 2022
 # abc Def <hdogan1974@gmail.com>, 2022
@@ -14,7 +14,7 @@
 # Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2022
 # Umur Akın <umura@projetgrup.com>, 2022
 # Martin Trigaux, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.5alpha1\n"

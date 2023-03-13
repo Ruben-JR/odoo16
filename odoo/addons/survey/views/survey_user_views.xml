@@ -68,7 +68,7 @@
                             <label for="attempts_number" string="Attempt n°" attrs="{'invisible': ['|', ('is_attempts_limited', '=', False), '|', ('test_entry', '=', True), ('state', '!=', 'done')]}"/>
                             <div attrs="{'invisible': ['|', ('is_attempts_limited', '=', False), '|', ('test_entry', '=', True), ('state', '!=', 'done')]}" class="d-inline-flex">
                                 <field name="attempts_number" nolabel="1"/>
-                                 / 
+                                 /
                                 <field name="attempts_limit" nolabel="1"/>
                             </div>
                             <field name="test_entry" groups="base.group_no_one"/>

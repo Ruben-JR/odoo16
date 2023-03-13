@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* spreadsheet_dashboard_im_livechat
-# 
+#
 # Translators:
 # Mariusz, 2022
 # Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2022
@@ -10,7 +10,7 @@
 # Martin Trigaux, 2022
 # Krzysztof Przygoda, 2022
 # Maksym <ms@myodoo.pl>, 2023
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta\n"

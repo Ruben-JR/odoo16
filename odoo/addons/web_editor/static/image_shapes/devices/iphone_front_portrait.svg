@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 680 1376" width="680" height="1376" data-forced-size="true">
     <style>
-        image { 
+        image {
             width: calc(100% - 72px);
             height: calc(100% - 65px);
         }
@@ -28,7 +28,7 @@
             <stop offset="0.52" stop-color="#080c23"/>
             <stop offset="0.69" stop-color="#02041c"/>
             <stop offset="1" stop-color="#00021a"/>
-        </radialGradient>  
+        </radialGradient>
         <path id="filterPath" d="M0.0547,0.0245H0.9456V0.976H0.0547Z"/>
     </defs>
     <path d="M570.58,10.44H109.42a94,94,0,0,0-94,94V1271.6a94,94,0,0,0,94,94H570.58a94,94,0,0,0,94-94V104.4A94,94,0,0,0,570.58,10.44Z"/>

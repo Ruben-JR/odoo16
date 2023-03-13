@@ -1,11 +1,11 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* loyalty_delivery
-# 
+#
 # Translators:
 # Hanna Kheradroosta, 2023
 # rahim agh <rahim.aghareb@gmail.com>, 2023
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.5alpha1\n"

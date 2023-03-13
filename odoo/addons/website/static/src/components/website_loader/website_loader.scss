@@ -23,7 +23,7 @@
     .o_website_loader_tip {
         font-size: 0.5em;
         color: var(--website-loader-color);
-        
+
         @include media-breakpoint-down(md) {
             width: 50% !important;
         }

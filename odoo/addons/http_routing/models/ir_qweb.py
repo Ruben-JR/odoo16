@@ -10,15 +10,18 @@ class IrQweb(models.AbstractModel):
 
     def _prepare_environment(self, values):
         irQweb = super()._prepare_environment(values)
-        values['slug'] = slug
-        values['unslug_url'] = unslug_url
+        values["slug"] = slug
+        values["unslug_url"] = unslug_url
 
-        if (not irQweb.env.context.get('minimal_qcontext') and
-                request and request.is_frontend):
+        if (
+            not irQweb.env.context.get("minimal_qcontext")
+            and request
+            and request.is_frontend
+        ):
             return irQweb._prepare_frontend_environment(values)
 
         return irQweb
 
     def _prepare_frontend_environment(self, values):
-        values['url_for'] = url_for
+        values["url_for"] = url_for
         return self

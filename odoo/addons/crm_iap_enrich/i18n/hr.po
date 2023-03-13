@@ -1,12 +1,12 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* crm_iap_enrich
-# 
+#
 # Translators:
 # Bole <bole@dajmi5.com>, 2022
 # Stjepan Lovasić <stjepan.lovasic@gmail.com>, 2022
 # Matej Mijoč, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~15.2\n"

@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* website_sale_slides
-# 
+#
 # Translators:
 # José Cabrera Lozano <jose.cabrera@edukative.es>, 2022
 # jabelchi, 2022
@@ -13,7 +13,7 @@
 # Ivan Espinola, 2022
 # Farouk Jabiri, 2022
 # Óscar Fonseca <tecnico@extreme-micro.com>, 2023
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta\n"

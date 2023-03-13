@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* auth_signup
-# 
+#
 # Translators:
 # Hamid Darabi, 2023
 # Arash Tarighati <arash.tgi@gmail.com>, 2023
@@ -9,7 +9,7 @@
 # Mohammad Tahmasebi <hit.tah75@gmail.com>, 2023
 # Hanna Kheradroosta, 2023
 # Hamed Mohammadi <hamed@dehongi.com>, 2023
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta\n"

@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* account_payment_invoice_online_payment_patch
-# 
+#
 # Translators:
 # keecome <7017511@qq.com>, 2023
 # Benson <Benson.Dr@Gmail.com>, 2023
@@ -9,7 +9,7 @@
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2023
 # Martin Trigaux, 2023
 # Emily Jia <eji@odoo.com>, 2023
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"

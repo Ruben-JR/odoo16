@@ -1,10 +1,10 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* website_sale_autocomplete
-# 
+#
 # Translators:
 # Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2023
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~15.4\n"

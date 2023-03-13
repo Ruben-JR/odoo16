@@ -11,22 +11,28 @@ from odoo.addons.sale.models.sale_order import READONLY_FIELD_STATES
 
 
 class SaleOrder(models.Model):
-    _inherit = 'sale.order'
+    _inherit = "sale.order"
 
     sale_order_template_id = fields.Many2one(
-        comodel_name='sale.order.template',
+        comodel_name="sale.order.template",
         string="Quotation Template",
-        compute='_compute_sale_order_template_id',
-        store=True, readonly=False, check_company=True, precompute=True,
+        compute="_compute_sale_order_template_id",
+        store=True,
+        readonly=False,
+        check_company=True,
+        precompute=True,
         states=READONLY_FIELD_STATES,
-        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
+    )
     sale_order_option_ids = fields.One2many(
-        comodel_name='sale.order.option', inverse_name='order_id',
+        comodel_name="sale.order.option",
+        inverse_name="order_id",
         string="Optional Products Lines",
         states=READONLY_FIELD_STATES,
-        copy=True)
+        copy=True,
+    )
 
-    #=== COMPUTE METHODS ===#
+    # === COMPUTE METHODS ===#
 
     # Do not make it depend on `company_id` field
     # It is triggered manually by the _onchange_company_id below iff the SO has not been saved.
@@ -34,62 +40,76 @@ class SaleOrder(models.Model):
         for order in self:
             company_template = order.company_id.sale_order_template_id
             if company_template and order.sale_order_template_id != company_template:
-                order.sale_order_template_id = order.company_id.sale_order_template_id.id
+                order.sale_order_template_id = (
+                    order.company_id.sale_order_template_id.id
+                )
 
-    @api.depends('partner_id', 'sale_order_template_id')
+    @api.depends("partner_id", "sale_order_template_id")
     def _compute_note(self):
         super()._compute_note()
-        for order in self.filtered('sale_order_template_id'):
-            template = order.sale_order_template_id.with_context(lang=order.partner_id.lang)
-            order.note = template.note if not is_html_empty(template.note) else order.note
+        for order in self.filtered("sale_order_template_id"):
+            template = order.sale_order_template_id.with_context(
+                lang=order.partner_id.lang
+            )
+            order.note = (
+                template.note if not is_html_empty(template.note) else order.note
+            )
 
-    @api.depends('sale_order_template_id')
+    @api.depends("sale_order_template_id")
     def _compute_require_signature(self):
         super()._compute_require_signature()
-        for order in self.filtered('sale_order_template_id'):
+        for order in self.filtered("sale_order_template_id"):
             order.require_signature = order.sale_order_template_id.require_signature
 
-    @api.depends('sale_order_template_id')
+    @api.depends("sale_order_template_id")
     def _compute_require_payment(self):
         super()._compute_require_payment()
-        for order in self.filtered('sale_order_template_id'):
+        for order in self.filtered("sale_order_template_id"):
             order.require_payment = order.sale_order_template_id.require_payment
 
-    @api.depends('sale_order_template_id')
+    @api.depends("sale_order_template_id")
     def _compute_validity_date(self):
         super()._compute_validity_date()
-        for order in self.filtered('sale_order_template_id'):
+        for order in self.filtered("sale_order_template_id"):
             validity_days = order.sale_order_template_id.number_of_days
             if validity_days > 0:
-                order.validity_date = fields.Date.context_today(order) + timedelta(validity_days)
+                order.validity_date = fields.Date.context_today(order) + timedelta(
+                    validity_days
+                )
 
-    #=== CONSTRAINT METHODS ===#
+    # === CONSTRAINT METHODS ===#
 
-    @api.constrains('company_id', 'sale_order_option_ids')
+    @api.constrains("company_id", "sale_order_option_ids")
     def _check_optional_product_company_id(self):
         for order in self:
             companies = order.sale_order_option_ids.product_id.company_id
             if companies and companies != order.company_id:
-                bad_products = order.sale_order_option_ids.product_id.filtered(lambda p: p.company_id and p.company_id != order.company_id)
-                raise ValidationError(_(
-                    "Your quotation contains products from company %(product_company)s whereas your quotation belongs to company %(quote_company)s. \n Please change the company of your quotation or remove the products from other companies (%(bad_products)s).",
-                    product_company=', '.join(companies.mapped('display_name')),
-                    quote_company=order.company_id.display_name,
-                    bad_products=', '.join(bad_products.mapped('display_name')),
-                ))
+                bad_products = order.sale_order_option_ids.product_id.filtered(
+                    lambda p: p.company_id and p.company_id != order.company_id
+                )
+                raise ValidationError(
+                    _(
+                        "Your quotation contains products from company %(product_company)s whereas your quotation belongs to company %(quote_company)s. \n Please change the company of your quotation or remove the products from other companies (%(bad_products)s).",
+                        product_company=", ".join(companies.mapped("display_name")),
+                        quote_company=order.company_id.display_name,
+                        bad_products=", ".join(bad_products.mapped("display_name")),
+                    )
+                )
 
-    #=== ONCHANGE METHODS ===#
+    # === ONCHANGE METHODS ===#
 
-    @api.onchange('company_id')
+    @api.onchange("company_id")
     def _onchange_company_id(self):
         """Trigger quotation template recomputation on unsaved records company change"""
         if self._origin.id:
             return
         self._compute_sale_order_template_id()
 
-    @api.onchange('sale_order_template_id')
+    @api.onchange("sale_order_template_id")
     def _onchange_sale_order_template_id(self):
-        sale_order_template = self.sale_order_template_id.with_context(lang=self.partner_id.lang)
+        sale_order_template = self.sale_order_template_id.with_context(
+            lang=self.partner_id.lang
+        )
 
         order_lines_data = [fields.Command.clear()]
         order_lines_data += [
@@ -107,7 +127,7 @@ class SaleOrder(models.Model):
 
         self.sale_order_option_ids = option_lines_data
 
-    #=== ACTION METHODS ===#
+    # === ACTION METHODS ===#
 
     def action_confirm(self):
         res = super().action_confirm()
@@ -115,7 +135,10 @@ class SaleOrder(models.Model):
             self = self.with_user(SUPERUSER_ID)
 
         for order in self:
-            if order.sale_order_template_id and order.sale_order_template_id.mail_template_id:
+            if (
+                order.sale_order_template_id
+                and order.sale_order_template_id.mail_template_id
+            ):
                 order.sale_order_template_id.mail_template_id.send_mail(order.id)
         return res
 

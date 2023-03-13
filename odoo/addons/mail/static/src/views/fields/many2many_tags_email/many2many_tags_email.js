@@ -91,4 +91,3 @@ FieldMany2ManyTagsEmail.fieldsToFetch = Object.assign({},
 FieldMany2ManyTagsEmail.additionalClasses = ["o_field_many2many_tags"];
 
 registry.category("fields").add("many2many_tags_email", FieldMany2ManyTagsEmail);
-

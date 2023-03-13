@@ -81,7 +81,7 @@ QUnit.module("Widgets", (hooks) => {
         assert.containsOnce(target, '.o_widget_account_file_uploader');
         const file = new File(["test"], "fake_file.txt", { type: "text/plain" });
         await editInput(target, ".o_input_file", file);
-        
+
     });
 
 });

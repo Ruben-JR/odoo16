@@ -35,7 +35,9 @@ _sha1_re = re.compile(r"^[a-f0-9]{40}$")
 def generate_key(salt=None):
     if salt is None:
         salt = repr(salt).encode("ascii")
-    return sha1(b"".join([salt, str(time()).encode("ascii"), os.urandom(30)])).hexdigest()
+    return sha1(
+        b"".join([salt, str(time()).encode("ascii"), os.urandom(30)])
+    ).hexdigest()
 
 
 class ModificationTrackingDict(CallbackDict):
@@ -217,7 +219,9 @@ class FilesystemSessionStore(SessionStore):
         try:
             f = open(self.get_session_filename(sid), "rb")
         except IOError:
-            _logger.debug('Could not load session from disk. Use empty session.', exc_info=True)
+            _logger.debug(
+                "Could not load session from disk. Use empty session.", exc_info=True
+            )
             if self.renew_missing:
                 return self.new()
             data = {}
@@ -226,7 +230,9 @@ class FilesystemSessionStore(SessionStore):
                 try:
                     data = load(f)
                 except Exception:
-                    _logger.debug('Could not load session data. Use empty session.', exc_info=True)
+                    _logger.debug(
+                        "Could not load session data. Use empty session.", exc_info=True
+                    )
                     data = {}
             finally:
                 f.close()

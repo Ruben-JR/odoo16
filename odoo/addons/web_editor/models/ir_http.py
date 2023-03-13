@@ -4,15 +4,15 @@ from odoo import models
 from odoo.http import request
 
 
-CONTEXT_KEYS = ['editable', 'edit_translations', 'translatable']
+CONTEXT_KEYS = ["editable", "edit_translations", "translatable"]
 
 
 class IrHttp(models.AbstractModel):
-    _inherit = 'ir.http'
+    _inherit = "ir.http"
 
     @classmethod
     def _get_web_editor_context(cls):
-        """ Check for ?editable and stuff in the query-string """
+        """Check for ?editable and stuff in the query-string"""
         return {
             key: True
             for key in CONTEXT_KEYS
@@ -28,4 +28,4 @@ class IrHttp(models.AbstractModel):
     @classmethod
     def _get_translation_frontend_modules_name(cls):
         mods = super(IrHttp, cls)._get_translation_frontend_modules_name()
-        return mods + ['web_editor']
+        return mods + ["web_editor"]

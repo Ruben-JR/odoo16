@@ -14,12 +14,20 @@ class AccountChartTemplate(models.Model):
         ref = self.env.ref
         cid = self.env.company.id
         model, data = super()._get_demo_data_move()
-        if self.env.company.account_fiscal_country_id.code == 'EC':
-            document_type = ref('l10n_ec.ec_dt_01', False) and ref('l10n_ec.ec_dt_01').id or False
-            data[f'{cid}_demo_invoice_1']['l10n_latam_document_type_id'] = document_type
-            data[f'{cid}_demo_invoice_2']['l10n_latam_document_type_id'] = document_type
-            data[f'{cid}_demo_invoice_3']['l10n_latam_document_type_id'] = document_type
-            data[f'{cid}_demo_invoice_followup']['l10n_latam_document_type_id'] = document_type
-            data[f'{cid}_demo_invoice_5']['l10n_latam_document_number'] = '001-001-00001'
-            data[f'{cid}_demo_invoice_equipment_purchase']['l10n_latam_document_number'] = '001-001-00002'
+        if self.env.company.account_fiscal_country_id.code == "EC":
+            document_type = (
+                ref("l10n_ec.ec_dt_01", False) and ref("l10n_ec.ec_dt_01").id or False
+            )
+            data[f"{cid}_demo_invoice_1"]["l10n_latam_document_type_id"] = document_type
+            data[f"{cid}_demo_invoice_2"]["l10n_latam_document_type_id"] = document_type
+            data[f"{cid}_demo_invoice_3"]["l10n_latam_document_type_id"] = document_type
+            data[f"{cid}_demo_invoice_followup"][
+                "l10n_latam_document_type_id"
+            ] = document_type
+            data[f"{cid}_demo_invoice_5"][
+                "l10n_latam_document_number"
+            ] = "001-001-00001"
+            data[f"{cid}_demo_invoice_equipment_purchase"][
+                "l10n_latam_document_number"
+            ] = "001-001-00002"
         return model, data

@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* mass_mailing
-# 
+#
 # Translators:
 # Marek Pontus, 2022
 # Gert Valdek <gert@airobot.ee>, 2022
@@ -21,7 +21,7 @@
 # Leaanika Randmets, 2023
 # Jana Jaakson, 2023
 # Anna, 2023
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"

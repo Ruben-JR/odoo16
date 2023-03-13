@@ -126,7 +126,7 @@
 <t t-name="hr_org_chart.hr_orgchart_emp_popover" owl="1">
     <div class="popover o_org_chart_popup" role="tooltip">
         <div class="tooltip-arrow">
-            
+
         </div>
         <h3 class="popover-header">
             <div class="d-flex align-items-center">

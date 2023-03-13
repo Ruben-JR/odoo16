@@ -3,11 +3,12 @@
 
 from odoo import models
 
+
 class BaseModel(models.AbstractModel):
-    _inherit = 'base'
+    _inherit = "base"
 
     def get_field_translations(self, field_name, langs=None):
-        """ get model/model_term translations for records with transifex url
+        """get model/model_term translations for records with transifex url
         :param str field_name: field name
         :param list langs: languages
 
@@ -21,11 +22,11 @@ class BaseModel(models.AbstractModel):
         if not external_id:
             return translations, context
 
-        module = external_id.split('.')[0]
+        module = external_id.split(".")[0]
         if module not in self.pool._init_modules:
             return translations, context
 
         for translation in translations:
-            translation['module'] = module
-        self.env['transifex.translation']._update_transifex_url(translations)
+            translation["module"] = module
+        self.env["transifex.translation"]._update_transifex_url(translations)
         return translations, context

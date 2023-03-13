@@ -2,12 +2,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    'name': 'Transifex integration',
-    'version': '1.0',
-    'summary': 'Add a link to edit a translation in Transifex',
-    'category': 'Hidden/Tools',
-    'description':
-    """
+    "name": "Transifex integration",
+    "version": "1.0",
+    "summary": "Add a link to edit a translation in Transifex",
+    "category": "Hidden/Tools",
+    "description": """
 Transifex integration
 =====================
 This module will add a link to the Transifex project in the translation view.
@@ -20,18 +19,18 @@ the main Transifex project).
 The language the user tries to translate must be activated on the Transifex
 project.
         """,
-    'data': [
-        'data/transifex_data.xml',
-        'views/code_translation_views.xml',
-        'security/ir.model.access.csv'
+    "data": [
+        "data/transifex_data.xml",
+        "views/code_translation_views.xml",
+        "security/ir.model.access.csv",
     ],
-    'assets': {
-        'web.assets_backend': [
-            'transifex/static/src/views/fields/translation_dialog.xml',
-            'transifex/static/src/views/*.js',
-            'transifex/static/src/views/*.xml',
+    "assets": {
+        "web.assets_backend": [
+            "transifex/static/src/views/fields/translation_dialog.xml",
+            "transifex/static/src/views/*.js",
+            "transifex/static/src/views/*.xml",
         ],
     },
-    'depends': ['base', 'web'],
-    'license': 'LGPL-3',
+    "depends": ["base", "web"],
+    "license": "LGPL-3",
 }

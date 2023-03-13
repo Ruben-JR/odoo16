@@ -15,12 +15,12 @@ def get_hsl_from_seed(seed):
     sat = int(hashed_seed[2:4], 16) * ((70 - 40) / 255) + 40
     # not too bright and not too dark, in percent
     lig = 45
-    return f'hsl({hue:.0f}, {sat:.0f}%, {lig:.0f}%)'
+    return f"hsl({hue:.0f}, {sat:.0f}%, {lig:.0f}%)"
 
 
 class AvatarMixin(models.AbstractModel):
-    _name = 'avatar.mixin'
-    _inherit = ['image.mixin']
+    _name = "avatar.mixin"
+    _inherit = ["image.mixin"]
     _description = "Avatar Mixin"
     _avatar_name_field = "name"
 
@@ -41,39 +41,44 @@ class AvatarMixin(models.AbstractModel):
                     avatar = b64encode(record._avatar_get_placeholder())
             record[avatar_field] = avatar
 
-    @api.depends(lambda self: [self._avatar_name_field, 'image_1920'])
+    @api.depends(lambda self: [self._avatar_name_field, "image_1920"])
     def _compute_avatar_1920(self):
-        self._compute_avatar('avatar_1920', 'image_1920')
+        self._compute_avatar("avatar_1920", "image_1920")
 
-    @api.depends(lambda self: [self._avatar_name_field, 'image_1024'])
+    @api.depends(lambda self: [self._avatar_name_field, "image_1024"])
     def _compute_avatar_1024(self):
-        self._compute_avatar('avatar_1024', 'image_1024')
+        self._compute_avatar("avatar_1024", "image_1024")
 
-    @api.depends(lambda self: [self._avatar_name_field, 'image_512'])
+    @api.depends(lambda self: [self._avatar_name_field, "image_512"])
     def _compute_avatar_512(self):
-        self._compute_avatar('avatar_512', 'image_512')
+        self._compute_avatar("avatar_512", "image_512")
 
-    @api.depends(lambda self: [self._avatar_name_field, 'image_256'])
+    @api.depends(lambda self: [self._avatar_name_field, "image_256"])
     def _compute_avatar_256(self):
-        self._compute_avatar('avatar_256', 'image_256')
+        self._compute_avatar("avatar_256", "image_256")
 
-    @api.depends(lambda self: [self._avatar_name_field, 'image_128'])
+    @api.depends(lambda self: [self._avatar_name_field, "image_128"])
     def _compute_avatar_128(self):
-        self._compute_avatar('avatar_128', 'image_128')
+        self._compute_avatar("avatar_128", "image_128")
 
     def _avatar_generate_svg(self):
         initial = html_escape(self[self._avatar_name_field][0].upper())
-        bgcolor = get_hsl_from_seed(self[self._avatar_name_field] + str(self.create_date.timestamp() if self.create_date else ""))
-        return b64encode((
-            "<?xml version='1.0' encoding='UTF-8' ?>"
-            "<svg height='180' width='180' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>"
-            f"<rect fill='{bgcolor}' height='180' width='180'/>"
-            f"<text fill='#ffffff' font-size='96' text-anchor='middle' x='90' y='125' font-family='sans-serif'>{initial}</text>"
-            "</svg>"
-        ).encode())
+        bgcolor = get_hsl_from_seed(
+            self[self._avatar_name_field]
+            + str(self.create_date.timestamp() if self.create_date else "")
+        )
+        return b64encode(
+            (
+                "<?xml version='1.0' encoding='UTF-8' ?>"
+                "<svg height='180' width='180' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>"
+                f"<rect fill='{bgcolor}' height='180' width='180'/>"
+                f"<text fill='#ffffff' font-size='96' text-anchor='middle' x='90' y='125' font-family='sans-serif'>{initial}</text>"
+                "</svg>"
+            ).encode()
+        )
 
     def _avatar_get_placeholder_path(self):
         return "base/static/img/avatar_grey.png"
 
     def _avatar_get_placeholder(self):
-        return file_open(self._avatar_get_placeholder_path(), 'rb').read()
+        return file_open(self._avatar_get_placeholder_path(), "rb").read()

@@ -23,4 +23,3 @@ tour.register('website_sale_stock_reorder_from_portal', {
         },
     ]
 );
-

@@ -18,34 +18,50 @@ class BaseLanguageImport(models.TransientModel):
     _name = "base.language.import"
     _description = "Language Import"
 
-    name = fields.Char('Language Name', required=True)
-    code = fields.Char('ISO Code', size=6, required=True,
-                       help="ISO Language and Country code, e.g. en_US")
-    data = fields.Binary('File', required=True, attachment=False)
-    filename = fields.Char('File Name', required=True)
-    overwrite = fields.Boolean('Overwrite Existing Terms',
-                               default=True,
-                               help="If you enable this option, existing translations (including custom ones) "
-                                    "will be overwritten and replaced by those in this file")
+    name = fields.Char("Language Name", required=True)
+    code = fields.Char(
+        "ISO Code",
+        size=6,
+        required=True,
+        help="ISO Language and Country code, e.g. en_US",
+    )
+    data = fields.Binary("File", required=True, attachment=False)
+    filename = fields.Char("File Name", required=True)
+    overwrite = fields.Boolean(
+        "Overwrite Existing Terms",
+        default=True,
+        help="If you enable this option, existing translations (including custom ones) "
+        "will be overwritten and replaced by those in this file",
+    )
 
     def import_lang(self):
         Lang = self.env["res.lang"]
-        for overwrite, base_lang_imports in tools.groupby(self, operator.itemgetter('overwrite')):
+        for overwrite, base_lang_imports in tools.groupby(
+            self, operator.itemgetter("overwrite")
+        ):
             translation_importer = TranslationImporter(self.env.cr)
             for base_lang_import in base_lang_imports:
                 if not Lang._activate_lang(base_lang_import.code):
-                    Lang._create_lang(base_lang_import.code, lang_name=base_lang_import.name)
+                    Lang._create_lang(
+                        base_lang_import.code, lang_name=base_lang_import.name
+                    )
                 try:
-                    with TemporaryFile('wb+') as buf:
+                    with TemporaryFile("wb+") as buf:
                         buf.write(base64.decodebytes(base_lang_import.data))
                         fileformat = splitext(base_lang_import.filename)[-1][1:].lower()
-                        translation_importer.load(buf, fileformat, base_lang_import.code)
+                        translation_importer.load(
+                            buf, fileformat, base_lang_import.code
+                        )
                 except Exception as e:
-                    _logger.exception('File unsuccessfully imported, due to format mismatch.')
+                    _logger.exception(
+                        "File unsuccessfully imported, due to format mismatch."
+                    )
                     raise UserError(
-                        _('File %r not imported due to format mismatch or a malformed file.'
-                          ' (Valid formats are .csv, .po, .pot)\n\nTechnical Details:\n%s') % \
-                        (base_lang_import.filename, tools.ustr(e))
+                        _(
+                            "File %r not imported due to format mismatch or a malformed file."
+                            " (Valid formats are .csv, .po, .pot)\n\nTechnical Details:\n%s"
+                        )
+                        % (base_lang_import.filename, tools.ustr(e))
                     )
             translation_importer.save(overwrite=overwrite)
         return True

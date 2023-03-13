@@ -1,10 +1,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
-    'name': 'Third Party and Deferred/Electronic Checks Management',
-    'version': "1.0.0",
-    'category': 'Accounting/Localizations',
-    'summary': 'Checks Management',
-    'description': """
+    "name": "Third Party and Deferred/Electronic Checks Management",
+    "version": "1.0.0",
+    "category": "Accounting/Localizations",
+    "summary": "Checks Management",
+    "description": """
 Own Checks Management
 ---------------------
 
@@ -40,23 +40,22 @@ There are 2 main Payment Methods additions:
 
   * Those operations can be done with multiple checks at once
 """,
-    'author': 'ADHOC SA',
-    'license': 'LGPL-3',
-    'images': [
+    "author": "ADHOC SA",
+    "license": "LGPL-3",
+    "images": [],
+    "depends": [
+        "account_check_printing",
+        "base_vat",
     ],
-    'depends': [
-        'account_check_printing',
-        'base_vat',
+    "data": [
+        "data/account_payment_method_data.xml",
+        "wizards/l10n_latam_payment_mass_transfer_views.xml",
+        "security/ir.model.access.csv",
+        "views/account_payment_view.xml",
+        "views/account_journal_view.xml",
+        "wizards/account_payment_register_views.xml",
     ],
-    'data': [
-        'data/account_payment_method_data.xml',
-        'wizards/l10n_latam_payment_mass_transfer_views.xml',
-        'security/ir.model.access.csv',
-        'views/account_payment_view.xml',
-        'views/account_journal_view.xml',
-        'wizards/account_payment_register_views.xml',
-    ],
-    'installable': True,
-    'auto_install': False,
-    'application': False,
+    "installable": True,
+    "auto_install": False,
+    "application": False,
 }

@@ -15,14 +15,19 @@ _logger = logging.getLogger(__name__)
 
 
 class APSController(http.Controller):
-    _return_url = '/payment/aps/return'
-    _webhook_url = '/payment/aps/webhook'
+    _return_url = "/payment/aps/return"
+    _webhook_url = "/payment/aps/webhook"
 
     @http.route(
-        _return_url, type='http', auth='public', methods=['POST'], csrf=False, save_session=False
+        _return_url,
+        type="http",
+        auth="public",
+        methods=["POST"],
+        csrf=False,
+        save_session=False,
     )
     def aps_return_from_checkout(self, **data):
-        """ Process the notification data sent by APS after redirection.
+        """Process the notification data sent by APS after redirection.
 
         The route is flagged with `save_session=False` to prevent Odoo from assigning a new session
         to the user if they are redirected to this route with a POST request. Indeed, as the session
@@ -34,21 +39,25 @@ class APSController(http.Controller):
 
         :param dict data: The notification data.
         """
-        _logger.info("Handling redirection from APS with data:\n%s", pprint.pformat(data))
+        _logger.info(
+            "Handling redirection from APS with data:\n%s", pprint.pformat(data)
+        )
 
         # Check the integrity of the notification.
-        tx_sudo = request.env['payment.transaction'].sudo()._get_tx_from_notification_data(
-            'aps', data
+        tx_sudo = (
+            request.env["payment.transaction"]
+            .sudo()
+            ._get_tx_from_notification_data("aps", data)
         )
         self._verify_notification_signature(data, tx_sudo)
 
         # Handle the notification data.
-        tx_sudo._handle_notification_data('aps', data)
-        return request.redirect('/payment/status')
+        tx_sudo._handle_notification_data("aps", data)
+        return request.redirect("/payment/status")
 
-    @http.route(_webhook_url, type='http', auth='public', methods=['POST'], csrf=False)
+    @http.route(_webhook_url, type="http", auth="public", methods=["POST"], csrf=False)
     def aps_webhook(self, **data):
-        """ Process the notification data sent by APS to the webhook.
+        """Process the notification data sent by APS to the webhook.
 
         See https://paymentservices-reference.payfort.com/docs/api/build/index.html#transaction-feedback.
 
@@ -56,24 +65,32 @@ class APSController(http.Controller):
         :return: The 'SUCCESS' string to acknowledge the notification
         :rtype: str
         """
-        _logger.info("Notification received from APS with data:\n%s", pprint.pformat(data))
+        _logger.info(
+            "Notification received from APS with data:\n%s", pprint.pformat(data)
+        )
         try:
             # Check the integrity of the notification.
-            tx_sudo = request.env['payment.transaction'].sudo()._get_tx_from_notification_data(
-                'aps', data
+            tx_sudo = (
+                request.env["payment.transaction"]
+                .sudo()
+                ._get_tx_from_notification_data("aps", data)
             )
             self._verify_notification_signature(data, tx_sudo)
 
             # Handle the notification data.
-            tx_sudo._handle_notification_data('aps', data)
-        except ValidationError:  # Acknowledge the notification to avoid getting spammed.
-            _logger.exception("Unable to handle the notification data; skipping to acknowledge.")
+            tx_sudo._handle_notification_data("aps", data)
+        except (
+            ValidationError
+        ):  # Acknowledge the notification to avoid getting spammed.
+            _logger.exception(
+                "Unable to handle the notification data; skipping to acknowledge."
+            )
 
-        return ''  # Acknowledge the notification.
+        return ""  # Acknowledge the notification.
 
     @staticmethod
     def _verify_notification_signature(notification_data, tx_sudo):
-        """ Check that the received signature matches the expected one.
+        """Check that the received signature matches the expected one.
 
         :param dict notification_data: The notification data
         :param recordset tx_sudo: The sudoed transaction referenced by the notification data, as a
@@ -81,7 +98,7 @@ class APSController(http.Controller):
         :return: None
         :raise: :class:`werkzeug.exceptions.Forbidden` if the signatures don't match
         """
-        received_signature = notification_data.get('signature')
+        received_signature = notification_data.get("signature")
         if not received_signature:
             _logger.warning("received notification with missing signature")
             raise Forbidden()

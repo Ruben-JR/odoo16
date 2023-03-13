@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* fleet
-# 
+#
 # Translators:
 # Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2022
 # Maksym <ms@myodoo.pl>, 2022
@@ -24,7 +24,7 @@
 # Tomasz Leppich <t.leppich@gmail.com>, 2022
 # Karol Rybak <karolrybak85@gmail.com>, 2022
 # Martin Trigaux, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta\n"

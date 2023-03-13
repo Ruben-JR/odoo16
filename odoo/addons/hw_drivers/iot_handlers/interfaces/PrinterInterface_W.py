@@ -5,9 +5,10 @@ import win32print
 
 from odoo.addons.hw_drivers.interface import Interface
 
+
 class PrinterInterface(Interface):
     _loop_delay = 30
-    connection_type = 'printer'
+    connection_type = "printer"
 
     def get_devices(self):
         printer_devices = {}
@@ -18,7 +19,7 @@ class PrinterInterface(Interface):
             handle_printer = win32print.OpenPrinter(identifier)
             win32print.GetPrinter(handle_printer, 2)
             printer_devices[identifier] = {
-                'identifier': identifier,
-                'printer_handle': handle_printer,
+                "identifier": identifier,
+                "printer_handle": handle_printer,
             }
         return printer_devices

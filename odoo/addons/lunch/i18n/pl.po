@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* lunch
-# 
+#
 # Translators:
 # Maksym <ms@myodoo.pl>, 2022
 # Zdzisław Krajewski <zdzichucb@gmail.com>, 2022
@@ -24,7 +24,7 @@
 # Dariusz Żbikowski <darek@krokus.com.pl>, 2022
 # Piotr Szlązak <szlazakpiotr@gmail.com>, 2022
 # Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta\n"

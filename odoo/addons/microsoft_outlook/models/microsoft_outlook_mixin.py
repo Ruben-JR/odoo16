@@ -16,53 +16,77 @@ _logger = logging.getLogger(__name__)
 
 
 class MicrosoftOutlookMixin(models.AbstractModel):
-
-    _name = 'microsoft.outlook.mixin'
-    _description = 'Microsoft Outlook Mixin'
+    _name = "microsoft.outlook.mixin"
+    _description = "Microsoft Outlook Mixin"
 
     _OUTLOOK_SCOPE = None
 
-    is_microsoft_outlook_configured = fields.Boolean('Is Outlook Credential Configured',
-        compute='_compute_is_microsoft_outlook_configured')
-    microsoft_outlook_refresh_token = fields.Char(string='Outlook Refresh Token',
-        groups='base.group_system', copy=False)
-    microsoft_outlook_access_token = fields.Char(string='Outlook Access Token',
-        groups='base.group_system', copy=False)
-    microsoft_outlook_access_token_expiration = fields.Integer(string='Outlook Access Token Expiration Timestamp',
-        groups='base.group_system', copy=False)
-    microsoft_outlook_uri = fields.Char(compute='_compute_outlook_uri', string='Authentication URI',
-        help='The URL to generate the authorization code from Outlook', groups='base.group_system')
+    is_microsoft_outlook_configured = fields.Boolean(
+        "Is Outlook Credential Configured",
+        compute="_compute_is_microsoft_outlook_configured",
+    )
+    microsoft_outlook_refresh_token = fields.Char(
+        string="Outlook Refresh Token", groups="base.group_system", copy=False
+    )
+    microsoft_outlook_access_token = fields.Char(
+        string="Outlook Access Token", groups="base.group_system", copy=False
+    )
+    microsoft_outlook_access_token_expiration = fields.Integer(
+        string="Outlook Access Token Expiration Timestamp",
+        groups="base.group_system",
+        copy=False,
+    )
+    microsoft_outlook_uri = fields.Char(
+        compute="_compute_outlook_uri",
+        string="Authentication URI",
+        help="The URL to generate the authorization code from Outlook",
+        groups="base.group_system",
+    )
 
     def _compute_is_microsoft_outlook_configured(self):
-        Config = self.env['ir.config_parameter'].sudo()
-        microsoft_outlook_client_id = Config.get_param('microsoft_outlook_client_id')
-        microsoft_outlook_client_secret = Config.get_param('microsoft_outlook_client_secret')
-        self.is_microsoft_outlook_configured = microsoft_outlook_client_id and microsoft_outlook_client_secret
+        Config = self.env["ir.config_parameter"].sudo()
+        microsoft_outlook_client_id = Config.get_param("microsoft_outlook_client_id")
+        microsoft_outlook_client_secret = Config.get_param(
+            "microsoft_outlook_client_secret"
+        )
+        self.is_microsoft_outlook_configured = (
+            microsoft_outlook_client_id and microsoft_outlook_client_secret
+        )
 
-    @api.depends('is_microsoft_outlook_configured')
+    @api.depends("is_microsoft_outlook_configured")
     def _compute_outlook_uri(self):
-        Config = self.env['ir.config_parameter'].sudo()
+        Config = self.env["ir.config_parameter"].sudo()
         base_url = self.get_base_url()
-        microsoft_outlook_client_id = Config.get_param('microsoft_outlook_client_id')
+        microsoft_outlook_client_id = Config.get_param("microsoft_outlook_client_id")
 
         for record in self:
             if not record.id or not record.is_microsoft_outlook_configured:
                 record.microsoft_outlook_uri = False
                 continue
 
-            record.microsoft_outlook_uri = url_join(self._get_microsoft_endpoint(), 'authorize?%s' % url_encode({
-                'client_id': microsoft_outlook_client_id,
-                'response_type': 'code',
-                'redirect_uri': url_join(base_url, '/microsoft_outlook/confirm'),
-                'response_mode': 'query',
-                # offline_access is needed to have the refresh_token
-                'scope': 'offline_access %s' % self._OUTLOOK_SCOPE,
-                'state': json.dumps({
-                    'model': record._name,
-                    'id': record.id,
-                    'csrf_token': record._get_outlook_csrf_token(),
-                })
-            }))
+            record.microsoft_outlook_uri = url_join(
+                self._get_microsoft_endpoint(),
+                "authorize?%s"
+                % url_encode(
+                    {
+                        "client_id": microsoft_outlook_client_id,
+                        "response_type": "code",
+                        "redirect_uri": url_join(
+                            base_url, "/microsoft_outlook/confirm"
+                        ),
+                        "response_mode": "query",
+                        # offline_access is needed to have the refresh_token
+                        "scope": "offline_access %s" % self._OUTLOOK_SCOPE,
+                        "state": json.dumps(
+                            {
+                                "model": record._name,
+                                "id": record.id,
+                                "csrf_token": record._get_outlook_csrf_token(),
+                            }
+                        ),
+                    }
+                ),
+            )
 
     def open_microsoft_outlook_uri(self):
         """Open the URL to accept the Outlook permission.
@@ -73,15 +97,17 @@ class MicrosoftOutlookMixin(models.AbstractModel):
         """
         self.ensure_one()
 
-        if not self.env.user.has_group('base.group_system'):
-            raise AccessError(_('Only the administrator can link an Outlook mail server.'))
+        if not self.env.user.has_group("base.group_system"):
+            raise AccessError(
+                _("Only the administrator can link an Outlook mail server.")
+            )
 
         if not self.is_microsoft_outlook_configured:
-            raise UserError(_('Please configure your Outlook credentials.'))
+            raise UserError(_("Please configure your Outlook credentials."))
 
         return {
-            'type': 'ir.actions.act_url',
-            'url': self.microsoft_outlook_uri,
+            "type": "ir.actions.act_url",
+            "url": self.microsoft_outlook_uri,
         }
 
     def _fetch_outlook_refresh_token(self, authorization_code):
@@ -90,11 +116,13 @@ class MicrosoftOutlookMixin(models.AbstractModel):
         :return:
             refresh_token, access_token, access_token_expiration
         """
-        response = self._fetch_outlook_token('authorization_code', code=authorization_code)
+        response = self._fetch_outlook_token(
+            "authorization_code", code=authorization_code
+        )
         return (
-            response['refresh_token'],
-            response['access_token'],
-            int(time.time()) + response['expires_in'],
+            response["refresh_token"],
+            response["access_token"],
+            int(time.time()) + response["expires_in"],
         )
 
     def _fetch_outlook_access_token(self, refresh_token):
@@ -103,11 +131,13 @@ class MicrosoftOutlookMixin(models.AbstractModel):
         :return:
             access_token, access_token_expiration
         """
-        response = self._fetch_outlook_token('refresh_token', refresh_token=refresh_token)
+        response = self._fetch_outlook_token(
+            "refresh_token", refresh_token=refresh_token
+        )
         return (
-            response['refresh_token'],
-            response['access_token'],
-            int(time.time()) + response['expires_in'],
+            response["refresh_token"],
+            response["access_token"],
+            int(time.time()) + response["expires_in"],
         )
 
     def _fetch_outlook_token(self, grant_type, **values):
@@ -118,19 +148,21 @@ class MicrosoftOutlookMixin(models.AbstractModel):
         :param grant_type: Depends the action we want to do (refresh_token or authorization_code)
         :param values: Additional parameters that will be given to the Outlook endpoint
         """
-        Config = self.env['ir.config_parameter'].sudo()
+        Config = self.env["ir.config_parameter"].sudo()
         base_url = self.get_base_url()
-        microsoft_outlook_client_id = Config.get_param('microsoft_outlook_client_id')
-        microsoft_outlook_client_secret = Config.get_param('microsoft_outlook_client_secret')
+        microsoft_outlook_client_id = Config.get_param("microsoft_outlook_client_id")
+        microsoft_outlook_client_secret = Config.get_param(
+            "microsoft_outlook_client_secret"
+        )
 
         response = requests.post(
-            url_join(self._get_microsoft_endpoint(), 'token'),
+            url_join(self._get_microsoft_endpoint(), "token"),
             data={
-                'client_id': microsoft_outlook_client_id,
-                'client_secret': microsoft_outlook_client_secret,
-                'scope': 'offline_access %s' % self._OUTLOOK_SCOPE,
-                'redirect_uri': url_join(base_url, '/microsoft_outlook/confirm'),
-                'grant_type': grant_type,
+                "client_id": microsoft_outlook_client_id,
+                "client_secret": microsoft_outlook_client_secret,
+                "scope": "offline_access %s" % self._OUTLOOK_SCOPE,
+                "redirect_uri": url_join(base_url, "/microsoft_outlook/confirm"),
+                "grant_type": grant_type,
                 **values,
             },
             timeout=10,
@@ -138,10 +170,15 @@ class MicrosoftOutlookMixin(models.AbstractModel):
 
         if not response.ok:
             try:
-                error_description = response.json()['error_description']
+                error_description = response.json()["error_description"]
             except Exception:
-                error_description = _('Unknown error.')
-            raise UserError(_('An error occurred when fetching the access token. %s', error_description))
+                error_description = _("Unknown error.")
+            raise UserError(
+                _(
+                    "An error occurred when fetching the access token. %s",
+                    error_description,
+                )
+            )
 
         return response.json()
 
@@ -153,25 +190,34 @@ class MicrosoftOutlookMixin(models.AbstractModel):
         """
         self.ensure_one()
         now_timestamp = int(time.time())
-        if not self.microsoft_outlook_access_token \
-           or not self.microsoft_outlook_access_token_expiration \
-           or self.microsoft_outlook_access_token_expiration < now_timestamp:
+        if (
+            not self.microsoft_outlook_access_token
+            or not self.microsoft_outlook_access_token_expiration
+            or self.microsoft_outlook_access_token_expiration < now_timestamp
+        ):
             if not self.microsoft_outlook_refresh_token:
-                raise UserError(_('Please connect with your Outlook account before using it.'))
+                raise UserError(
+                    _("Please connect with your Outlook account before using it.")
+                )
             (
                 self.microsoft_outlook_refresh_token,
                 self.microsoft_outlook_access_token,
                 self.microsoft_outlook_access_token_expiration,
             ) = self._fetch_outlook_access_token(self.microsoft_outlook_refresh_token)
             _logger.info(
-                'Microsoft Outlook: fetch new access token. It expires in %i minutes',
-                (self.microsoft_outlook_access_token_expiration - now_timestamp) // 60)
+                "Microsoft Outlook: fetch new access token. It expires in %i minutes",
+                (self.microsoft_outlook_access_token_expiration - now_timestamp) // 60,
+            )
         else:
             _logger.info(
-                'Microsoft Outlook: reuse existing access token. It expires in %i minutes',
-                (self.microsoft_outlook_access_token_expiration - now_timestamp) // 60)
+                "Microsoft Outlook: reuse existing access token. It expires in %i minutes",
+                (self.microsoft_outlook_access_token_expiration - now_timestamp) // 60,
+            )
 
-        return 'user=%s\1auth=Bearer %s\1\1' % (login, self.microsoft_outlook_access_token)
+        return "user=%s\1auth=Bearer %s\1\1" % (
+            login,
+            self.microsoft_outlook_access_token,
+        )
 
     def _get_outlook_csrf_token(self):
         """Generate a CSRF token that will be verified in `microsoft_outlook_callback`.
@@ -179,16 +225,22 @@ class MicrosoftOutlookMixin(models.AbstractModel):
         This will prevent a malicious person to make an admin user disconnect the mail servers.
         """
         self.ensure_one()
-        _logger.info('Microsoft Outlook: generate CSRF token for %s #%i', self._name, self.id)
+        _logger.info(
+            "Microsoft Outlook: generate CSRF token for %s #%i", self._name, self.id
+        )
         return hmac(
             env=self.env(su=True),
-            scope='microsoft_outlook_oauth',
+            scope="microsoft_outlook_oauth",
             message=(self._name, self.id),
         )
 
     @api.model
     def _get_microsoft_endpoint(self):
-        return self.env["ir.config_parameter"].sudo().get_param(
-            'microsoft_outlook.endpoint',
-            'https://login.microsoftonline.com/common/oauth2/v2.0/',
+        return (
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param(
+                "microsoft_outlook.endpoint",
+                "https://login.microsoftonline.com/common/oauth2/v2.0/",
+            )
         )

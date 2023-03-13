@@ -5,12 +5,12 @@
 #                       Philmer <philmer@cciconnect.be>
 
 {
-    'name': 'Accounting Sequence',
-    'version': '1.0',
-    'category': 'Hidden',
-    'description': "Change the way `sequence.mixin` works to reduce concurrency errors",
-    'depends': ['account'],
-    'installable': True,
-    'auto_install': True,
-    'license': 'LGPL-3',
+    "name": "Accounting Sequence",
+    "version": "1.0",
+    "category": "Hidden",
+    "description": "Change the way `sequence.mixin` works to reduce concurrency errors",
+    "depends": ["account"],
+    "installable": True,
+    "auto_install": True,
+    "license": "LGPL-3",
 }

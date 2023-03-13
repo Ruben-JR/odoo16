@@ -26,8 +26,8 @@ class odoo_resolver(etree.Resolver):
 
     def resolve(self, url, id, context):
         """Search url in ``ir.attachment`` and return the resolved content."""
-        attachment_name = f'{self.prefix}.{url}' if self.prefix else url
-        attachment = self.env['ir.attachment'].search([('name', '=', attachment_name)])
+        attachment_name = f"{self.prefix}.{url}" if self.prefix else url
+        attachment = self.env["ir.attachment"].search([("name", "=", attachment_name)])
         if attachment:
             return self.resolve_string(attachment.raw, context)
 
@@ -52,8 +52,8 @@ def _check_with_xsd(tree_or_str, stream, env=None, prefix=None):
     parser = etree.XMLParser()
     if env:
         parser.resolvers.add(odoo_resolver(env, prefix))
-        if isinstance(stream, str) and stream.endswith('.xsd'):
-            attachment = env['ir.attachment'].search([('name', '=', stream)])
+        if isinstance(stream, str) and stream.endswith(".xsd"):
+            attachment = env["ir.attachment"].search([("name", "=", stream)])
             if not attachment:
                 raise FileNotFoundError()
             stream = BytesIO(attachment.raw)
@@ -61,7 +61,7 @@ def _check_with_xsd(tree_or_str, stream, env=None, prefix=None):
     try:
         xsd_schema.assertValid(tree_or_str)
     except etree.DocumentInvalid as xml_errors:
-        raise UserError('\n'.join(str(e) for e in xml_errors.error_log))
+        raise UserError("\n".join(str(e) for e in xml_errors.error_log))
 
 
 def create_xml_node_chain(first_parent_node, nodes_list, last_node_value=None):
@@ -98,7 +98,13 @@ def create_xml_node(parent_node, node_name, node_value=None):
     return create_xml_node_chain(parent_node, [node_name], node_value)[0]
 
 
-def cleanup_xml_node(xml_node_or_string, remove_blank_text=True, remove_blank_nodes=True, indent_level=0, indent_space="  "):
+def cleanup_xml_node(
+    xml_node_or_string,
+    remove_blank_text=True,
+    remove_blank_nodes=True,
+    indent_level=0,
+    indent_space="  ",
+):
     """Clean up the sub-tree of the provided XML node.
 
     If the provided XML node is of type:
@@ -127,9 +133,9 @@ def cleanup_xml_node(xml_node_or_string, remove_blank_text=True, remove_blank_no
 
         # Indentation
         if level >= 0:
-            indent = '\n' + indent_space * level
+            indent = "\n" + indent_space * level
             if not node.tail or not node.tail.strip():
-                node.tail = '\n' if parent_node is None else indent
+                node.tail = "\n" if parent_node is None else indent
             if len(node) > 0:
                 if not node.text or not node.text.strip():
                     # First child's indentation is parent's text
@@ -143,16 +149,24 @@ def cleanup_xml_node(xml_node_or_string, remove_blank_text=True, remove_blank_no
         if parent_node is not None and len(node) == 0:
             if remove_blank_text and node.text is not None and not node.text.strip():
                 # node.text is None iff node.tag is self-closing (text='' creates closing tag)
-                node.text = ''
-            if remove_blank_nodes and not (node.text or ''):
+                node.text = ""
+            if remove_blank_nodes and not (node.text or ""):
                 parent_node.remove(node)
 
     leaf_iter(None, xml_node, indent_level)
     return xml_node
 
 
-def load_xsd_files_from_url(env, url, file_name, force_reload=False,
-                            request_max_timeout=10, xsd_name_prefix='', xsd_names_filter=None, modify_xsd_content=None):
+def load_xsd_files_from_url(
+    env,
+    url,
+    file_name,
+    force_reload=False,
+    request_max_timeout=10,
+    xsd_name_prefix="",
+    xsd_names_filter=None,
+    modify_xsd_content=None,
+):
     """Load XSD file or ZIP archive and save it as ir.attachment.
 
     If the XSD file/archive has already been saved in database, then just return the attachment.
@@ -177,31 +191,39 @@ def load_xsd_files_from_url(env, url, file_name, force_reload=False,
     :rtype: odoo.api.ir.attachment | bool
     :return: the main attachment or False if an error occurred (see warning logs)
     """
-    if not url.endswith(('.xsd', '.zip')):
-        _logger.warning("The given URL (%s) needs to lead to an XSD file or a ZIP archive", url)
+    if not url.endswith((".xsd", ".zip")):
+        _logger.warning(
+            "The given URL (%s) needs to lead to an XSD file or a ZIP archive", url
+        )
         return False
 
-    is_zip = url.endswith('.zip')
+    is_zip = url.endswith(".zip")
 
-    fetched_attachment = env['ir.attachment'].search([('name', '=', file_name)])
+    fetched_attachment = env["ir.attachment"].search([("name", "=", file_name)])
     if fetched_attachment:
         if not force_reload:
-            _logger.info("Retrieved attachment from database, with name: %s", fetched_attachment.name)
+            _logger.info(
+                "Retrieved attachment from database, with name: %s",
+                fetched_attachment.name,
+            )
             return fetched_attachment
-        _logger.info("Found the attachment with name %s in database, but forcing the reloading.", fetched_attachment.name)
+        _logger.info(
+            "Found the attachment with name %s in database, but forcing the reloading.",
+            fetched_attachment.name,
+        )
 
     try:
         _logger.info("Fetching file/archive from given URL: %s", url)
         response = requests.get(url, timeout=request_max_timeout)
         response.raise_for_status()
     except requests.exceptions.HTTPError as error:
-        _logger.warning('HTTP error: %s with the given URL: %s', error, url)
+        _logger.warning("HTTP error: %s with the given URL: %s", error, url)
         return False
     except requests.exceptions.ConnectionError as error:
-        _logger.warning('Connection error: %s with the given URL: %s', error, url)
+        _logger.warning("Connection error: %s with the given URL: %s", error, url)
         return False
     except requests.exceptions.Timeout as error:
-        _logger.warning('Request timeout: %s with the given URL: %s', error, url)
+        _logger.warning("Request timeout: %s with the given URL: %s", error, url)
         return False
 
     content = response.content
@@ -214,11 +236,13 @@ def load_xsd_files_from_url(env, url, file_name, force_reload=False,
         return fetched_attachment
 
     _logger.info("Saving XSD file as ir.attachment, with name: %s", file_name)
-    main_attachment = env['ir.attachment'].create({
-        'name': file_name,
-        'raw': content,
-        'public': True,
-    })
+    main_attachment = env["ir.attachment"].create(
+        {
+            "name": file_name,
+            "raw": content,
+            "public": True,
+        }
+    )
 
     if not is_zip:
         return main_attachment
@@ -229,41 +253,49 @@ def load_xsd_files_from_url(env, url, file_name, force_reload=False,
 
     archive = zipfile.ZipFile(BytesIO(content))
     for file_path in archive.namelist():
-        if not file_path.endswith('.xsd'):
+        if not file_path.endswith(".xsd"):
             continue
 
-        file_name = file_path.rsplit('/', 1)[-1]
+        file_name = file_path.rsplit("/", 1)[-1]
 
         if xsd_names_filter and file_name not in xsd_names_filter:
             continue
 
         if xsd_name_prefix:
-            file_name = f'{xsd_name_prefix}.{file_name}'
+            file_name = f"{xsd_name_prefix}.{file_name}"
 
-        attachment = env['ir.attachment'].search([('name', '=', file_name)])
+        attachment = env["ir.attachment"].search([("name", "=", file_name)])
         if attachment and not force_reload:
             continue
 
         if force_reload:
-            _logger.info("Updating the content of ir.attachment with name: %s", file_name)
+            _logger.info(
+                "Updating the content of ir.attachment with name: %s", file_name
+            )
         else:
             _logger.info("Saving XSD file as ir.attachment, with name: %s", file_name)
         try:
             content = archive.read(file_path)
             if modify_xsd_content:
                 content = modify_xsd_content(content)
-            env['ir.attachment'].create({
-                'name': file_name,
-                'raw': content,
-                'public': True,
-            })
+            env["ir.attachment"].create(
+                {
+                    "name": file_name,
+                    "raw": content,
+                    "public": True,
+                }
+            )
         except KeyError:
-            _logger.warning("Failed to retrieve XSD file with name %s from ZIP archive", file_name)
+            _logger.warning(
+                "Failed to retrieve XSD file with name %s from ZIP archive", file_name
+            )
 
     return fetched_attachment
 
 
-def validate_xml_from_attachment(env, xml_content, xsd_name, reload_files_function=None, prefix=None):
+def validate_xml_from_attachment(
+    env, xml_content, xsd_name, reload_files_function=None, prefix=None
+):
     """Try and validate the XML content with an XSD attachment.
     If the XSD attachment cannot be found in database, (re)load it.
 
@@ -276,7 +308,7 @@ def validate_xml_from_attachment(env, xml_content, xsd_name, reload_files_functi
     :param reload_files_function: function that will be called to try and (re)load XSD files
     :return: the result of the function :func:`odoo.tools.xml_utils._check_with_xsd`
     """
-    if env.context.get('skip_xsd', False):
+    if env.context.get("skip_xsd", False):
         return
     try:
         _check_with_xsd(xml_content, xsd_name, env, prefix)

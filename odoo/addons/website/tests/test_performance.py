@@ -18,11 +18,11 @@ be added:
 
 class UtilPerf(HttpCase):
     def _get_url_hot_query(self, url, cache=True):
-        url += ('?' not in url and '?' or '')
+        url += "?" not in url and "?" or ""
         if cache:
-            url += '&debug='
+            url += "&debug="
         else:
-            url += '&debug=disable-t-cache'
+            url += "&debug=disable-t-cache"
 
         # ensure worker is in hot state
         self.url_open(url)
@@ -34,63 +34,69 @@ class UtilPerf(HttpCase):
 
 
 class TestStandardPerformance(UtilPerf):
-    @mute_logger('odoo.http')
+    @mute_logger("odoo.http")
     def test_10_perf_sql_img_controller(self):
-        self.authenticate('demo', 'demo')
+        self.authenticate("demo", "demo")
         # not published user, get the not found image placeholder
-        self.assertEqual(self.env['res.users'].sudo().browse(2).website_published, False)
-        url = '/web/image/res.users/2/image_256'
+        self.assertEqual(
+            self.env["res.users"].sudo().browse(2).website_published, False
+        )
+        url = "/web/image/res.users/2/image_256"
         self.assertEqual(self._get_url_hot_query(url), 8)
         self.assertEqual(self._get_url_hot_query(url, cache=False), 8)
 
-    @mute_logger('odoo.http')
+    @mute_logger("odoo.http")
     def test_11_perf_sql_img_controller(self):
-        self.authenticate('demo', 'demo')
-        self.env['res.users'].sudo().browse(2).website_published = True
-        url = '/web/image/res.users/2/image_256'
+        self.authenticate("demo", "demo")
+        self.env["res.users"].sudo().browse(2).website_published = True
+        url = "/web/image/res.users/2/image_256"
         self.assertEqual(self._get_url_hot_query(url), 6)
         self.assertEqual(self._get_url_hot_query(url, cache=False), 6)
 
-    @mute_logger('odoo.http')
+    @mute_logger("odoo.http")
     def test_20_perf_sql_img_controller_bis(self):
-        url = '/web/image/website/1/favicon'
+        url = "/web/image/website/1/favicon"
         self.assertEqual(self._get_url_hot_query(url), 5)
         self.assertEqual(self._get_url_hot_query(url, cache=False), 5)
-        self.authenticate('portal', 'portal')
+        self.authenticate("portal", "portal")
         self.assertEqual(self._get_url_hot_query(url), 5)
         self.assertEqual(self._get_url_hot_query(url, cache=False), 5)
 
 
 class TestWebsitePerformance(UtilPerf):
-
     def setUp(self):
         super().setUp()
-        self.page, self.menu = self._create_page_with_menu('/sql_page')
+        self.page, self.menu = self._create_page_with_menu("/sql_page")
 
     def _create_page_with_menu(self, url):
         name = url[1:]
-        website = self.env['website'].browse(1)
-        page = self.env['website.page'].create({
-            'url': url,
-            'name': name,
-            'type': 'qweb',
-            'arch': '<t name="%s" t-name="website.page_test_%s"> \
+        website = self.env["website"].browse(1)
+        page = self.env["website.page"].create(
+            {
+                "url": url,
+                "name": name,
+                "type": "qweb",
+                "arch": '<t name="%s" t-name="website.page_test_%s"> \
                        <t t-call="website.layout"> \
                          <div id="wrap"><div class="oe_structure"/></div> \
                        </t> \
-                     </t>' % (name, name),
-            'key': 'website.page_test_%s' % name,
-            'is_published': True,
-            'website_id': website.id,
-            'track': False,
-        })
-        menu = self.env['website.menu'].create({
-            'name': name,
-            'url': url,
-            'page_id': page.id,
-            'website_id': website.id,
-            'parent_id': website.menu_id.id
-        })
+                     </t>'
+                % (name, name),
+                "key": "website.page_test_%s" % name,
+                "is_published": True,
+                "website_id": website.id,
+                "track": False,
+            }
+        )
+        menu = self.env["website.menu"].create(
+            {
+                "name": name,
+                "url": url,
+                "page_id": page.id,
+                "website_id": website.id,
+                "parent_id": website.menu_id.id,
+            }
+        )
         return (page, menu)
 
     def test_10_perf_sql_queries_page(self):
@@ -112,25 +118,25 @@ class TestWebsitePerformance(UtilPerf):
 
     def test_20_perf_sql_queries_homepage(self):
         # homepage "/" has its own controller
-        self.assertEqual(self._get_url_hot_query('/'), 7)
-        self.assertEqual(self._get_url_hot_query('/', cache=False), 9)
+        self.assertEqual(self._get_url_hot_query("/"), 7)
+        self.assertEqual(self._get_url_hot_query("/", cache=False), 9)
 
     def test_30_perf_sql_queries_page_no_layout(self):
         # website.page with no call to layout templates
-        self.page.arch = '<div>I am a blank page</div>'
+        self.page.arch = "<div>I am a blank page</div>"
         self.assertEqual(self._get_url_hot_query(self.page.url), 5)
         self.assertEqual(self._get_url_hot_query(self.page.url, cache=False), 5)
 
     def test_40_perf_sql_queries_page_multi_level_menu(self):
         # menu structure should not impact SQL requests
-        _, menu_a = self._create_page_with_menu('/a')
-        _, menu_aa = self._create_page_with_menu('/aa')
-        _, menu_b = self._create_page_with_menu('/b')
-        _, menu_bb = self._create_page_with_menu('/bb')
-        _, menu_bbb = self._create_page_with_menu('/bbb')
-        _, menu_bbbb = self._create_page_with_menu('/bbbb')
-        _, menu_bbbbb = self._create_page_with_menu('/bbbbb')
-        self._create_page_with_menu('c')
+        _, menu_a = self._create_page_with_menu("/a")
+        _, menu_aa = self._create_page_with_menu("/aa")
+        _, menu_b = self._create_page_with_menu("/b")
+        _, menu_bb = self._create_page_with_menu("/bb")
+        _, menu_bbb = self._create_page_with_menu("/bbb")
+        _, menu_bbbb = self._create_page_with_menu("/bbbb")
+        _, menu_bbbbb = self._create_page_with_menu("/bbbbb")
+        self._create_page_with_menu("c")
         menu_bbbbb.parent_id = menu_bbbb
         menu_bbbb.parent_id = menu_bbb
         menu_bbb.parent_id = menu_bb
@@ -141,12 +147,21 @@ class TestWebsitePerformance(UtilPerf):
         self.assertEqual(self._get_url_hot_query(self.page.url, cache=False), 10)
 
 
-@tagged('-at_install', 'post_install')
+@tagged("-at_install", "post_install")
 class TestWebsitePerformancePost(UtilPerf):
-    @mute_logger('odoo.http')
+    @mute_logger("odoo.http")
     def test_50_perf_sql_web_assets(self):
         # assets route /web/assets/..
-        self.env['ir.qweb']._generate_asset_nodes('web.assets_frontend_lazy', css=False, js=True)
-        assets_url = self.env['ir.attachment'].search([('url', '=like', '/web/assets/%/web.assets_frontend_lazy%.js')], limit=1).url
+        self.env["ir.qweb"]._generate_asset_nodes(
+            "web.assets_frontend_lazy", css=False, js=True
+        )
+        assets_url = (
+            self.env["ir.attachment"]
+            .search(
+                [("url", "=like", "/web/assets/%/web.assets_frontend_lazy%.js")],
+                limit=1,
+            )
+            .url
+        )
         self.assertEqual(self._get_url_hot_query(assets_url), 4)
         self.assertEqual(self._get_url_hot_query(assets_url, cache=False), 4)

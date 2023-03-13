@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* mail_group
-# 
+#
 # Translators:
 # Veikko Väätäjä <veikko.vaataja@gmail.com>, 2022
 # Jussi Lehto <jussi@gulfeo.com>, 2022
@@ -17,7 +17,7 @@
 # Mikko Salmela <salmemik@gmail.com>, 2022
 # Martin Trigaux, 2022
 # Sanna Edelman <direct@generare.com>, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta\n"

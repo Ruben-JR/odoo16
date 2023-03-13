@@ -75,7 +75,7 @@ registerModel({
          * Called when clicking on image. Stop propagation of event to prevent
          * closing the dialog.
          *
-         * @param {MouseEvent} ev 
+         * @param {MouseEvent} ev
          */
         onClickImage(ev) {
             if (this.isDragging) {

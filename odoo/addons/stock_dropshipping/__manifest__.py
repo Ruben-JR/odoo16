@@ -2,11 +2,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    'name': 'Drop Shipping',
-    'version': '1.0',
-    'category': 'Inventory/Inventory',
-    'summary': 'Drop Shipping',
-    'description': """
+    "name": "Drop Shipping",
+    "version": "1.0",
+    "category": "Inventory/Inventory",
+    "summary": "Drop Shipping",
+    "description": """
 Manage drop shipping orders
 ===========================
 
@@ -20,12 +20,12 @@ going through the retailer's warehouse. In this case no
 internal transfer document is needed.
 
 """,
-    'depends': ['sale_purchase_stock'],
-    'data': [
-        'data/stock_data.xml',
-        'views/sale_order_views.xml',
-        'views/purchase_order_views.xml'
+    "depends": ["sale_purchase_stock"],
+    "data": [
+        "data/stock_data.xml",
+        "views/sale_order_views.xml",
+        "views/purchase_order_views.xml",
     ],
-    'installable': True,
-    'license': 'LGPL-3',
+    "installable": True,
+    "license": "LGPL-3",
 }

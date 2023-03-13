@@ -1,14 +1,14 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* purchase_price_diff
-# 
+#
 # Translators:
 # Algo Kärp <algokarp@gmail.com>, 2023
 # Marek Pontus, 2023
 # Patrick-Jordan Kiudorv, 2023
 # Eneli Õigus <enelioigus@gmail.com>, 2023
 # Triine Aavik <triine@avalah.ee>, 2023
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"

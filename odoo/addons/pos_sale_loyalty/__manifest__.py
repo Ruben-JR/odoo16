@@ -3,21 +3,21 @@
 
 
 {
-    'name': 'pos_sale_loyalty',
-    'version': '1.0',
-    'category': 'Hidden',
-    'sequence': 6,
-    'summary': 'Link module between pos_sale and pos_loyalty',
-    'description': """
+    "name": "pos_sale_loyalty",
+    "version": "1.0",
+    "category": "Hidden",
+    "sequence": 6,
+    "summary": "Link module between pos_sale and pos_loyalty",
+    "description": """
 This module correct some behaviors when both module are installed.
 """,
-    'depends': ['pos_sale', 'pos_loyalty'],
-    'installable': True,
-    'auto_install': True,
-    'assets': {
-        'point_of_sale.assets': [
-            'pos_sale_loyalty/static/src/js/**/*.js',
+    "depends": ["pos_sale", "pos_loyalty"],
+    "installable": True,
+    "auto_install": True,
+    "assets": {
+        "point_of_sale.assets": [
+            "pos_sale_loyalty/static/src/js/**/*.js",
         ],
     },
-    'license': 'LGPL-3',
+    "license": "LGPL-3",
 }

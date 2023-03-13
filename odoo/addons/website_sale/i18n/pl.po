@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* website_sale
-# 
+#
 # Translators:
 # Jan Dziurz <jan.dziurzynski@openglobe.pl>, 2022
 # Slawomir Adamus <melthalion@gmail.com>, 2022
@@ -35,7 +35,7 @@
 # danielkowalczyk007, 2023
 # Maksym <ms@myodoo.pl>, 2023
 # Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"

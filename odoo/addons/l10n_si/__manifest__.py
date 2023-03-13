@@ -9,11 +9,7 @@
     "description": """
         Chart of accounts and taxes for Slovenia.
     """,
-    "depends": [
-        "account",
-        "base_vat",
-        "l10n_multilang"
-    ],
+    "depends": ["account", "base_vat", "l10n_multilang"],
     "data": [
         "data/l10n_si_chart_data.xml",
         "data/account.account.template.csv",
@@ -27,9 +23,9 @@
         "data/account_chart_template_configure_data.xml",
         "data/account_chart_template_data.xml",
     ],
-    'demo': [
-        'demo/demo_company.xml',
+    "demo": [
+        "demo/demo_company.xml",
     ],
-    'post_init_hook': 'load_translations',
-    'license': 'LGPL-3',
+    "post_init_hook": "load_translations",
+    "license": "LGPL-3",
 }

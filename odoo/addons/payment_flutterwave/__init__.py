@@ -7,8 +7,8 @@ from odoo.addons.payment import setup_provider, reset_payment_provider
 
 
 def post_init_hook(cr, registry):
-    setup_provider(cr, registry, 'flutterwave')
+    setup_provider(cr, registry, "flutterwave")
 
 
 def uninstall_hook(cr, registry):
-    reset_payment_provider(cr, registry, 'flutterwave')
+    reset_payment_provider(cr, registry, "flutterwave")

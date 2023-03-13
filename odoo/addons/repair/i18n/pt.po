@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* repair
-# 
+#
 # Translators:
 # Marcelo Pereira <marcelo.pereira@arxi.pt>, 2022
 # Diogo Duarte <diogocarvalhoduarte@gmail.com>, 2022
@@ -14,7 +14,7 @@
 # Luiz Fernando <lfpsgs@outlook.com>, 2022
 # Nuno Silva <nuno.silva@arxi.pt>, 2022
 # Manuela Silva <mmsrs@sky.com>, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta\n"

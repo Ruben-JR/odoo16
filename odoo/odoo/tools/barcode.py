@@ -5,7 +5,7 @@ import re
 
 
 def get_barcode_check_digit(numeric_barcode):
-    """ Computes and returns the barcode check digit. The used algorithm
+    """Computes and returns the barcode check digit. The used algorithm
     follows the GTIN specifications and can be used by all compatible
     barcode nomenclature, like as EAN-8, EAN-12 (UPC-A) or EAN-13.
     https://www.gs1.org/sites/default/files/docs/barcodes/GS1_General_Specifications.pdf
@@ -33,7 +33,7 @@ def get_barcode_check_digit(numeric_barcode):
 
 
 def check_barcode_encoding(barcode, encoding):
-    """ Checks if the given barcode is correctly encoded.
+    """Checks if the given barcode is correctly encoded.
     :return: True if the barcode string is encoded with the provided encoding.
     :rtype: bool
     """
@@ -41,14 +41,16 @@ def check_barcode_encoding(barcode, encoding):
     if encoding == "any":
         return True
     barcode_sizes = {
-        'ean8': 8,
-        'ean13': 13,
-        'gtin14': 14,
-        'upca': 12,
-        'sscc': 18,
+        "ean8": 8,
+        "ean13": 13,
+        "gtin14": 14,
+        "upca": 12,
+        "sscc": 18,
     }
     barcode_size = barcode_sizes[encoding]
-    return (encoding != 'ean13' or barcode[0] != '0') \
-           and len(barcode) == barcode_size \
-           and re.match(r"^\d+$", barcode) \
-           and get_barcode_check_digit(barcode) == int(barcode[-1])
+    return (
+        (encoding != "ean13" or barcode[0] != "0")
+        and len(barcode) == barcode_size
+        and re.match(r"^\d+$", barcode)
+        and get_barcode_check_digit(barcode) == int(barcode[-1])
+    )

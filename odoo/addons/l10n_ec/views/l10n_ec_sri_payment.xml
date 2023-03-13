@@ -16,7 +16,7 @@
             </form>
         </field>
     </record>
-    
+
     <record id="view_payment_method_tree" model="ir.ui.view" >
         <field name="name">l10n_ec.sri.payment.tree</field>
         <field name="model">l10n_ec.sri.payment</field>

@@ -1,9 +1,11 @@
-IDS_SEPARATOR = ':'
+IDS_SEPARATOR = ":"
+
 
 def combine_ids(ms_id, ms_uid):
     if not ms_id:
         return False
-    return ms_id + IDS_SEPARATOR + (ms_uid if ms_uid else '')
+    return ms_id + IDS_SEPARATOR + (ms_uid if ms_uid else "")
+
 
 def split_ids(value):
     ids = value.split(IDS_SEPARATOR)

@@ -135,7 +135,7 @@ export class FieldMany2OneMailingFilter extends Many2OneField {
     }
 }
 FieldMany2OneMailingFilter.template = 'mass_mailing.MailingFilter';
-FieldMany2OneMailingFilter.components = { 
+FieldMany2OneMailingFilter.components = {
     ...Many2OneField.components,
     MailingFilterDropdown,
 };

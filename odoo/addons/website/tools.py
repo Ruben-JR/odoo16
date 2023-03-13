@@ -14,19 +14,27 @@ from odoo.tools.misc import DotDict, frozendict
 
 @contextlib.contextmanager
 def MockRequest(
-        env, *, path='/mockrequest', routing=True, multilang=True,
-        context=frozendict(), cookies=frozendict(), country_code=None,
-        website=None, remote_addr=HOST, environ_base=None,
-        # website_sale
-        sale_order_id=None, website_sale_current_pl=None,
+    env,
+    *,
+    path="/mockrequest",
+    routing=True,
+    multilang=True,
+    context=frozendict(),
+    cookies=frozendict(),
+    country_code=None,
+    website=None,
+    remote_addr=HOST,
+    environ_base=None,
+    # website_sale
+    sale_order_id=None,
+    website_sale_current_pl=None,
 ):
-
-    lang_code = context.get('lang', env.context.get('lang', 'en_US'))
+    lang_code = context.get("lang", env.context.get("lang", "en_US"))
     env = env(context=dict(context, lang=lang_code))
     request = Mock(
         # request
         httprequest=Mock(
-            host='localhost',
+            host="localhost",
             path=path,
             app=odoo.http.root,
             environ=dict(
@@ -38,16 +46,16 @@ def MockRequest(
                 REMOTE_ADDR=remote_addr,
             ),
             cookies=cookies,
-            referrer='',
+            referrer="",
             remote_addr=remote_addr,
         ),
-        type='http',
+        type="http",
         future_response=odoo.http.FutureResponse(),
         params={},
-        redirect=env['ir.http']._redirect,
+        redirect=env["ir.http"]._redirect,
         session=DotDict(
             odoo.http.get_default_session(),
-            geoip={'country_code': country_code},
+            geoip={"country_code": country_code},
             sale_order_id=sale_order_id,
             website_sale_current_pl=website_sale_current_pl,
         ),
@@ -58,7 +66,7 @@ def MockRequest(
         cr=env.cr,
         uid=env.uid,
         context=env.context,
-        lang=env['res.lang']._lang_get(lang_code),
+        lang=env["res.lang"]._lang_get(lang_code),
         website=website,
     )
     if website:
@@ -76,9 +84,9 @@ def MockRequest(
     match = router.return_value.bind.return_value.match
     if routing:
         match.return_value[0].routing = {
-            'type': 'http',
-            'website': True,
-            'multilang': multilang
+            "type": "http",
+            "website": True,
+            "multilang": multilang,
         }
     else:
         match.side_effect = NotFound
@@ -91,11 +99,13 @@ def MockRequest(
     with contextlib.ExitStack() as s:
         odoo.http._request_stack.push(request)
         s.callback(odoo.http._request_stack.pop)
-        s.enter_context(patch('odoo.http.root.get_db_router', router))
+        s.enter_context(patch("odoo.http.root.get_db_router", router))
 
         yield request
 
+
 # Fuzzy matching tools
+
 
 def distance(s1="", s2="", limit=4):
     """
@@ -134,6 +144,7 @@ def distance(s1="", s2="", limit=4):
         p, d = d, p
     return p[l1] if p[l1] <= limit else -1
 
+
 def similarity_score(s1, s2):
     """
     Computes a score that describes how much two strings are matching.
@@ -153,6 +164,7 @@ def similarity_score(s1, s2):
     score -= len(set1.symmetric_difference(s2)) / (len(s1) + len(s2))
     return score
 
+
 def text_from_html(html_fragment, collapse_whitespace=False):
     """
     Returns the plain non-tag text from an html
@@ -162,8 +174,8 @@ def text_from_html(html_fragment, collapse_whitespace=False):
     :return: text extracted from the html
     """
     # lxml requires one single root element
-    tree = etree.fromstring('<p>%s</p>' % html_fragment, etree.XMLParser(recover=True))
-    content = ' '.join(tree.itertext())
+    tree = etree.fromstring("<p>%s</p>" % html_fragment, etree.XMLParser(recover=True))
+    content = " ".join(tree.itertext())
     if collapse_whitespace:
-        content = re.sub('\\s+', ' ', content).strip()
+        content = re.sub("\\s+", " ", content).strip()
     return content

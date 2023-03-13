@@ -191,7 +191,7 @@ QUnit.module('MrpDocumentsKanbanView', {
             "Uploading... (50%)",
             "the current upload progress should be at 50%"
         );
-            
+
         progressEvent.loaded = 350000000;
         mockedXHRs[0].upload.dispatchEvent(progressEvent);
         await nextTick();

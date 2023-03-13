@@ -7,10 +7,10 @@ from odoo import fields, models, api
 class ReportProjectTaskUser(models.Model):
     _inherit = "report.project.task.user"
 
-    hours_planned = fields.Float('Planned Hours', readonly=True)
-    hours_effective = fields.Float('Effective Hours', readonly=True)
-    remaining_hours = fields.Float('Remaining Hours', readonly=True)
-    progress = fields.Float('Progress', group_operator='avg', readonly=True)
+    hours_planned = fields.Float("Planned Hours", readonly=True)
+    hours_effective = fields.Float("Effective Hours", readonly=True)
+    remaining_hours = fields.Float("Remaining Hours", readonly=True)
+    progress = fields.Float("Progress", group_operator="avg", readonly=True)
     overtime = fields.Float(readonly=True)
 
     def _select(self):
@@ -33,15 +33,22 @@ class ReportProjectTaskUser(models.Model):
         return super(ReportProjectTaskUser, self)._group_by() + group_by_append
 
     @api.model
-    def _get_view_cache_key(self, view_id=None, view_type='form', **options):
+    def _get_view_cache_key(self, view_id=None, view_type="form", **options):
         """The override of _get_view changing the time field labels according to the company timesheet encoding UOM
         makes the view cache dependent on the company timesheet encoding uom"""
         key = super()._get_view_cache_key(view_id, view_type, **options)
         return key + (self.env.company.timesheet_encode_uom_id,)
 
     @api.model
-    def _get_view(self, view_id=None, view_type='form', **options):
+    def _get_view(self, view_id=None, view_type="form", **options):
         arch, view = super()._get_view(view_id, view_type, **options)
-        if view_type in ['pivot', 'graph'] and self.env.company.timesheet_encode_uom_id == self.env.ref('uom.product_uom_day'):
-            arch = self.env['account.analytic.line']._apply_time_label(arch, related_model=self._name)
+        if view_type in [
+            "pivot",
+            "graph",
+        ] and self.env.company.timesheet_encode_uom_id == self.env.ref(
+            "uom.product_uom_day"
+        ):
+            arch = self.env["account.analytic.line"]._apply_time_label(
+                arch, related_model=self._name
+            )
         return arch, view

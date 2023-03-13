@@ -15,45 +15,53 @@ _logger = logging.getLogger(__name__)
 
 
 class AsiaPayController(http.Controller):
-    _return_url = '/payment/asiapay/return'
-    _webhook_url = '/payment/asiapay/webhook'
+    _return_url = "/payment/asiapay/return"
+    _webhook_url = "/payment/asiapay/webhook"
 
-    @http.route(_return_url, type='http', auth='public', methods=['GET'])
+    @http.route(_return_url, type="http", auth="public", methods=["GET"])
     def asiapay_return_from_checkout(self, **data):
-        """ Process the notification data sent by AsiaPay after redirection.
+        """Process the notification data sent by AsiaPay after redirection.
 
         :param dict data: The notification data.
         """
         # Don't process the notification data as they contain no valuable information except for the
         # reference and AsiaPay doesn't expose an endpoint to fetch the data from the API.
-        return request.redirect('/payment/status')
+        return request.redirect("/payment/status")
 
-    @http.route(_webhook_url, type='http', auth='public', methods=['POST'], csrf=False)
+    @http.route(_webhook_url, type="http", auth="public", methods=["POST"], csrf=False)
     def asiapay_webhook(self, **data):
-        """ Process the notification data sent by AsiaPay to the webhook.
+        """Process the notification data sent by AsiaPay to the webhook.
 
         :param dict data: The notification data.
         :return: The 'OK' string to acknowledge the notification.
         :rtype: str
         """
-        _logger.info("Notification received from AsiaPay with data:\n%s", pprint.pformat(data))
+        _logger.info(
+            "Notification received from AsiaPay with data:\n%s", pprint.pformat(data)
+        )
         try:
             # Check the integrity of the notification data.
-            tx_sudo = request.env['payment.transaction'].sudo()._get_tx_from_notification_data(
-                'asiapay', data
+            tx_sudo = (
+                request.env["payment.transaction"]
+                .sudo()
+                ._get_tx_from_notification_data("asiapay", data)
             )
             self._verify_notification_signature(data, tx_sudo)
 
             # Handle the notification data.
-            tx_sudo._handle_notification_data('asiapay', data)
-        except ValidationError:  # Acknowledge the notification to avoid getting spammed.
-            _logger.exception("Unable to handle the notification data; skipping to acknowledge.")
+            tx_sudo._handle_notification_data("asiapay", data)
+        except (
+            ValidationError
+        ):  # Acknowledge the notification to avoid getting spammed.
+            _logger.exception(
+                "Unable to handle the notification data; skipping to acknowledge."
+            )
 
-        return 'OK'  # Acknowledge the notification.
+        return "OK"  # Acknowledge the notification.
 
     @staticmethod
     def _verify_notification_signature(notification_data, tx_sudo):
-        """ Check that the received signature matches the expected one.
+        """Check that the received signature matches the expected one.
 
         :param dict notification_data: The notification data
         :param recordset tx_sudo: The sudoed transaction referenced by the notification data, as a
@@ -61,7 +69,7 @@ class AsiaPayController(http.Controller):
         :return: None
         :raise: :class:`werkzeug.exceptions.Forbidden` if the signatures don't match
         """
-        received_signature = notification_data.get('secureHash')
+        received_signature = notification_data.get("secureHash")
         if not received_signature:
             _logger.warning("Received notification with missing signature.")
             raise Forbidden()

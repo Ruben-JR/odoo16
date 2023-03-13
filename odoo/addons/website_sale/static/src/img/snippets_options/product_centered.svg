@@ -29,7 +29,7 @@
             <rect width="16" height="1" x="16" y="52" fill="#fff"/>
             <rect width="34" height="32" fill="#9ccde4" x="7"/>
         </g>
-    </defs> 
+    </defs>
     <use href="#product_centered_item" y="5" x="5"/>
     <use href="#product_centered_shirt" y="9" x="16"/>
     <use href="#product_centered_item" y="5" x="66"/>

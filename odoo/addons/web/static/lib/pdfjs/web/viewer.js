@@ -13914,7 +13914,7 @@ function getDefaultPreferences() {
       "enablePrintAutoRotate": false,
       "enableWebGL": false,
       // Odoo: Below two preference changes are needed here as we can't change them as parameters in an iframe.
-      "eventBusDispatchToDOM": true, 
+      "eventBusDispatchToDOM": true,
       "externalLinkTarget": 2,
       "historyUpdateUrl": false,
       "pdfBugEnabled": false,

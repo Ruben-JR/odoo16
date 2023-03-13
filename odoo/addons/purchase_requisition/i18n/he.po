@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* purchase_requisition
-# 
+#
 # Translators:
 # Leandro Noijovich <eliel.sorcerer@gmail.com>, 2022
 # Fishfur A Banter <fishfurbanter@gmail.com>, 2022
@@ -19,7 +19,7 @@
 # Yihya Hugirat <hugirat@gmail.com>, 2022
 # NoaFarkash, 2022
 # Sagi Ahiel, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"

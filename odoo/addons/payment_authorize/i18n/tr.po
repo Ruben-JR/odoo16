@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* payment_authorize
-# 
+#
 # Translators:
 # Ediz Duman <neps1192@gmail.com>, 2019
 # Martin Trigaux, 2019
@@ -9,7 +9,7 @@
 # Ramiz Deniz Öner <deniz@denizoner.com>, 2019
 # Hüseyin Cem Aras <hcemaras@gmail.com>, 2019
 # Umur Akın <umura@projetgrup.com>, 2019
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5\n"

@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function (evt) {
     if (!recipientAddress) {
         recipientAddress = document.querySelector("div .row.fallback_header > div.col-5.offset-7 > div:first-child");
     }
-    var style = window.getComputedStyle(recipientAddress, null); 
+    var style = window.getComputedStyle(recipientAddress, null);
     var height = parseFloat(style.getPropertyValue('height'));
     var fontSize = parseFloat(style.getPropertyValue('font-size'));
     recipientAddress.style.fontSize = (baseSize / (height / fontSize)) + 'px';

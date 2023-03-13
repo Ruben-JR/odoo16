@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* spreadsheet_dashboard_hr_timesheet
-# 
+#
 # Translators:
 # Natalia Gros <nag@odoo.com>, 2022
 # Mariusz, 2022
@@ -12,7 +12,7 @@
 # Paweł Wodyński <pw@myodoo.pl>, 2022
 # Jaroslaw Kaczmarski, 2022
 # Krzysztof Przygoda, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta\n"

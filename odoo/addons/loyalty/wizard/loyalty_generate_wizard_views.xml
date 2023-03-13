@@ -37,10 +37,10 @@
                 <footer>
                     <button name="generate_coupons" type="object" class="btn-primary" data-hotkey="q">
                         <span attrs="{'invisible': [('will_send_mail', '=', False)]}">
-                            Generate and Send 
+                            Generate and Send
                         </span>
                         <span attrs="{'invisible': [('will_send_mail', '=', True)]}">
-                            Generate 
+                            Generate
                         </span>
                         <field name="program_type" nolabel="1"/>
                     </button>

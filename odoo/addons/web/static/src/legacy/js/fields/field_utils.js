@@ -437,7 +437,7 @@ function formatJson(value, field, options) {
 /**
  * Smart date inputs are shortcuts to write dates quicker.
  * These shortcuts should respect the format ^[+-]\d+[dmwy]?$
- * 
+ *
  * e.g.
  *   "+1d" or "+1" will return now + 1 day
  *   "-2w" will return now - 2 weeks

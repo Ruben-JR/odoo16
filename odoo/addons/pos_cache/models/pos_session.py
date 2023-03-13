@@ -5,27 +5,36 @@ from odoo import models
 
 
 class PosSession(models.Model):
-    _inherit = 'pos.session'
+    _inherit = "pos.session"
 
     def get_products_from_cache(self):
         loading_info = self._loader_params_product_product()
-        fields_str = str(loading_info['search_params']['fields'])
-        domain_str = str([list(item) if isinstance(item, (list, tuple)) else item for item in loading_info['search_params']['domain']])
-        pos_cache = self.env['pos.cache']
-        cache_for_user = pos_cache.search([
-            ('id', 'in', self.config_id.cache_ids.ids),
-            ('compute_user_id', '=', self.env.uid),
-            ('product_domain', '=', domain_str),
-            ('product_fields', '=', fields_str),
-        ])
+        fields_str = str(loading_info["search_params"]["fields"])
+        domain_str = str(
+            [
+                list(item) if isinstance(item, (list, tuple)) else item
+                for item in loading_info["search_params"]["domain"]
+            ]
+        )
+        pos_cache = self.env["pos.cache"]
+        cache_for_user = pos_cache.search(
+            [
+                ("id", "in", self.config_id.cache_ids.ids),
+                ("compute_user_id", "=", self.env.uid),
+                ("product_domain", "=", domain_str),
+                ("product_fields", "=", fields_str),
+            ]
+        )
 
         if not cache_for_user:
-            cache_for_user = pos_cache.create({
-                'config_id': self.config_id.id,
-                'product_domain': domain_str,
-                'product_fields': fields_str,
-                'compute_user_id': self.env.uid
-            })
+            cache_for_user = pos_cache.create(
+                {
+                    "config_id": self.config_id.id,
+                    "product_domain": domain_str,
+                    "product_fields": fields_str,
+                    "compute_user_id": self.env.uid,
+                }
+            )
             cache_for_user.refresh_cache()
 
         return cache_for_user.cache2json()

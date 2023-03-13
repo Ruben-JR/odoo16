@@ -5,7 +5,7 @@ from odoo.http import request, Response
 
 
 class IrHttp(models.AbstractModel):
-    _inherit = 'ir.http'
+    _inherit = "ir.http"
 
     @classmethod
     def get_utm_domain_cookies(cls):
@@ -16,9 +16,20 @@ class IrHttp(models.AbstractModel):
         # Make sure response is an odoo Response.
         response = Response.load(response)
         domain = cls.get_utm_domain_cookies()
-        for url_parameter, __, cookie_name in request.env['utm.mixin'].tracking_fields():
-            if url_parameter in request.params and request.httprequest.cookies.get(cookie_name) != request.params[url_parameter]:
-                response.set_cookie(cookie_name, request.params[url_parameter], domain=domain, cookie_type='optional')
+        for url_parameter, __, cookie_name in request.env[
+            "utm.mixin"
+        ].tracking_fields():
+            if (
+                url_parameter in request.params
+                and request.httprequest.cookies.get(cookie_name)
+                != request.params[url_parameter]
+            ):
+                response.set_cookie(
+                    cookie_name,
+                    request.params[url_parameter],
+                    domain=domain,
+                    cookie_type="optional",
+                )
 
     @classmethod
     def _post_dispatch(cls, response):

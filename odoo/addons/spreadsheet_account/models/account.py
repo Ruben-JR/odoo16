@@ -60,22 +60,20 @@ class AccountMove(models.Model):
         ]
         code_domain = expression.OR(
             [
-                expression.AND([
-                    [("account_id.code", "=like", f"{code}%")],
-                    expression.OR([balance_domain, pnl_domain]),
-                ])
+                expression.AND(
+                    [
+                        [("account_id.code", "=like", f"{code}%")],
+                        expression.OR([balance_domain, pnl_domain]),
+                    ]
+                )
                 for code in codes
             ]
         )
         domain = expression.AND([code_domain, [("company_id", "=", company_id)]])
         if formula_params["include_unposted"]:
-            domain = expression.AND(
-                [domain, [("move_id.state", "!=", "cancel")]]
-            )
+            domain = expression.AND([domain, [("move_id.state", "!=", "cancel")]])
         else:
-            domain = expression.AND(
-                [domain, [("move_id.state", "=", "posted")]]
-            )
+            domain = expression.AND([domain, [("move_id.state", "=", "posted")]])
         return domain
 
     @api.model

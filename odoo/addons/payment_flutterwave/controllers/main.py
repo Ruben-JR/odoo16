@@ -15,55 +15,68 @@ _logger = logging.getLogger(__name__)
 
 
 class FlutterwaveController(http.Controller):
-    _return_url = '/payment/flutterwave/return'
-    _webhook_url = '/payment/flutterwave/webhook'
+    _return_url = "/payment/flutterwave/return"
+    _webhook_url = "/payment/flutterwave/webhook"
 
-    @http.route(_return_url, type='http', methods=['GET'], auth='public')
+    @http.route(_return_url, type="http", methods=["GET"], auth="public")
     def flutterwave_return_from_checkout(self, **data):
-        """ Process the notification data sent by Flutterwave after redirection from checkout.
+        """Process the notification data sent by Flutterwave after redirection from checkout.
 
         :param dict data: The notification data.
         """
-        _logger.info("Handling redirection from Flutterwave with data:\n%s", pprint.pformat(data))
+        _logger.info(
+            "Handling redirection from Flutterwave with data:\n%s", pprint.pformat(data)
+        )
 
         # Handle the notification data.
-        if data.get('status') != 'cancelled':
-            request.env['payment.transaction'].sudo()._handle_notification_data('flutterwave', data)
+        if data.get("status") != "cancelled":
+            request.env["payment.transaction"].sudo()._handle_notification_data(
+                "flutterwave", data
+            )
         else:  # The customer cancelled the payment by clicking on the close button.
             pass  # Don't try to process this case because the transaction id was not provided.
 
         # Redirect the user to the status page.
-        return request.redirect('/payment/status')
+        return request.redirect("/payment/status")
 
-    @http.route(_webhook_url, type='http', methods=['POST'], auth='public', csrf=False)
+    @http.route(_webhook_url, type="http", methods=["POST"], auth="public", csrf=False)
     def flutterwave_webhook(self):
-        """ Process the notification data sent by Flutterwave to the webhook.
+        """Process the notification data sent by Flutterwave to the webhook.
 
         :return: An empty string to acknowledge the notification.
         :rtype: str
         """
         data = request.get_json_data()
-        _logger.info("Notification received from Flutterwave with data:\n%s", pprint.pformat(data))
+        _logger.info(
+            "Notification received from Flutterwave with data:\n%s",
+            pprint.pformat(data),
+        )
 
-        if data['event'] == 'charge.completed':
+        if data["event"] == "charge.completed":
             try:
                 # Check the origin of the notification.
-                tx_sudo = request.env['payment.transaction'].sudo()._get_tx_from_notification_data(
-                    'flutterwave', data['data']
+                tx_sudo = (
+                    request.env["payment.transaction"]
+                    .sudo()
+                    ._get_tx_from_notification_data("flutterwave", data["data"])
                 )
-                signature = request.httprequest.headers.get('verif-hash')
+                signature = request.httprequest.headers.get("verif-hash")
                 self._verify_notification_signature(signature, tx_sudo)
 
                 # Handle the notification data.
-                notification_data = data['data']
-                tx_sudo._handle_notification_data('flutterwave', notification_data)
-            except ValidationError:  # Acknowledge the notification to avoid getting spammed.
-                _logger.exception("Unable to handle the notification data; skipping to acknowledge")
-        return request.make_json_response('')
+                notification_data = data["data"]
+                tx_sudo._handle_notification_data("flutterwave", notification_data)
+            except (
+                ValidationError
+            ):  # Acknowledge the notification to avoid getting spammed.
+                _logger.exception(
+                    "Unable to handle the notification data; skipping to acknowledge"
+                )
+        return request.make_json_response("")
 
     @staticmethod
     def _verify_notification_signature(received_signature, tx_sudo):
-        """ Check that the received signature matches the expected one.
+        """Check that the received signature matches the expected one.
 
         :param dict received_signature: The signature received with the notification data.
         :param recordset tx_sudo: The sudoed transaction referenced by the notification data, as a

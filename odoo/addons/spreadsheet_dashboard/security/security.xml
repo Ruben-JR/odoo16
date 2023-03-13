@@ -6,4 +6,3 @@
         <field name="domain_force">[('group_ids', 'in', user.groups_id.ids)]</field>
     </record>
 </odoo>
-

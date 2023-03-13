@@ -17,15 +17,19 @@ _logger = logging.getLogger(__name__)
 
 
 class PaypalController(http.Controller):
-    _return_url = '/payment/paypal/return/'
-    _webhook_url = '/payment/paypal/webhook/'
+    _return_url = "/payment/paypal/return/"
+    _webhook_url = "/payment/paypal/webhook/"
 
     @http.route(
-        _return_url, type='http', auth='public', methods=['GET', 'POST'], csrf=False,
-        save_session=False
+        _return_url,
+        type="http",
+        auth="public",
+        methods=["GET", "POST"],
+        csrf=False,
+        save_session=False,
     )
     def paypal_return_from_checkout(self, **pdt_data):
-        """ Process the PDT notification sent by PayPal after redirection from checkout.
+        """Process the PDT notification sent by PayPal after redirection from checkout.
 
         The PDT (Payment Data Transfer) notification contains the parameters necessary to verify the
         origin of the notification and retrieve the actual notification data, if PDT is enabled on
@@ -44,26 +48,36 @@ class PaypalController(http.Controller):
         will satisfy any specification of the `SameSite` attribute, the session of the user will be
         retrieved and with it the transaction which will be immediately post-processed.
         """
-        _logger.info("handling redirection from PayPal with data:\n%s", pprint.pformat(pdt_data))
-        if not pdt_data:  # The customer has canceled or paid then clicked on "Return to Merchant"
+        _logger.info(
+            "handling redirection from PayPal with data:\n%s", pprint.pformat(pdt_data)
+        )
+        if (
+            not pdt_data
+        ):  # The customer has canceled or paid then clicked on "Return to Merchant"
             pass  # Redirect them to the status page to browse the (currently) draft transaction
         else:
             # Check the origin of the notification
-            tx_sudo = request.env['payment.transaction'].sudo()._get_tx_from_notification_data(
-                'paypal', pdt_data
+            tx_sudo = (
+                request.env["payment.transaction"]
+                .sudo()
+                ._get_tx_from_notification_data("paypal", pdt_data)
             )
             try:
-                notification_data = self._verify_pdt_notification_origin(pdt_data, tx_sudo)
+                notification_data = self._verify_pdt_notification_origin(
+                    pdt_data, tx_sudo
+                )
             except Forbidden:
-                _logger.exception("could not verify the origin of the PDT; discarding it")
+                _logger.exception(
+                    "could not verify the origin of the PDT; discarding it"
+                )
             else:
                 # Handle the notification data
-                tx_sudo._handle_notification_data('paypal', notification_data)
+                tx_sudo._handle_notification_data("paypal", notification_data)
 
-        return request.redirect('/payment/status')
+        return request.redirect("/payment/status")
 
     def _verify_pdt_notification_origin(self, pdt_data, tx_sudo):
-        """ Validate the authenticity of a PDT and return the retrieved notification data.
+        """Validate the authenticity of a PDT and return the retrieved notification data.
 
         The validation is done in four steps:
 
@@ -83,64 +97,88 @@ class PaypalController(http.Controller):
         :return: The retrieved notification data
         :raise :class:`werkzeug.exceptions.Forbidden`: if the notification origin can't be verified
         """
-        if 'tx' not in pdt_data:  # PDT is not enabled; PayPal directly sent the notification data.
-            tx_sudo._log_message_on_linked_documents(_(
-                "The status of transaction with reference %(ref)s was not synchronized because the "
-                "'Payment data transfer' option is not enabled on the PayPal dashboard.",
-                ref=tx_sudo.reference,
-            ))
+        if (
+            "tx" not in pdt_data
+        ):  # PDT is not enabled; PayPal directly sent the notification data.
+            tx_sudo._log_message_on_linked_documents(
+                _(
+                    "The status of transaction with reference %(ref)s was not synchronized because the "
+                    "'Payment data transfer' option is not enabled on the PayPal dashboard.",
+                    ref=tx_sudo.reference,
+                )
+            )
             raise Forbidden("PayPal: PDT are not enabled; cannot verify data origin")
         else:
             provider_sudo = tx_sudo.provider_id
-            if not provider_sudo.paypal_pdt_token:  # We received PDT data but can't verify them
-                record_link = f'<a href=# data-oe-model=payment.provider ' \
-                              f'data-oe-id={provider_sudo.id}>{html_escape(provider_sudo.name)}</a>'
-                tx_sudo._log_message_on_linked_documents(_(
-                    "The status of transaction with reference %(ref)s was not synchronized because "
-                    "the PDT Identify Token is not configured on the provider %(record_link)s.",
-                    ref=tx_sudo.reference, record_link=record_link
-                ))
-                raise Forbidden("PayPal: The PDT token is not set; cannot verify data origin")
+            if (
+                not provider_sudo.paypal_pdt_token
+            ):  # We received PDT data but can't verify them
+                record_link = (
+                    f"<a href=# data-oe-model=payment.provider "
+                    f"data-oe-id={provider_sudo.id}>{html_escape(provider_sudo.name)}</a>"
+                )
+                tx_sudo._log_message_on_linked_documents(
+                    _(
+                        "The status of transaction with reference %(ref)s was not synchronized because "
+                        "the PDT Identify Token is not configured on the provider %(record_link)s.",
+                        ref=tx_sudo.reference,
+                        record_link=record_link,
+                    )
+                )
+                raise Forbidden(
+                    "PayPal: The PDT token is not set; cannot verify data origin"
+                )
             else:  # The PayPal account is configured to receive PDT data, and the PDT token is set
                 # Request a PDT data authenticity check and the notification data to PayPal
                 url = provider_sudo._paypal_get_api_url()
                 payload = {
-                    'cmd': '_notify-synch',
-                    'tx': pdt_data['tx'],
-                    'at': tx_sudo.provider_id.paypal_pdt_token,
+                    "cmd": "_notify-synch",
+                    "tx": pdt_data["tx"],
+                    "at": tx_sudo.provider_id.paypal_pdt_token,
                 }
                 try:
                     response = requests.post(url, data=payload, timeout=10)
                     response.raise_for_status()
-                except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError):
-                    raise Forbidden("PayPal: Encountered an error when verifying PDT origin")
+                except (
+                    requests.exceptions.ConnectionError,
+                    requests.exceptions.HTTPError,
+                ):
+                    raise Forbidden(
+                        "PayPal: Encountered an error when verifying PDT origin"
+                    )
                 else:
-                    notification_data = self._parse_pdt_validation_response(response.text)
+                    notification_data = self._parse_pdt_validation_response(
+                        response.text
+                    )
                     if notification_data is None:
-                        raise Forbidden("PayPal: The PDT origin was not verified by PayPal")
+                        raise Forbidden(
+                            "PayPal: The PDT origin was not verified by PayPal"
+                        )
 
         return notification_data
 
     @staticmethod
     def _parse_pdt_validation_response(response_content):
-        """ Parse the PDT validation request response and return the parsed notification data.
+        """Parse the PDT validation request response and return the parsed notification data.
 
         :param str response_content: The PDT validation request response
         :return: The parsed notification data
         :rtype: dict
         """
         response_items = response_content.splitlines()
-        if response_items[0] == 'SUCCESS':
+        if response_items[0] == "SUCCESS":
             notification_data = {}
             for notification_data_param in response_items[1:]:
-                key, raw_value = notification_data_param.split('=', 1)
+                key, raw_value = notification_data_param.split("=", 1)
                 notification_data[key] = urls.url_unquote_plus(raw_value)
             return notification_data
         return None
 
-    @http.route(_webhook_url, type='http', auth='public', methods=['GET', 'POST'], csrf=False)
+    @http.route(
+        _webhook_url, type="http", auth="public", methods=["GET", "POST"], csrf=False
+    )
     def paypal_webhook(self, **data):
-        """ Process the notification data (IPN) sent by PayPal to the webhook.
+        """Process the notification data (IPN) sent by PayPal to the webhook.
 
         The "Instant Payment Notification" is a classical webhook notification.
         See https://developer.paypal.com/api/nvp-soap/ipn/.
@@ -149,23 +187,29 @@ class PaypalController(http.Controller):
         :return: An empty string to acknowledge the notification
         :rtype: str
         """
-        _logger.info("notification received from PayPal with data:\n%s", pprint.pformat(data))
+        _logger.info(
+            "notification received from PayPal with data:\n%s", pprint.pformat(data)
+        )
         try:
             # Check the origin and integrity of the notification
-            tx_sudo = request.env['payment.transaction'].sudo()._get_tx_from_notification_data(
-                'paypal', data
+            tx_sudo = (
+                request.env["payment.transaction"]
+                .sudo()
+                ._get_tx_from_notification_data("paypal", data)
             )
             self._verify_webhook_notification_origin(data, tx_sudo)
 
             # Handle the notification data
-            tx_sudo._handle_notification_data('paypal', data)
+            tx_sudo._handle_notification_data("paypal", data)
         except ValidationError:  # Acknowledge the notification to avoid getting spammed
-            _logger.exception("unable to handle the notification data; skipping to acknowledge")
-        return ''
+            _logger.exception(
+                "unable to handle the notification data; skipping to acknowledge"
+            )
+        return ""
 
     @staticmethod
     def _verify_webhook_notification_origin(notification_data, tx_sudo):
-        """ Check that the notification was sent by PayPal.
+        """Check that the notification was sent by PayPal.
 
         The verification is done in three steps:
 
@@ -185,23 +229,26 @@ class PaypalController(http.Controller):
         """
         # Request PayPal for an authenticity check
         url = tx_sudo.provider_id._paypal_get_api_url()
-        payload = dict(notification_data, cmd='_notify-validate')
+        payload = dict(notification_data, cmd="_notify-validate")
         try:
             response = requests.post(url, payload, timeout=60)
             response.raise_for_status()
-        except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError) as error:
+        except (
+            requests.exceptions.ConnectionError,
+            requests.exceptions.HTTPError,
+        ) as error:
             _logger.exception(
                 "could not verify notification origin at %(url)s with data: %(data)s:\n%(error)s",
                 {
-                    'url': url,
-                    'data': pprint.pformat(notification_data),
-                    'error': pprint.pformat(error.response.text),
+                    "url": url,
+                    "data": pprint.pformat(notification_data),
+                    "error": pprint.pformat(error.response.text),
                 },
             )
             raise Forbidden()
         else:
             response_content = response.text
-            if response_content != 'VERIFIED':
+            if response_content != "VERIFIED":
                 _logger.error(
                     "PayPal did not confirm the origin of the notification with data:\n%s",
                     pprint.pformat(notification_data),

@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* project_timesheet_holidays
-# 
+#
 # Translators:
 # Jonatan Gk, 2022
 # Quim - eccit <quim@eccit.com>, 2022
@@ -11,7 +11,7 @@
 # Ivan Espinola, 2022
 # Farouk Jabiri, 2022
 # Josep Anton Belchi, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"

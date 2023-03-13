@@ -35,12 +35,12 @@
         <field name="domain_force">[('mrp_production_id', 'in', user.partner_id.commercial_partner_id.production_ids.ids)]</field>
         <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
     </record>
-    
+
     <record model="ir.rule" id="stock_move_subcontractor_rule">
         <field name="name">Stock Moves Subcontractor</field>
         <field name="model_id" ref="stock.model_stock_move"/>
         <field name="domain_force">[
-        '|', 
+        '|',
             '|',
                 ('production_id.subcontractor_id', '=', user.partner_id.commercial_partner_id.id),
                 ('move_orig_ids.production_id.subcontractor_id', 'in', user.partner_id.commercial_partner_id.ids),
@@ -53,7 +53,7 @@
         <field name="name">Stock Move Lines Subcontractor</field>
         <field name="model_id" ref="model_stock_move_line"/>
         <field name="domain_force">[
-        '|', 
+        '|',
             '|',
                 ('move_id.production_id.subcontractor_id', '=', user.partner_id.commercial_partner_id.id),
                 ('move_id.move_orig_ids.production_id.subcontractor_id', 'in', user.partner_id.commercial_partner_id.ids),
@@ -83,11 +83,11 @@
             '|',
                 '|',
                     '|',
-                        '|', 
-                            ('child_ids', 'in', user.partner_id.commercial_partner_id.picking_ids.location_id.ids), 
+                        '|',
+                            ('child_ids', 'in', user.partner_id.commercial_partner_id.picking_ids.location_id.ids),
                             ('child_ids', 'in', user.partner_id.commercial_partner_id.picking_ids.location_dest_id.ids),
-                        '|', 
-                            ('id', 'in', user.partner_id.commercial_partner_id.picking_ids.location_id.ids), 
+                        '|',
+                            ('id', 'in', user.partner_id.commercial_partner_id.picking_ids.location_id.ids),
                             ('id', 'in', user.partner_id.commercial_partner_id.picking_ids.location_dest_id.ids),
                     '|',
                         ('id', 'in', user.partner_id.commercial_partner_id.picking_ids.picking_type_id.warehouse_id.view_location_id.ids),

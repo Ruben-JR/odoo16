@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 {
-    'name': 'Events Sales',
-    'version': '1.2',
-    'category': 'Marketing/Events',
-    'website': 'https://www.odoo.com/app/events',
-    'description': """
+    "name": "Events Sales",
+    "version": "1.2",
+    "category": "Marketing/Events",
+    "website": "https://www.odoo.com/app/events",
+    "description": """
 Creating registration with sales orders.
 ========================================
 
@@ -18,36 +18,36 @@ that product, you will be able to choose an existing event of that category and
 when you confirm your sales order it will automatically create a registration for
 this event.
 """,
-    'depends': ['event', 'sale_management'],
-    'data': [
-        'views/event_ticket_views.xml',
-        'views/event_registration_views.xml',
-        'views/event_views.xml',
-        'views/sale_order_views.xml',
-        'data/event_sale_data.xml',
-        'data/mail_templates.xml',
-        'report/event_event_templates.xml',
-        'report/event_sale_report_views.xml',
-        'security/ir.model.access.csv',
-        'security/ir_rule.xml',
-        'security/event_security.xml',
-        'wizard/event_edit_registration.xml',
-        'wizard/event_configurator_views.xml',
+    "depends": ["event", "sale_management"],
+    "data": [
+        "views/event_ticket_views.xml",
+        "views/event_registration_views.xml",
+        "views/event_views.xml",
+        "views/sale_order_views.xml",
+        "data/event_sale_data.xml",
+        "data/mail_templates.xml",
+        "report/event_event_templates.xml",
+        "report/event_sale_report_views.xml",
+        "security/ir.model.access.csv",
+        "security/ir_rule.xml",
+        "security/event_security.xml",
+        "wizard/event_edit_registration.xml",
+        "wizard/event_configurator_views.xml",
     ],
-    'demo': [
-        'data/event_sale_demo.xml',
-        'data/event_demo.xml',  # needs event_sale_demo
-        'data/event_registration_demo.xml',  # needs event_sale_demo
+    "demo": [
+        "data/event_sale_demo.xml",
+        "data/event_demo.xml",  # needs event_sale_demo
+        "data/event_registration_demo.xml",  # needs event_sale_demo
     ],
-    'installable': True,
-    'auto_install': True,
-    'assets': {
-        'web.assets_backend': [
-            'event_sale/static/src/**/*',
+    "installable": True,
+    "auto_install": True,
+    "assets": {
+        "web.assets_backend": [
+            "event_sale/static/src/**/*",
         ],
-        'web.assets_tests': [
-            'event_sale/static/tests/tours/**/*',
+        "web.assets_tests": [
+            "event_sale/static/tests/tours/**/*",
         ],
     },
-    'license': 'LGPL-3',
+    "license": "LGPL-3",
 }

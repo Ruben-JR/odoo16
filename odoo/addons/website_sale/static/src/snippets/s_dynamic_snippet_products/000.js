@@ -128,8 +128,8 @@ const DynamicSnippetProductsCard = publicWidget.Widget.extend({
 
     /**
      * Event triggered by a click on the Add to cart button
-     * 
-     * @param {OdooEvent} ev 
+     *
+     * @param {OdooEvent} ev
      */
     async _onClickAddToCart(ev) {
         const $card = $(ev.currentTarget).closest('.card');

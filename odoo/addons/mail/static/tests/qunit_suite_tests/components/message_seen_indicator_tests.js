@@ -13,7 +13,7 @@ QUnit.test('rendering when just one has received the message', async function (a
     assert.expect(3);
 
     const pyEnv = await startServer();
-    
+
     const resPartnerId1 = pyEnv['res.partner'].create({ name: "Demo User" });
     const resPartnerId2 = pyEnv['res.partner'].create({ name: "Other User" });
     const mailChannelId = pyEnv['mail.channel'].create({

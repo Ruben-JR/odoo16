@@ -4,13 +4,13 @@ from odoo import fields, models
 
 
 class AccountFiscalPositionTemplate(models.Model):
-    _inherit = 'account.fiscal.position.template'
+    _inherit = "account.fiscal.position.template"
 
     l10n_br_fp_type = fields.Selection(
         selection=[
-            ('internal', 'Internal'),
-            ('ss_nnm', 'South/Southeast selling to North/Northeast/Midwest'),
-            ('interstate', 'Other interstate'),
+            ("internal", "Internal"),
+            ("ss_nnm", "South/Southeast selling to North/Northeast/Midwest"),
+            ("interstate", "Other interstate"),
         ],
-        string='Interstate Fiscal Position Type',
+        string="Interstate Fiscal Position Type",
     )

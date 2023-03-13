@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* website_livechat
-# 
+#
 # Translators:
 # Grażyna Grzelak <grazyna.grzelak@openglobe.pl>, 2022
 # Mariusz, 2022
@@ -13,7 +13,7 @@
 # Piotr Strębski <strebski@gmail.com>, 2022
 # Dariusz Żbikowski <darek@krokus.com.pl>, 2022
 # Maksym <ms@myodoo.pl>, 2023
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.5alpha1\n"

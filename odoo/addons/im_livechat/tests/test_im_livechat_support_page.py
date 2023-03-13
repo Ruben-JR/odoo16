@@ -4,7 +4,8 @@
 import odoo
 from odoo.tests import HttpCase
 
-@odoo.tests.tagged('-at_install', 'post_install')
+
+@odoo.tests.tagged("-at_install", "post_install")
 class TestImLivechatSupportPage(HttpCase):
     def test_load_modules(self):
         """Checks that all javascript modules load correctly on the livechat support page"""
@@ -16,4 +17,8 @@ class TestImLivechatSupportPage(HttpCase):
                 console.log("test successful");
             }
         """
-        self.browser_js("/im_livechat/support/1", code=check_js_modules, ready="odoo.__DEBUG__.didLogInfo")
+        self.browser_js(
+            "/im_livechat/support/1",
+            code=check_js_modules,
+            ready="odoo.__DEBUG__.didLogInfo",
+        )

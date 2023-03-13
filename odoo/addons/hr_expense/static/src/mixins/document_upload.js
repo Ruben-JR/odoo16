@@ -49,7 +49,7 @@ export const ExpenseDocumentDropZone = {
         ev.preventDefault();
         await this.env.bus.trigger("change_file_input", {
             files: ev.dataTransfer.files,
-        });        
+        });
     },
 };
 

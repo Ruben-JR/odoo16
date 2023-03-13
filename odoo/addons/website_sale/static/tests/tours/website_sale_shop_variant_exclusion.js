@@ -36,4 +36,3 @@ tour.register('shop_variant_exclusion', {
         },
     ]
 );
-

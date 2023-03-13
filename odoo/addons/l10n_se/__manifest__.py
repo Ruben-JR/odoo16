@@ -5,7 +5,7 @@
     "version": "1.0",
     "author": "XCLUDE, Odoo SA",
     "category": "Accounting/Localizations/Account Charts",
-    'description': """
+    "description": """
 Swedish Accounting
 ------------------
 
@@ -14,7 +14,7 @@ It also includes the invoice OCR payment reference handling.
     """,
     "depends": ["account", "base_vat"],
     "data": [
-        'data/account.account.tag.csv',
+        "data/account.account.tag.csv",
         "data/account_chart_template_before_accounts.xml",
         "data/account.account.template-K3.csv",
         "data/account.account.template-K2.csv",
@@ -30,8 +30,8 @@ It also includes the invoice OCR payment reference handling.
         "views/partner_view.xml",
         "views/account_journal_view.xml",
     ],
-    'demo': [
-        'demo/demo_company.xml',
+    "demo": [
+        "demo/demo_company.xml",
     ],
-    'license': 'LGPL-3',
- }
+    "license": "LGPL-3",
+}

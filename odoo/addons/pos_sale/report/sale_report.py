@@ -10,15 +10,15 @@ class SaleReport(models.Model):
     @api.model
     def _get_done_states(self):
         done_states = super()._get_done_states()
-        done_states.extend(['paid', 'pos_done', 'invoiced'])
+        done_states.extend(["paid", "pos_done", "invoiced"])
         return done_states
 
     state = fields.Selection(
         selection_add=[
-            ('pos_draft', 'New'),
-            ('paid', 'Paid'),
-            ('pos_done', 'Posted'),
-            ('invoiced', 'Invoiced')
+            ("pos_draft", "New"),
+            ("paid", "Paid"),
+            ("pos_done", "Posted"),
+            ("invoiced", "Invoiced"),
         ],
     )
 
@@ -89,7 +89,7 @@ class SaleReport(models.Model):
         :param values: dictionary of values to fill
         :type values: dict
         """
-        return {x: 'NULL' for x in additional_fields}
+        return {x: "NULL" for x in additional_fields}
 
     def _from_pos(self):
         return """
@@ -103,12 +103,10 @@ class SaleReport(models.Model):
             LEFT JOIN pos_config config ON config.id = session.config_id
             JOIN {currency_table} ON currency_table.company_id = pos.company_id
             """.format(
-            currency_table=self.env['res.currency']._get_query_currency_table(
-                {
-                    'multi_company': True,
-                    'date': {'date_to': fields.Date.today()}
-                }),
-            )
+            currency_table=self.env["res.currency"]._get_query_currency_table(
+                {"multi_company": True, "date": {"date_to": fields.Date.today()}}
+            ),
+        )
 
     def _where_pos(self):
         return """
@@ -140,10 +138,13 @@ class SaleReport(models.Model):
 
     def _query(self):
         res = super()._query()
-        return res + f"""UNION ALL (
+        return (
+            res
+            + f"""UNION ALL (
             SELECT {self._select_pos()}
             FROM {self._from_pos()}
             WHERE {self._where_pos()}
             GROUP BY {self._group_by_pos()}
             )
         """
+        )

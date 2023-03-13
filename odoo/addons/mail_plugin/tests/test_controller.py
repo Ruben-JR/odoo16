@@ -5,17 +5,21 @@ import json
 from unittest.mock import Mock, patch
 
 from odoo.addons.iap.tools import iap_tools
-from odoo.addons.mail_plugin.tests.common import TestMailPluginControllerCommon, mock_auth_method_outlook
+from odoo.addons.mail_plugin.tests.common import (
+    TestMailPluginControllerCommon,
+    mock_auth_method_outlook,
+)
 
 
 class TestMailPluginController(TestMailPluginControllerCommon):
-
     def test_enrich_and_create_company(self):
-        partner = self.env["res.partner"].create({
-            "name": "Test partner",
-            "email": "test@test_domain.xyz",
-            "is_company": False,
-        })
+        partner = self.env["res.partner"].create(
+            {
+                "name": "Test partner",
+                "email": "test@test_domain.xyz",
+                "is_company": False,
+            }
+        )
 
         result = self.mock_enrich_and_create_company(
             partner.id,
@@ -23,14 +27,18 @@ class TestMailPluginController(TestMailPluginControllerCommon):
         )
 
         self.assertEqual(result["enrichment_info"], {"type": "company_created"})
-        self.assertEqual(result["company"]["additionalInfo"]["return"], "test_domain.xyz")
+        self.assertEqual(
+            result["company"]["additionalInfo"]["return"], "test_domain.xyz"
+        )
 
         company_id = result["company"]["id"]
         company = self.env["res.partner"].browse(company_id)
         partner.invalidate_recordset()
-        self.assertEqual(partner.parent_id, company, "Should change the company of the partner")
+        self.assertEqual(
+            partner.parent_id, company, "Should change the company of the partner"
+        )
 
-    @mock_auth_method_outlook('employee')
+    @mock_auth_method_outlook("employee")
     def test_get_partner_blacklisted_domain(self):
         """Test enrichment on a blacklisted domain, should return an error."""
         domain = list(iap_tools._MAIL_DOMAIN_BLACKLIST)[0]
@@ -45,28 +53,35 @@ class TestMailPluginController(TestMailPluginControllerCommon):
         mocked_request_enrich = Mock()
 
         with patch(
-            "odoo.addons.iap.models.iap_enrich_api.IapEnrichAPI"
-            "._request_enrich",
+            "odoo.addons.iap.models.iap_enrich_api.IapEnrichAPI" "._request_enrich",
             new=mocked_request_enrich,
         ):
-            result = self.url_open(
-                "/mail_plugin/partner/get",
-                data=json.dumps(data).encode(),
-                headers={"Content-Type": "application/json"},
-            ).json().get("result", {})
+            result = (
+                self.url_open(
+                    "/mail_plugin/partner/get",
+                    data=json.dumps(data).encode(),
+                    headers={"Content-Type": "application/json"},
+                )
+                .json()
+                .get("result", {})
+            )
 
         self.assertFalse(mocked_request_enrich.called)
-        self.assertEqual(result['partner']['enrichment_info']['type'], 'missing_data')
+        self.assertEqual(result["partner"]["enrichment_info"]["type"], "missing_data")
 
     def test_get_partner_company_found(self):
-        company = self.env["res.partner"].create({
-            "name": "Test partner",
-            "email": "test@test_domain.xyz",
-            "is_company": True,
-        })
+        company = self.env["res.partner"].create(
+            {
+                "name": "Test partner",
+                "email": "test@test_domain.xyz",
+                "is_company": True,
+            }
+        )
 
         mock_iap_enrich = Mock()
-        result = self.mock_plugin_partner_get("Test", "qsd@test_domain.xyz", mock_iap_enrich)
+        result = self.mock_plugin_partner_get(
+            "Test", "qsd@test_domain.xyz", mock_iap_enrich
+        )
 
         self.assertFalse(mock_iap_enrich.called)
         self.assertEqual(result["partner"]["id"], -1)
@@ -75,11 +90,13 @@ class TestMailPluginController(TestMailPluginControllerCommon):
         self.assertFalse(result["partner"]["company"]["additionalInfo"])
 
     def test_get_partner_company_not_found(self):
-        self.env["res.partner"].create({
-            "name": "Test partner",
-            "email": "test@test_domain.xyz",
-            "is_company": False,
-        })
+        self.env["res.partner"].create(
+            {
+                "name": "Test partner",
+                "email": "test@test_domain.xyz",
+                "is_company": False,
+            }
+        )
 
         result = self.mock_plugin_partner_get(
             "Test",
@@ -112,19 +129,30 @@ class TestMailPluginController(TestMailPluginControllerCommon):
         self.assertEqual(result["partner"]["id"], -1)
         self.assertEqual(result["partner"]["email"], "qsd@test_domain.xyz")
         self.assertTrue(first_company_id, "Should have created the company")
-        self.assertEqual(result["partner"]["company"]["additionalInfo"]["iap_information"], "test")
+        self.assertEqual(
+            result["partner"]["company"]["additionalInfo"]["iap_information"], "test"
+        )
 
         self.assertEqual(first_company.name, "Name")
         self.assertEqual(first_company.email, "contact@gmail.com")
 
         # Test that we do not duplicate the company and that we return the previous one
         mock_iap_enrich = Mock()
-        result = self.mock_plugin_partner_get("Test", "qsd@test_domain.xyz", mock_iap_enrich)
-        self.assertFalse(mock_iap_enrich.called, "We already enriched this company, should not call IAP a second time")
+        result = self.mock_plugin_partner_get(
+            "Test", "qsd@test_domain.xyz", mock_iap_enrich
+        )
+        self.assertFalse(
+            mock_iap_enrich.called,
+            "We already enriched this company, should not call IAP a second time",
+        )
 
         second_company_id = result["partner"]["company"]["id"]
-        self.assertEqual(first_company_id, second_company_id, "Should not create a new company")
-        self.assertEqual(result["partner"]["company"]["additionalInfo"]["iap_information"], "test")
+        self.assertEqual(
+            first_company_id, second_company_id, "Should not create a new company"
+        )
+        self.assertEqual(
+            result["partner"]["company"]["additionalInfo"]["iap_information"], "test"
+        )
 
     def test_get_partner_no_email_returned_by_iap(self):
         """Test the case where IAP do not return an email address.
@@ -133,7 +161,8 @@ class TestMailPluginController(TestMailPluginControllerCommon):
         retrieve the first one.
         """
         result = self.mock_plugin_partner_get(
-            "Test", "qsd@domain.com",
+            "Test",
+            "qsd@domain.com",
             lambda _, domain: {"name": "Name", "email": []},
         )
 
@@ -146,8 +175,11 @@ class TestMailPluginController(TestMailPluginControllerCommon):
 
         # Test that we do not duplicate the company and that we return the previous one
         result = self.mock_plugin_partner_get(
-            "Test", "qsd@domain.com",
+            "Test",
+            "qsd@domain.com",
             lambda _, domain: {"name": "Name", "email": ["contact@" + domain]},
         )
         second_company_id = result["partner"]["company"]["id"]
-        self.assertEqual(first_company_id, second_company_id, "Should not create a new company")
+        self.assertEqual(
+            first_company_id, second_company_id, "Should not create a new company"
+        )

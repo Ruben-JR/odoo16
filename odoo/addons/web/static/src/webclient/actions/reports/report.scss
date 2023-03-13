@@ -185,7 +185,7 @@ ul {
     padding-left: $container-padding-x;
 }
 
-// Removes borders within a table-borderless as its new definition in Boostrap 5 still has its borders visible in PDFs 
+// Removes borders within a table-borderless as its new definition in Boostrap 5 still has its borders visible in PDFs
 .table-borderless {
     tbody, thead, tfoot, tr, td, th {
         border: 0 none;

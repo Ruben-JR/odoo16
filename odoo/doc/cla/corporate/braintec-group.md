@@ -16,4 +16,3 @@ Fréderic Garbely frederic.garbely@braintec-group.com https://github.com/BT-fgar
 Kumar Aberer kumar.aberer@braintec-group.com https://github.com/BT-kaberer
 Pascal Zenklusen pascal.zenklusen@braintec-group.com https://github.com/BT-pzenklusen
 Nadal Francisco Garcia nadal.francisco@braintec-group.com https://github.com/BT-nfrancisco
-

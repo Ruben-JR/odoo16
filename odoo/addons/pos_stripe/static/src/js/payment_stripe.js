@@ -96,7 +96,7 @@ let PaymentStripe = PaymentInterface.extend({
             }
         }
         this._showError(_.str.sprintf(
-            this.env._t('Stripe readers %s not listed in your account'), 
+            this.env._t('Stripe readers %s not listed in your account'),
             this.payment_method.stripe_serial_number
         ));
     },

@@ -1,7 +1,13 @@
 from odoo.tests import tagged, common
-from odoo.addons.l10n_id_efaktur.models.account_move import FK_HEAD_LIST, LT_HEAD_LIST, OF_HEAD_LIST, _csv_row
+from odoo.addons.l10n_id_efaktur.models.account_move import (
+    FK_HEAD_LIST,
+    LT_HEAD_LIST,
+    OF_HEAD_LIST,
+    _csv_row,
+)
 
-@tagged('post_install', '-at_install', 'post_install_l10n')
+
+@tagged("post_install", "-at_install", "post_install_l10n")
 class TestIndonesianEfaktur(common.TransactionCase):
     def setUp(self):
         """
@@ -13,36 +19,73 @@ class TestIndonesianEfaktur(common.TransactionCase):
 
         self.maxDiff = 1500
         # change company info for csv detai later
-        self.env.company.country_id = self.env.ref('base.id')
+        self.env.company.country_id = self.env.ref("base.id")
         self.env.company.street = "test"
         self.env.company.phone = "12345"
 
-        self.partner_id = self.env['res.partner'].create({"name": "l10ntest", "l10n_id_pkp": True, "l10n_id_kode_transaksi": "01", "l10n_id_nik": "12345"})
-        self.tax_id = self.env['account.tax'].create({"name": "test tax", "type_tax_use": "sale", "amount": 10.0, "price_include": True})
+        self.partner_id = self.env["res.partner"].create(
+            {
+                "name": "l10ntest",
+                "l10n_id_pkp": True,
+                "l10n_id_kode_transaksi": "01",
+                "l10n_id_nik": "12345",
+            }
+        )
+        self.tax_id = self.env["account.tax"].create(
+            {
+                "name": "test tax",
+                "type_tax_use": "sale",
+                "amount": 10.0,
+                "price_include": True,
+            }
+        )
 
-        self.efaktur = self.env['l10n_id_efaktur.efaktur.range'].create({'min': '0000000000001', 'max': '0000000000010'})
-        self.out_invoice_1 = self.env['account.move'].create({
-            'move_type': 'out_invoice',
-            'partner_id': self.partner_id.id,
-            'invoice_date': '2019-05-01',
-            'date': '2019-05-01',
-            'invoice_line_ids': [
-                (0, 0, {'name': 'line1', 'price_unit': 110.0, 'tax_ids': self.tax_id.ids}),
-            ],
-            'l10n_id_kode_transaksi': "01",
-        })
+        self.efaktur = self.env["l10n_id_efaktur.efaktur.range"].create(
+            {"min": "0000000000001", "max": "0000000000010"}
+        )
+        self.out_invoice_1 = self.env["account.move"].create(
+            {
+                "move_type": "out_invoice",
+                "partner_id": self.partner_id.id,
+                "invoice_date": "2019-05-01",
+                "date": "2019-05-01",
+                "invoice_line_ids": [
+                    (
+                        0,
+                        0,
+                        {
+                            "name": "line1",
+                            "price_unit": 110.0,
+                            "tax_ids": self.tax_id.ids,
+                        },
+                    ),
+                ],
+                "l10n_id_kode_transaksi": "01",
+            }
+        )
         self.out_invoice_1.action_post()
 
-        self.out_invoice_2 = self.env['account.move'].create({
-            'move_type': 'out_invoice',
-            'partner_id': self.partner_id.id,
-            'invoice_date': '2019-05-01',
-            'date': '2019-05-01',
-            'invoice_line_ids': [
-                (0, 0, {'name': 'line1', 'price_unit': 110.11, 'quantity': 400, 'tax_ids': self.tax_id.ids})
-            ],
-            'l10n_id_kode_transaksi': '01'
-        })
+        self.out_invoice_2 = self.env["account.move"].create(
+            {
+                "move_type": "out_invoice",
+                "partner_id": self.partner_id.id,
+                "invoice_date": "2019-05-01",
+                "date": "2019-05-01",
+                "invoice_line_ids": [
+                    (
+                        0,
+                        0,
+                        {
+                            "name": "line1",
+                            "price_unit": 110.11,
+                            "quantity": 400,
+                            "tax_ids": self.tax_id.ids,
+                        },
+                    )
+                ],
+                "l10n_id_kode_transaksi": "01",
+            }
+        )
         self.out_invoice_2.action_post()
 
     def test_efaktur_csv_output_1(self):
@@ -52,11 +95,11 @@ class TestIndonesianEfaktur(common.TransactionCase):
         """
         # to check the diff when test fails
 
-        efaktur_csv_output = self.out_invoice_1._generate_efaktur_invoice(',')
-        output_head = '%s%s%s' % (
-            _csv_row(FK_HEAD_LIST, ','),
-            _csv_row(LT_HEAD_LIST, ','),
-            _csv_row(OF_HEAD_LIST, ','),
+        efaktur_csv_output = self.out_invoice_1._generate_efaktur_invoice(",")
+        output_head = "%s%s%s" % (
+            _csv_row(FK_HEAD_LIST, ","),
+            _csv_row(LT_HEAD_LIST, ","),
+            _csv_row(OF_HEAD_LIST, ","),
         )
         # remaining lines
         line_4 = '"FK","01","0","0000000000001","5","2019","1/5/2019","12345","l10ntest","","100","10","0","","0","0","0","0","INV/2019/00001 12345","0"\n'
@@ -76,11 +119,11 @@ class TestIndonesianEfaktur(common.TransactionCase):
         invoice_line_unit_price will be 100, if we continue with the calculation of total price, it will be 100*400 = 40000
         eventhough the total is supposed to be 100.1*400 = 40040, there is a 40 discrepancy
         """
-        efaktur_csv_output = self.out_invoice_2._generate_efaktur_invoice(',')
-        output_head = '%s%s%s' % (
-            _csv_row(FK_HEAD_LIST, ','),
-            _csv_row(LT_HEAD_LIST, ','),
-            _csv_row(OF_HEAD_LIST, ','),
+        efaktur_csv_output = self.out_invoice_2._generate_efaktur_invoice(",")
+        output_head = "%s%s%s" % (
+            _csv_row(FK_HEAD_LIST, ","),
+            _csv_row(LT_HEAD_LIST, ","),
+            _csv_row(OF_HEAD_LIST, ","),
         )
         line_4 = '"FK","01","0","0000000000002","5","2019","1/5/2019","12345","l10ntest","","40040","4004","0","","0","0","0","0","INV/2019/00002 12345","0"\n'
         line_5 = '"OF","","","100","400.0","40040","0","40040","4004","0","0"\n'

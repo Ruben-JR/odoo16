@@ -5,7 +5,7 @@ from odoo import fields, models
 
 
 class Uom(models.Model):
-    _inherit = 'uom.uom'
+    _inherit = "uom.uom"
 
     def _unprotected_uom_xml_ids(self):
         # Override

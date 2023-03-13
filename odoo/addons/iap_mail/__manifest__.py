@@ -3,24 +3,24 @@
 
 
 {
-    'name': "IAP / Mail",
-    'summary': """Bridge between IAP and mail""",
-    'description': """Bridge between IAP and mail""",
-    'category': 'Hidden/Tools',
-    'version': '1.0',
-    'depends': [
-        'iap',
-        'mail',
+    "name": "IAP / Mail",
+    "summary": """Bridge between IAP and mail""",
+    "description": """Bridge between IAP and mail""",
+    "category": "Hidden/Tools",
+    "version": "1.0",
+    "depends": [
+        "iap",
+        "mail",
     ],
-    'installable': True,
-    'auto_install': True,
-    'data': [
-        'data/mail_templates.xml',
+    "installable": True,
+    "auto_install": True,
+    "data": [
+        "data/mail_templates.xml",
     ],
-    'assets': {
-        'web.assets_backend': [
-            'iap_mail/static/src/js/**/*',
+    "assets": {
+        "web.assets_backend": [
+            "iap_mail/static/src/js/**/*",
         ],
     },
-    'license': 'LGPL-3',
+    "license": "LGPL-3",
 }

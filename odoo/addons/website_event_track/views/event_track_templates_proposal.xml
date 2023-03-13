@@ -159,7 +159,7 @@
             <h4><b>Contact Information</b></h4>
             <div class="form-text text-muted mb16">
                 How can our team get in touch with you?
-            </div> 
+            </div>
             <div class="row mb-3">
                 <label class="col-form-label col-sm-auto" style="width: 200px">
                     <span for="contact_name">Name</span>
@@ -175,7 +175,7 @@
                 <label class="col-form-label col-sm-auto" for="contact_phone" style="width: 200px" >Phone</label>
                 <div class="col-sm"><input name="contact_phone" type="text" class="form-control o_wetrack_contact_mean o_wetrack_contact_phone_input"/></div>
             </div>
-        </div> 
+        </div>
     </div>
 </template>
 

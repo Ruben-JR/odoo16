@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* delivery
-# 
+#
 # Translators:
 # Atte Isopuro <atte.isopuro@web-veistamo.fi>, 2022
 # Timo Kekäläinen <timo.kekalainen@hotmail.com>, 2022
@@ -17,7 +17,7 @@
 # Tuomas Lyyra <tuomas.lyyra@legenda.fi>, 2022
 # Tuomo Aura <tuomo.aura@web-veistamo.fi>, 2022
 # Svante Suominen <svante.suominen@web-veistamo.fi>, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"

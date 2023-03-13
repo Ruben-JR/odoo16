@@ -256,7 +256,7 @@ _.escape = function escape(s) {
 // * Markup#replace => automatically escapes the replacements (difficult impl)
 
 // get a reference to the internalMarkup class from owl
-const _Markup = owl.markup('').constructor; 
+const _Markup = owl.markup('').constructor;
 _Markup.prototype[_.escapeMethod] = function () {
     return this;
 }

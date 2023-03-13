@@ -6,7 +6,7 @@
 
 - Payment with redirection flow.
 - Webhook.
-- Several payment methods including credit cards, chinese payment methods such as Alipay, and 
+- Several payment methods including credit cards, chinese payment methods such as Alipay, and
   [others](https://www.asiapay.com/payment.html#option).
 
 In addition, AsiaPay also allows to implement manual capture, refunds, express checkout, and

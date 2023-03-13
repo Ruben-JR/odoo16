@@ -29,6 +29,6 @@ tour.register('create_crm_team_tour', {
     run: () => {},
 }, {
     trigger: 'button.o_select_button',
-}, 
+},
     ...tour.stepUtils.saveForm()
 ]);

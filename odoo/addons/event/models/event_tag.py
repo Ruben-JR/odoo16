@@ -20,8 +20,8 @@ class EventTagCategory(models.Model):
         return (self.search([], order="sequence desc", limit=1).sequence or 0) + 1
 
     name = fields.Char("Name", required=True, translate=True)
-    sequence = fields.Integer('Sequence', default=_default_sequence)
-    tag_ids = fields.One2many('event.tag', 'category_id', string="Tags")
+    sequence = fields.Integer("Sequence", default=_default_sequence)
+    tag_ids = fields.One2many("event.tag", "category_id", string="Tags")
 
 
 class EventTag(models.Model):
@@ -33,9 +33,15 @@ class EventTag(models.Model):
         return randint(1, 11)
 
     name = fields.Char("Name", required=True, translate=True)
-    sequence = fields.Integer('Sequence', default=0)
-    category_id = fields.Many2one("event.tag.category", string="Category", required=True, ondelete='cascade')
-    category_sequence = fields.Integer(related='category_id.sequence', string='Category Sequence', store=True)
+    sequence = fields.Integer("Sequence", default=0)
+    category_id = fields.Many2one(
+        "event.tag.category", string="Category", required=True, ondelete="cascade"
+    )
+    category_sequence = fields.Integer(
+        related="category_id.sequence", string="Category Sequence", store=True
+    )
     color = fields.Integer(
-        string='Color Index', default=lambda self: self._default_color(),
-        help='Tag color. No color means no display in kanban or front-end, to distinguish internal tags from public categorization tags.')
+        string="Color Index",
+        default=lambda self: self._default_color(),
+        help="Tag color. No color means no display in kanban or front-end, to distinguish internal tags from public categorization tags.",
+    )

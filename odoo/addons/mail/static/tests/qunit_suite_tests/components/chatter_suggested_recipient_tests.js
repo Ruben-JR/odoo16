@@ -104,14 +104,14 @@ QUnit.test("suggested recipient without partner are unchecked when closing the d
             if (document.querySelector(selector)) {
                 return resolve(document.querySelector(selector));
             }
-    
+
             const observer = new MutationObserver(mutations => {
                 if (document.querySelector(selector)) {
                     resolve(document.querySelector(selector));
                     observer.disconnect();
                 }
             });
-    
+
             observer.observe(document.body, {
                 childList: true,
                 subtree: true

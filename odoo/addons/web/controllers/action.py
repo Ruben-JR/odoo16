@@ -9,25 +9,24 @@ _logger = logging.getLogger(__name__)
 
 
 class Action(Controller):
-
-    @route('/web/action/load', type='json', auth="user")
+    @route("/web/action/load", type="json", auth="user")
     def load(self, action_id, additional_context=None):
-        Actions = request.env['ir.actions.actions']
+        Actions = request.env["ir.actions.actions"]
         value = False
         try:
             action_id = int(action_id)
         except ValueError:
             try:
                 action = request.env.ref(action_id)
-                assert action._name.startswith('ir.actions.')
+                assert action._name.startswith("ir.actions.")
                 action_id = action.id
             except Exception:
-                action_id = 0   # force failed read
+                action_id = 0  # force failed read
 
-        base_action = Actions.browse([action_id]).sudo().read(['type'])
+        base_action = Actions.browse([action_id]).sudo().read(["type"])
         if base_action:
-            action_type = base_action[0]['type']
-            if action_type == 'ir.actions.report':
+            action_type = base_action[0]["type"]
+            if action_type == "ir.actions.report":
                 request.update_context(bin_size=True)
             if additional_context:
                 request.update_context(**additional_context)
@@ -36,8 +35,8 @@ class Action(Controller):
                 value = clean_action(action[0], env=request.env)
         return value
 
-    @route('/web/action/run', type='json', auth="user")
+    @route("/web/action/run", type="json", auth="user")
     def run(self, action_id):
-        action = request.env['ir.actions.server'].browse([action_id])
+        action = request.env["ir.actions.server"].browse([action_id])
         result = action.run()
         return clean_action(result, env=action.env) if result else False

@@ -4,9 +4,8 @@ from odoo.exceptions import UserError
 from odoo.tests.common import TransactionCase, tagged
 
 
-@tagged('post_install_l10n', 'post_install', '-at_install')
+@tagged("post_install_l10n", "post_install", "-at_install")
 class TestResPartner(TransactionCase):
-
     def test_validate_fiscal_code(self):
         valid_codes = [
             "AORTHV05P30V295L",
@@ -49,13 +48,17 @@ class TestResPartner(TransactionCase):
             "45692151219",
         ]
 
-        partners = self.env['res.partner']
+        partners = self.env["res.partner"]
 
         for i, code in enumerate(invalid_codes):
             with self.assertRaises(UserError):
-                partners += self.env['res.partner'].create({'name': f'partner_{i}', 'l10n_it_codice_fiscale': code})
+                partners += self.env["res.partner"].create(
+                    {"name": f"partner_{i}", "l10n_it_codice_fiscale": code}
+                )
 
         for i, code in enumerate(valid_codes):
-            partners += self.env['res.partner'].create({'name': f'partner_{i}', 'l10n_it_codice_fiscale': code})
+            partners += self.env["res.partner"].create(
+                {"name": f"partner_{i}", "l10n_it_codice_fiscale": code}
+            )
 
         self.assertEqual(len(partners), len(valid_codes))

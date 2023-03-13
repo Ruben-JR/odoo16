@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* delivery
-# 
+#
 # Translators:
 # Rastislav Brencic <rastislav.brencic@azet.sk>, 2022
 # SAKodoo <sak@odoo.com>, 2022
 # Jan Prokop, 2022
 # Martin Trigaux, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"

@@ -104,7 +104,6 @@ def send_file(
     if isinstance(path_or_file, (os.PathLike, str)) or hasattr(
         path_or_file, "__fspath__"
     ):
-
         # Flask will pass app.root_path, allowing its send_file wrapper
         # to not have to deal with paths.
         if _root_path is not None:

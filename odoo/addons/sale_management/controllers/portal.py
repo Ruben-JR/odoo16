@@ -7,9 +7,8 @@ from odoo.addons.sale.controllers import portal
 
 
 class CustomerPortal(portal.CustomerPortal):
-
     def _get_order_portal_content(self, order_sudo):
-        """ Return the order portal details.
+        """Return the order portal details.
 
         :return: rendered html of the order portal details
         :rtype: dict
@@ -17,9 +16,23 @@ class CustomerPortal(portal.CustomerPortal):
         # TODO remove me in master
         return
 
-    @route(['/my/orders/<int:order_id>/update_line_dict'], type='json', auth="public", website=True)
-    def portal_quote_option_update(self, order_id, line_id, access_token=None, remove=False, unlink=False, input_quantity=False, **kwargs):
-        """ Update the quantity or Remove an optional SOline from a SO.
+    @route(
+        ["/my/orders/<int:order_id>/update_line_dict"],
+        type="json",
+        auth="public",
+        website=True,
+    )
+    def portal_quote_option_update(
+        self,
+        order_id,
+        line_id,
+        access_token=None,
+        remove=False,
+        unlink=False,
+        input_quantity=False,
+        **kwargs
+    ):
+        """Update the quantity or Remove an optional SOline from a SO.
 
         :param int order_id: `sale.order` id
         :param int line_id: `sale.order.line` id
@@ -32,14 +45,16 @@ class CustomerPortal(portal.CustomerPortal):
         :rtype: dict
         """
         try:
-            order_sudo = self._document_check_access('sale.order', order_id, access_token=access_token)
+            order_sudo = self._document_check_access(
+                "sale.order", order_id, access_token=access_token
+            )
         except (AccessError, MissingError):
-            return request.redirect('/my')
+            return request.redirect("/my")
 
-        if order_sudo.state not in ('draft', 'sent'):
+        if order_sudo.state not in ("draft", "sent"):
             return False
 
-        order_line = request.env['sale.order.line'].sudo().browse(int(line_id)).exists()
+        order_line = request.env["sale.order.line"].sudo().browse(int(line_id)).exists()
         if not order_line or order_line.order_id != order_sudo:
             return False
 
@@ -60,9 +75,14 @@ class CustomerPortal(portal.CustomerPortal):
 
         return self._get_order_portal_content(order_sudo)
 
-    @route(["/my/orders/<int:order_id>/add_option/<int:option_id>"], type='json', auth="public", website=True)
+    @route(
+        ["/my/orders/<int:order_id>/add_option/<int:option_id>"],
+        type="json",
+        auth="public",
+        website=True,
+    )
     def portal_quote_add_option(self, order_id, option_id, access_token=None, **kwargs):
-        """ Add the specified option to the specified order.
+        """Add the specified option to the specified order.
 
         :param int order_id: `sale.order` id
         :param int option_id: `sale.order.option` id
@@ -72,11 +92,13 @@ class CustomerPortal(portal.CustomerPortal):
         :rtype: dict
         """
         try:
-            order_sudo = self._document_check_access('sale.order', order_id, access_token=access_token)
+            order_sudo = self._document_check_access(
+                "sale.order", order_id, access_token=access_token
+            )
         except (AccessError, MissingError):
-            return request.redirect('/my')
+            return request.redirect("/my")
 
-        option_sudo = request.env['sale.order.option'].sudo().browse(option_id)
+        option_sudo = request.env["sale.order.option"].sudo().browse(option_id)
 
         if order_sudo != option_sudo.order_id:
             return request.redirect(order_sudo.get_portal_url())

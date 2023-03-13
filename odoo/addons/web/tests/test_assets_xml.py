@@ -16,12 +16,13 @@ from odoo.addons.base.models.assetsbundle import AssetsBundle, WebAsset
 
 _logger = logging.getLogger(__name__)
 
+
 class TestStaticInheritanceCommon(odoo.tests.TransactionCase):
     def setUp(self):
         super().setUp()
 
         self.template_files = {
-            '/module_1/static/xml/file_1.xml': """
+            "/module_1/static/xml/file_1.xml": """
                 <templates id="template" xml:space="preserve">
                     <form t-name="template_1_1" random-attr="gloria">
                         <span>Ho !</span>
@@ -33,7 +34,7 @@ class TestStaticInheritanceCommon(odoo.tests.TransactionCase):
                     </t>
                 </templates>
             """,
-            '/module_2/static/xml/file_1.xml': """
+            "/module_2/static/xml/file_1.xml": """
                 <templates id="template" xml:space="preserve">
                     <form t-name="template_2_1" t-inherit="module_1.template_1_1" t-inherit-mode="primary">
                         <xpath expr="//div[1]" position="after">
@@ -57,25 +58,29 @@ class TestStaticInheritanceCommon(odoo.tests.TransactionCase):
                 </templates>
             """,
         }
-        self._patch = patch.object(WebAsset, '_fetch_content', lambda asset: self.template_files[asset.url])
+        self._patch = patch.object(
+            WebAsset, "_fetch_content", lambda asset: self.template_files[asset.url]
+        )
         self.startPatcher(self._patch)
 
     def renderBundle(self, debug=False):
         files = []
         for url in self.template_files:
-            atype = 'text/xml'
-            if '.js' in url:
-                atype = 'text/javascript'
-            files.append({
-                'atype': atype,
-                'url': url,
-                'filename': url,
-                'content': None,
-                'media': None,
-            })
-        asset = AssetsBundle('web.test_bundle', files, env=self.env, css=False, js=True)
+            atype = "text/xml"
+            if ".js" in url:
+                atype = "text/javascript"
+            files.append(
+                {
+                    "atype": atype,
+                    "url": url,
+                    "filename": url,
+                    "content": None,
+                    "media": None,
+                }
+            )
+        asset = AssetsBundle("web.test_bundle", files, env=self.env, css=False, js=True)
         # to_node return the files descriptions and generate attachments.
-        asset.to_node(css=False, js=False, debug=debug and 'assets' or '')
+        asset.to_node(css=False, js=False, debug=debug and "assets" or "")
         content = asset.xml(show_inherit_info=debug)
         return f'<templates xml:space="preserve">\n{content}\n</templates>'
 
@@ -85,7 +90,8 @@ class TestStaticInheritanceCommon(odoo.tests.TransactionCase):
         self.assertTrue(expected)
         self.assertEqual(etree.fromstring(output), etree.fromstring(expected))
 
-@tagged('assets_bundle', 'static_templates')
+
+@tagged("assets_bundle", "static_templates")
 class TestStaticInheritance(TestStaticInheritanceCommon):
     # Actual test cases
     def test_static_with_debug_mode(self):
@@ -150,7 +156,7 @@ class TestStaticInheritance(TestStaticInheritanceCommon):
 
     def test_static_inheritance_02(self):
         self.template_files = {
-            '/module_1/static/xml/file_1.xml': """
+            "/module_1/static/xml/file_1.xml": """
                 <templates id="template" xml:space="preserve">
                     <form t-name="template_1_1" random-attr="gloria">
                         <div>At first I was afraid</div>
@@ -181,7 +187,7 @@ class TestStaticInheritance(TestStaticInheritanceCommon):
 
     def test_static_inheritance_03(self):
         self.template_files = {
-            '/module_1/static/xml/file_1.xml': '''
+            "/module_1/static/xml/file_1.xml": """
                 <templates id="template" xml:space="preserve">
                     <form t-name="template_1_1">
                         <div>At first I was afraid</div>
@@ -196,7 +202,7 @@ class TestStaticInheritance(TestStaticInheritanceCommon):
                         <xpath expr="//div[2]" position="replace"/>
                     </form>
                 </templates>
-            '''
+            """
         }
         expected = """
             <templates xml:space="preserve">
@@ -219,16 +225,15 @@ class TestStaticInheritance(TestStaticInheritanceCommon):
 
     def test_static_inheritance_in_same_module(self):
         self.template_files = {
-            '/module_1/static/xml/file_1.xml': '''
+            "/module_1/static/xml/file_1.xml": """
                 <templates id="template" xml:space="preserve">
                     <form t-name="template_1_1">
                         <div>At first I was afraid</div>
                         <div>Kept thinking I could never live without you by my side</div>
                     </form>
                 </templates>
-            ''',
-
-            '/module_1/static/xml/file_2.xml': '''
+            """,
+            "/module_1/static/xml/file_2.xml": """
                 <templates id="template" xml:space="preserve">
                     <form t-name="template_1_2" t-inherit="template_1_1" t-inherit-mode="primary">
                         <xpath expr="//div[1]" position="after">
@@ -236,7 +241,7 @@ class TestStaticInheritance(TestStaticInheritanceCommon):
                         </xpath>
                     </form>
                 </templates>
-            '''
+            """,
         }
         expected = """
             <templates xml:space="preserve">
@@ -255,7 +260,7 @@ class TestStaticInheritance(TestStaticInheritanceCommon):
 
     def test_static_inheritance_in_same_file(self):
         self.template_files = {
-            '/module_1/static/xml/file_1.xml': '''
+            "/module_1/static/xml/file_1.xml": """
                 <templates id="template" xml:space="preserve">
                     <form t-name="template_1_1">
                         <div>At first I was afraid</div>
@@ -267,7 +272,7 @@ class TestStaticInheritance(TestStaticInheritanceCommon):
                         </xpath>
                     </form>
                 </templates>
-            ''',
+            """,
         }
         expected = """
             <templates xml:space="preserve">
@@ -286,7 +291,7 @@ class TestStaticInheritance(TestStaticInheritanceCommon):
 
     def test_static_inherit_extended_template(self):
         self.template_files = {
-            '/module_1/static/xml/file_1.xml': '''
+            "/module_1/static/xml/file_1.xml": """
                 <templates id="template" xml:space="preserve">
                     <form t-name="template_1_1">
                         <div>At first I was afraid</div>
@@ -303,7 +308,7 @@ class TestStaticInheritance(TestStaticInheritanceCommon):
                         </xpath>
                     </form>
                 </templates>
-            ''',
+            """,
         }
         expected = """
             <templates xml:space="preserve">
@@ -324,16 +329,15 @@ class TestStaticInheritance(TestStaticInheritanceCommon):
 
     def test_sibling_extension(self):
         self.template_files = {
-            '/module_1/static/xml/file_1.xml': '''
+            "/module_1/static/xml/file_1.xml": """
                 <templates id="template" xml:space="preserve">
                     <form t-name="template_1_1">
                         <div>I am a man of constant sorrow</div>
                         <div>I've seen trouble all my days</div>
                     </form>
                 </templates>
-            ''',
-
-            '/module_2/static/xml/file_1.xml': '''
+            """,
+            "/module_2/static/xml/file_1.xml": """
                 <templates id="template" xml:space="preserve">
                     <form t-name="template_2_1" t-inherit="module_1.template_1_1" t-inherit-mode="extension">
                         <xpath expr="//div[1]" position="after">
@@ -341,9 +345,8 @@ class TestStaticInheritance(TestStaticInheritanceCommon):
                         </xpath>
                     </form>
                 </templates>
-            ''',
-
-            '/module_3/static/xml/file_1.xml': '''
+            """,
+            "/module_3/static/xml/file_1.xml": """
                 <templates id="template" xml:space="preserve">
                     <form t-name="template_3_1" t-inherit="module_1.template_1_1" t-inherit-mode="extension">
                         <xpath expr="//div[2]" position="after">
@@ -351,7 +354,7 @@ class TestStaticInheritance(TestStaticInheritanceCommon):
                         </xpath>
                     </form>
                 </templates>
-            '''
+            """,
         }
         expected = """
             <templates xml:space="preserve">
@@ -368,19 +371,21 @@ class TestStaticInheritance(TestStaticInheritanceCommon):
     def test_static_misordered_modules(self):
         files = self.template_files
         self.template_files = {
-            '/module_2/static/xml/file_1.xml': files['/module_2/static/xml/file_1.xml'],
-            '/module_1/static/xml/file_1.xml': files['/module_1/static/xml/file_1.xml'],
+            "/module_2/static/xml/file_1.xml": files["/module_2/static/xml/file_1.xml"],
+            "/module_1/static/xml/file_1.xml": files["/module_1/static/xml/file_1.xml"],
         }
         with self.assertRaises(ValueError) as ve:
             self.renderBundle(debug=False)
 
         self.assertEqual(
             str(ve.exception),
-            "Module 'module_1' not loaded or inexistent (try to inherit 'template_1_1'), or templates of addon being loaded 'module_2' are misordered (template 'template_2_1')"
+            "Module 'module_1' not loaded or inexistent (try to inherit 'template_1_1'), or templates of addon being loaded 'module_2' are misordered (template 'template_2_1')",
         )
 
     def test_static_misordered_templates(self):
-        self.template_files['/module_2/static/xml/file_1.xml'] = """
+        self.template_files[
+            "/module_2/static/xml/file_1.xml"
+        ] = """
             <templates id="template" xml:space="preserve">
                 <form t-name="template_2_1" t-inherit="module_2.template_2_2" t-inherit-mode="primary">
                     <xpath expr="//div[1]" position="after">
@@ -405,7 +410,7 @@ class TestStaticInheritance(TestStaticInheritanceCommon):
         Replacing a template's meta definition in place doesn't keep the original attrs of the template
         """
         self.template_files = {
-            '/module_1/static/xml/file_1.xml': """
+            "/module_1/static/xml/file_1.xml": """
                 <templates id="template" xml:space="preserve">
                     <form t-name="template_1_1" random-attr="gloria">
                         <div>At first I was afraid</div>
@@ -429,7 +434,7 @@ class TestStaticInheritance(TestStaticInheritanceCommon):
 
     def test_replace_in_debug_mode2(self):
         self.template_files = {
-            '/module_1/static/xml/file_1.xml': """
+            "/module_1/static/xml/file_1.xml": """
                 <templates id="template" xml:space="preserve">
                     <form t-name="template_1_1" random-attr="gloria">
                         <div>At first I was afraid</div>
@@ -463,7 +468,7 @@ class TestStaticInheritance(TestStaticInheritanceCommon):
         This doesn't mean anything in terms of the business of template inheritance
         But it is in the XPATH specs"""
         self.template_files = {
-            '/module_1/static/xml/file_1.xml': """
+            "/module_1/static/xml/file_1.xml": """
                 <templates id="template" xml:space="preserve">
                     <form t-name="template_1_1" random-attr="gloria">
                         <div>At first I was afraid</div>
@@ -496,7 +501,7 @@ class TestStaticInheritance(TestStaticInheritanceCommon):
         Root node IS targeted by //NODE_TAG in xpath
         """
         self.template_files = {
-            '/module_1/static/xml/file_1.xml': """
+            "/module_1/static/xml/file_1.xml": """
                 <templates id="template" xml:space="preserve">
                     <form t-name="template_1_1" random-attr="gloria">
                         <div>At first I was afraid</div>
@@ -526,7 +531,7 @@ class TestStaticInheritance(TestStaticInheritanceCommon):
         Root node IS targeted by //NODE_TAG in xpath
         """
         self.template_files = {
-            '/module_1/static/xml/file_1.xml': """
+            "/module_1/static/xml/file_1.xml": """
                 <templates id="template" xml:space="preserve">
                     <form t-name="template_1_1" random-attr="gloria">
                         <div>At first I was afraid</div>
@@ -559,7 +564,7 @@ class TestStaticInheritance(TestStaticInheritanceCommon):
         and new ones if one is to replace its defining root node
         """
         self.template_files = {
-            '/module_1/static/xml/file_1.xml': """
+            "/module_1/static/xml/file_1.xml": """
                 <templates id="template" xml:space="preserve">
                     <form t-name="template_1_1" random-attr="gloria">
                         <div>At first I was afraid</div>
@@ -591,7 +596,7 @@ class TestStaticInheritance(TestStaticInheritanceCommon):
     def test_replace_in_nodebug_mode1(self):
         """Comments already in the arch are ignored"""
         self.template_files = {
-            '/module_1/static/xml/file_1.xml': """
+            "/module_1/static/xml/file_1.xml": """
                 <templates id="template" xml:space="preserve">
                     <form t-name="template_1_1" random-attr="gloria">
                         <div>At first I was afraid</div>
@@ -622,7 +627,7 @@ class TestStaticInheritance(TestStaticInheritanceCommon):
 
     def test_inherit_from_dotted_tname_1(self):
         self.template_files = {
-            '/module_1/static/xml/file_1.xml': """
+            "/module_1/static/xml/file_1.xml": """
                 <templates id="template" xml:space="preserve">
                     <form t-name="module_1.template_1_1.dot" random-attr="gloria">
                         <div>At first I was afraid</div>
@@ -653,7 +658,7 @@ class TestStaticInheritance(TestStaticInheritanceCommon):
 
     def test_inherit_from_dotted_tname_2(self):
         self.template_files = {
-            '/module_1/static/xml/file_1.xml': """
+            "/module_1/static/xml/file_1.xml": """
                 <templates id="template" xml:space="preserve">
                     <form t-name="template_1_1.dot" random-attr="gloria">
                         <div>At first I was afraid</div>
@@ -684,7 +689,7 @@ class TestStaticInheritance(TestStaticInheritanceCommon):
 
     def test_inherit_from_dotted_tname_2bis(self):
         self.template_files = {
-            '/module_1/static/xml/file_1.xml': """
+            "/module_1/static/xml/file_1.xml": """
                 <templates id="template" xml:space="preserve">
                     <form t-name="template_1_1.dot" random-attr="gloria">
                         <div>At first I was afraid</div>
@@ -715,7 +720,7 @@ class TestStaticInheritance(TestStaticInheritanceCommon):
 
     def test_inherit_from_dotted_tname_2ter(self):
         self.template_files = {
-            '/module_1/static/xml/file_1.xml': """
+            "/module_1/static/xml/file_1.xml": """
                 <templates id="template" xml:space="preserve">
                     <form t-name="module_1" random-attr="gloria">
                         <div>At first I was afraid</div>
@@ -746,15 +751,14 @@ class TestStaticInheritance(TestStaticInheritanceCommon):
 
     def test_inherit_from_dotted_tname_3(self):
         self.template_files = {
-            '/module_1/static/xml/file_1.xml': """
+            "/module_1/static/xml/file_1.xml": """
                 <templates id="template" xml:space="preserve">
                     <form t-name="module_1.template_1_1.dot" random-attr="gloria">
                         <div>At first I was afraid</div>
                     </form>
                 </templates>
                 """,
-
-            '/module_2/static/xml/file_1.xml': """
+            "/module_2/static/xml/file_1.xml": """
                 <templates id="template" xml:space="preserve">
                     <t t-name="template_2_1" t-inherit="module_1.template_1_1.dot" t-inherit-mode="primary">
                         <xpath expr="." position="replace">
@@ -765,7 +769,7 @@ class TestStaticInheritance(TestStaticInheritanceCommon):
                         </xpath>
                     </t>
                 </templates>
-            """
+            """,
         }
         expected = """
             <templates xml:space="preserve">
@@ -781,7 +785,9 @@ class TestStaticInheritance(TestStaticInheritanceCommon):
         self.assertXMLEqual(self.renderBundle(debug=False), expected)
 
     def test_inherit_and_qweb_extend(self):
-        self.template_files['/module_1/static/xml/file_2.xml'] = """
+        self.template_files[
+            "/module_1/static/xml/file_2.xml"
+        ] = """
                 <templates id="template" xml:space="preserve">
                     <t t-name="template_qw_1">
                         <div>111</div>
@@ -839,9 +845,16 @@ class TestStaticInheritance(TestStaticInheritanceCommon):
         self.assertXMLEqual(self.renderBundle(debug=False), expected)
 
 
-@tagged('-standard', 'assets_bundle', 'static_templates_performance')
+@tagged("-standard", "assets_bundle", "static_templates_performance")
 class TestStaticInheritancePerformance(TestStaticInheritanceCommon):
-    def _sick_script(self, nMod, nFilePerMod, nTemplatePerFile, stepInheritInModule=2, stepInheritPreviousModule=3):
+    def _sick_script(
+        self,
+        nMod,
+        nFilePerMod,
+        nTemplatePerFile,
+        stepInheritInModule=2,
+        stepInheritPreviousModule=3,
+    ):
         """
         Make a sick amount of templates to test perf
         nMod modules
@@ -852,15 +865,19 @@ class TestStaticInheritancePerformance(TestStaticInheritanceCommon):
         number_templates = 0
         for m in range(nMod):
             for f in range(nFilePerMod):
-                mname = 'mod_%s' % m
-                fname = 'mod_%s/folder/file_%s.xml' % (m, f)
-                self.asset_paths.append((fname, mname, 'bundle_1'))
+                mname = "mod_%s" % m
+                fname = "mod_%s/folder/file_%s.xml" % (m, f)
+                self.asset_paths.append((fname, mname, "bundle_1"))
 
                 _file = '<templates id="template" xml:space="preserve">'
 
                 for t in range(nTemplatePerFile):
-                    _template = ''
-                    if t % stepInheritInModule or t % stepInheritPreviousModule or t == 0:
+                    _template = ""
+                    if (
+                        t % stepInheritInModule
+                        or t % stepInheritPreviousModule
+                        or t == 0
+                    ):
                         _template += """
                             <div t-name="template_%(t_number)s_mod_%(m_number)s">
                                 <div>Parent</div>
@@ -893,13 +910,13 @@ class TestStaticInheritancePerformance(TestStaticInheritanceCommon):
 
                     _template_number = 1000 * f + t
                     _file += _template % {
-                        't_number': _template_number,
-                        'm_number': m,
-                        't_inherit': _template_number - 1,
-                        't_module_inherit': _template_number,
-                        'm_module_inherit': m - 1,
+                        "t_number": _template_number,
+                        "m_number": m,
+                        "t_inherit": _template_number - 1,
+                        "t_module_inherit": _template_number,
+                        "m_module_inherit": m - 1,
                     }
-                _file += '</templates>'
+                _file += "</templates>"
 
                 self.template_files[fname] = _file
         self.assertEqual(number_templates, nMod * nFilePerMod * nTemplatePerFile)
@@ -913,7 +930,10 @@ class TestStaticInheritancePerformance(TestStaticInheritanceCommon):
         contents = self.renderBundle(debug=False)
         after = datetime.now()
         delta2500 = after - before
-        _logger.runbot('Static Templates Inheritance: 2500 templates treated in %s seconds' % delta2500.total_seconds())
+        _logger.runbot(
+            "Static Templates Inheritance: 2500 templates treated in %s seconds"
+            % delta2500.total_seconds()
+        )
 
         whole_tree = etree.fromstring(contents)
         self.assertEqual(len(whole_tree), nMod * nFilePerMod * nTemplatePerFile)
@@ -928,6 +948,11 @@ class TestStaticInheritancePerformance(TestStaticInheritanceCommon):
         delta25000 = after - before
 
         time_ratio = delta25000.total_seconds() / delta2500.total_seconds()
-        _logger.runbot('Static Templates Inheritance: 25000 templates treated in %s seconds' % delta25000.total_seconds())
-        _logger.runbot('Static Templates Inheritance: Computed linearity ratio: %s' % time_ratio)
+        _logger.runbot(
+            "Static Templates Inheritance: 25000 templates treated in %s seconds"
+            % delta25000.total_seconds()
+        )
+        _logger.runbot(
+            "Static Templates Inheritance: Computed linearity ratio: %s" % time_ratio
+        )
         self.assertLessEqual(time_ratio, 14)

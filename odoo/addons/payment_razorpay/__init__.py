@@ -7,8 +7,8 @@ from odoo.addons.payment import setup_provider, reset_payment_provider
 
 
 def post_init_hook(cr, registry):
-    setup_provider(cr, registry, 'razorpay')
+    setup_provider(cr, registry, "razorpay")
 
 
 def uninstall_hook(cr, registry):
-    reset_payment_provider(cr, registry, 'razorpay')
+    reset_payment_provider(cr, registry, "razorpay")

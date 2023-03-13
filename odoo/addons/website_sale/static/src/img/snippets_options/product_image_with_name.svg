@@ -24,7 +24,7 @@
             <rect width="50" height="50" fill="#9ccde4"/>
             <rect width="40" height="2" x="5" y="58" fill="#fff"/>
         </g>
-    </defs> 
+    </defs>
     <use href="#product_image_with_name_item" y="5" x="5"/>
     <use href="#product_image_with_name_item" y="5" x="65"/>
     <use href="#product_image_with_name_item" y="5" x="125"/>

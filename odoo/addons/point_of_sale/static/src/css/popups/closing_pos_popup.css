@@ -22,7 +22,7 @@
 }
 
 .pos .close-pos-popup .total-orders .amount {
-    display: inline-block; 
+    display: inline-block;
 }
 
 .notes-container {
@@ -44,7 +44,7 @@
     word-break: break-word;
 }
 
-.pos .close-pos-popup .closing-notes { 
+.pos .close-pos-popup .closing-notes {
     font-style: italic;
     font-weight: 350;
     box-sizing: border-box;

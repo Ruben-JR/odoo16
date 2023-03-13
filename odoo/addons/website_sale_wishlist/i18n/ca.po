@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* website_sale_wishlist
-# 
+#
 # Translators:
 # RGB Consulting <odoo@rgbconsulting.com>, 2022
 # Sandra Franch <sandra.franch@upc.edu>, 2022
@@ -12,7 +12,7 @@
 # Quim - eccit <quim@eccit.com>, 2022
 # Josep Anton Belchi, 2022
 # Ivan Espinola, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.5alpha1\n"

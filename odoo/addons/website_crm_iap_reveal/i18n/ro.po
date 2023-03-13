@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* website_crm_iap_reveal
-# 
+#
 # Translators:
 # sharkutz <sharkutz4life@yahoo.com>, 2022
 # Cozmin Candea <office@terrabit.ro>, 2022
@@ -10,7 +10,7 @@
 # Hongu Cosmin <cosmin513@gmail.com>, 2022
 # Martin Trigaux, 2022
 # Claudia Baisan, 2023
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta\n"

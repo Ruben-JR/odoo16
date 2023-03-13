@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* mrp_account
-# 
+#
 # Translators:
 # Reinaldo Ramos <reinaldo.ramos@arxi.pt>, 2022
 # Marcelo Pereira <marcelo.pereira@arxi.pt>, 2022
@@ -10,7 +10,7 @@
 # Luiz Fernando <lfpsgs@outlook.com>, 2022
 # Manuela Silva <mmsrs@sky.com>, 2022
 # Martin Trigaux, 2023
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"

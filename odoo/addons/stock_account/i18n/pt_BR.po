@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* stock_account
-# 
+#
 # Translators:
 # Éder Brito <britoederr@gmail.com>, 2022
 # Luis Felipe Miléo <mileo@kmee.com.br>, 2022
 # Nikole Torrezam, 2022
 # Martin Trigaux, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"

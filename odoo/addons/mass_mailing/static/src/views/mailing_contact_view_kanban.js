@@ -25,4 +25,4 @@ registry.category('views').add('mailing_contact_kanban', {
     ...kanbanView,
     Controller: MailingContactController,
     buttonTemplate: 'MailingContactKanbanView.buttons',
-}); 
+});

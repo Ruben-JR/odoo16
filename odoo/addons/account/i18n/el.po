@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * account
-# 
+#
 # Translators:
 # Stelios Steiakakis <fs_corpse@yahoo.gr>, 2019
 # Fotios Tragopoulos <tragopoulos@icloud.com>, 2019
@@ -15,7 +15,7 @@
 # Martin Trigaux, 2019
 # Kostas Goutoudis <goutoudis@gmail.com>, 2019
 # George Tarasidis <george_tarasidis@yahoo.com>, 2019
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.1\n"

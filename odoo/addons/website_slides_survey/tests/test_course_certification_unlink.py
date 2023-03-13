@@ -11,26 +11,31 @@ class TestSurvey(SlidesCase):
     def setUp(self):
         super(TestSurvey, self).setUp()
 
-        self.survey = self.env['survey.survey'].create({'title': 'TestSurvey'})
-        self.survey2 = self.env['survey.survey'].create({'title': 'TestSurvey'})
+        self.survey = self.env["survey.survey"].create({"title": "TestSurvey"})
+        self.survey2 = self.env["survey.survey"].create({"title": "TestSurvey"})
 
-    @users('user_manager')
+    @users("user_manager")
     def test_unlink(self):
-        [certification, _dummy] = self.env['slide.slide'].create([{
-            'name': 'Certification',
-            'slide_type': 'certification',
-            'channel_id': self.channel.id,
-            'survey_id': self.survey.id,
-        }, {
-            'name': 'Second Certification',
-            'slide_type': 'certification',
-            'channel_id': self.channel.id,
-            'survey_id': self.survey2.id,
-        }])
+        [certification, _dummy] = self.env["slide.slide"].create(
+            [
+                {
+                    "name": "Certification",
+                    "slide_type": "certification",
+                    "channel_id": self.channel.id,
+                    "survey_id": self.survey.id,
+                },
+                {
+                    "name": "Second Certification",
+                    "slide_type": "certification",
+                    "channel_id": self.channel.id,
+                    "survey_id": self.survey2.id,
+                },
+            ]
+        )
 
         with self.assertRaises(
             ValidationError,
-            msg="Should raise when trying to unlink a survey linked to courses"
+            msg="Should raise when trying to unlink a survey linked to courses",
         ):
             (self.survey | self.survey2).unlink()
 

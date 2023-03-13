@@ -6,7 +6,7 @@
         <field name="name">Régimen nacional</field>
         <field name="auto_apply" eval="True"/>
         <field name="vat_required" eval="True"/>
-        <field name="country_id" ref="base.ec"/> 
+        <field name="country_id" ref="base.ec"/>
     </record>
     <record id="fp_foreign" model="account.fiscal.position.template">
         <field name="sequence">20</field>
@@ -34,5 +34,5 @@
         <field name="tax_src_id" ref="l10n_ec.tax_vat_415_services"/>
         <field name="tax_dest_id" ref="l10n_ec.tax_vat_417"/>
         <field name="position_id" ref="fp_foreign"/>
-    </record>    
+    </record>
 </odoo>

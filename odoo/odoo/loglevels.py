@@ -3,22 +3,23 @@
 
 import sys
 
-LOG_NOTSET = 'notset'
-LOG_DEBUG = 'debug'
-LOG_INFO = 'info'
-LOG_WARNING = 'warn'
-LOG_ERROR = 'error'
-LOG_CRITICAL = 'critical'
+LOG_NOTSET = "notset"
+LOG_DEBUG = "debug"
+LOG_INFO = "info"
+LOG_WARNING = "warn"
+LOG_ERROR = "error"
+LOG_CRITICAL = "critical"
 
 # TODO get_encodings, ustr and exception_to_unicode were originally from tools.misc.
 # There are here until we refactor tools so that this module doesn't depends on tools.
 
-def get_encodings(hint_encoding='utf-8'):
+
+def get_encodings(hint_encoding="utf-8"):
     fallbacks = {
-        'latin1': 'latin9',
-        'iso-8859-1': 'iso8859-15',
-        'iso-8859-8-i': 'iso8859-8',
-        'cp1252': '1252',
+        "latin1": "latin9",
+        "iso-8859-1": "iso8859-15",
+        "iso-8859-8-i": "iso8859-8",
+        "cp1252": "1252",
     }
     if hint_encoding:
         yield hint_encoding
@@ -26,22 +27,26 @@ def get_encodings(hint_encoding='utf-8'):
             yield fallbacks[hint_encoding.lower()]
 
     # some defaults (also taking care of pure ASCII)
-    for charset in ['utf8','latin1']:
+    for charset in ["utf8", "latin1"]:
         if not hint_encoding or (charset.lower() != hint_encoding.lower()):
             yield charset
 
     from locale import getpreferredencoding
+
     prefenc = getpreferredencoding()
-    if prefenc and prefenc.lower() != 'utf-8':
+    if prefenc and prefenc.lower() != "utf-8":
         yield prefenc
         prefenc = fallbacks.get(prefenc.lower())
         if prefenc:
             yield prefenc
 
+
 # not using pycompat to avoid circular import: pycompat is in tools much of
 # which comes back to import loglevels
-text_type = type(u'')
-def ustr(value, hint_encoding='utf-8', errors='strict'):
+text_type = type("")
+
+
+def ustr(value, hint_encoding="utf-8", errors="strict"):
     """This method is similar to the builtin `unicode`, except
     that it may try multiple encodings to find one that works
     for decoding `value`, and defaults to 'utf-8' first.
@@ -70,7 +75,6 @@ def ustr(value, hint_encoding='utf-8', errors='strict'):
     # special short-circuit for str, as we still needs to support
     # str subclasses such as `odoo.tools.unquote`
     if ttype is bytes or issubclass(ttype, bytes):
-
         # try hint_encoding first, avoids call to get_encoding()
         # for the most common case
         try:
@@ -92,13 +96,13 @@ def ustr(value, hint_encoding='utf-8', errors='strict'):
     try:
         return text_type(value)
     except Exception:
-        raise UnicodeError('unable to convert %r' % (value,))
+        raise UnicodeError("unable to convert %r" % (value,))
 
 
 def exception_to_unicode(e):
-    if getattr(e, 'args', ()):
+    if getattr(e, "args", ()):
         return "\n".join((ustr(a) for a in e.args))
     try:
         return text_type(e)
     except Exception:
-        return u"Unknown message"
+        return "Unknown message"

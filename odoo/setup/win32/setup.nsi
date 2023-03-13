@@ -376,7 +376,7 @@ Section $(TITLE_Ghostscript) SectionGhostscript
     DetailPrint "Downloading Ghostscript"
     inetc::get "$ghostscript_url" "$TEMP\$ghostscript_exe_filename" /POPUP
     DetailPrint "Temp dir: $TEMP\$ghostscript_exe_filename"
-    
+
     Rmdir /r "INSTDIR\Ghostscript"
     DetailPrint "Installing Ghostscript"
     ExecWait '"$TEMP\$ghostscript_exe_filename" \

@@ -66,7 +66,7 @@ odoo.define('point_of_sale.Draggable', function(require) {
                 }
                 this.limitAreaWidth = this.limitAreaBoundingRect.width;
                 this.limitAreaHeight = this.limitAreaBoundingRect.height;
-    
+
                 // absolutely position the element then remove the transform.
                 const elBoundingRect = this.el.getBoundingClientRect();
                 this.el.style.top = `${elBoundingRect.top}px`;

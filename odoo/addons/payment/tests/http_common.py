@@ -12,7 +12,7 @@ from odoo.addons.payment.tests.common import PaymentCommon
 
 
 class PaymentHttpCommon(PaymentCommon, HttpCase):
-    """ HttpCase common to build and simulate requests going through payment controllers.
+    """HttpCase common to build and simulate requests going through payment controllers.
 
     Only use if you effectively want to test controllers.
     If you only want to test 'models' code, the PaymentCommon should be sufficient.
@@ -25,7 +25,7 @@ class PaymentHttpCommon(PaymentCommon, HttpCase):
         return urls.url_join(self.base_url(), route)
 
     def _make_http_get_request(self, url, params=None):
-        """ Make an HTTP GET request to the provided URL.
+        """Make an HTTP GET request to the provided URL.
 
         :param str url: The URL to make the request to
         :param dict params: The parameters to be sent in the query string
@@ -36,7 +36,7 @@ class PaymentHttpCommon(PaymentCommon, HttpCase):
         return self.opener.get(url, params=formatted_params)
 
     def _make_http_post_request(self, url, data=None):
-        """ Make an HTTP POST request to the provided URL.
+        """Make an HTTP POST request to the provided URL.
 
         :param str url: The URL to make the request to
         :param dict data: The data to be send in the request body
@@ -47,7 +47,7 @@ class PaymentHttpCommon(PaymentCommon, HttpCase):
         return self.opener.post(url, data=formatted_data)
 
     def _format_http_request_payload(self, payload=None):
-        """ Format a request payload to replace float values by their string representation.
+        """Format a request payload to replace float values by their string representation.
 
         :param dict payload: The payload to format
         :return: The formatted payload
@@ -60,7 +60,7 @@ class PaymentHttpCommon(PaymentCommon, HttpCase):
         return formatted_payload
 
     def _make_json_request(self, url, data=None):
-        """ Make a JSON request to the provided URL.
+        """Make a JSON request to the provided URL.
 
         :param str url: The URL to make the request to
         :param dict data: The data to be send in the request body in JSON format
@@ -70,19 +70,22 @@ class PaymentHttpCommon(PaymentCommon, HttpCase):
         return self.opener.post(url, json=data)
 
     def _make_json_rpc_request(self, url, data=None):
-        """ Make a JSON-RPC request to the provided URL.
+        """Make a JSON-RPC request to the provided URL.
 
         :param str url: The URL to make the request to
         :param dict data: The data to be send in the request body in JSON-RPC 2.0 format
         :return: The response of the request
         :rtype: :class:`requests.models.Response`
         """
-        return self.opener.post(url, json={
-            'jsonrpc': '2.0',
-            'method': 'call',
-            'id': str(uuid4()),
-            'params': data,
-        })
+        return self.opener.post(
+            url,
+            json={
+                "jsonrpc": "2.0",
+                "method": "call",
+                "id": str(uuid4()),
+                "params": data,
+            },
+        )
 
     def _get_tx_context(self, response, form_name):
         """Extracts txContext & other form info (provider & token ids)
@@ -104,10 +107,10 @@ class PaymentHttpCommon(PaymentCommon, HttpCase):
         values = {}
         for key, val in checkout_form.items():
             if key.startswith("data-"):
-                formatted_key = key[5:].replace('-', '_')
-                if formatted_key.endswith('_id'):
+                formatted_key = key[5:].replace("-", "_")
+                if formatted_key.endswith("_id"):
                     formatted_val = int(val)
-                elif formatted_key == 'amount':
+                elif formatted_key == "amount":
                     formatted_val = float(val)
                 else:
                     formatted_val = val
@@ -119,24 +122,28 @@ class PaymentHttpCommon(PaymentCommon, HttpCase):
         for p_o_input in payment_options_inputs:
             data = dict()
             for key, val in p_o_input.items():
-                if key.startswith('data-'):
+                if key.startswith("data-"):
                     data[key[5:]] = val
-            if data['payment-option-type'] == 'provider':
-                provider_ids.append(int(data['payment-option-id']))
+            if data["payment-option-type"] == "provider":
+                provider_ids.append(int(data["payment-option-id"]))
             else:
-                token_ids.append(int(data['payment-option-id']))
+                token_ids.append(int(data["payment-option-id"]))
 
-        values.update({
-            'provider_ids': provider_ids,
-            'token_ids': token_ids,
-        })
+        values.update(
+            {
+                "provider_ids": provider_ids,
+                "token_ids": token_ids,
+            }
+        )
 
         return values
 
     # payment/pay #
     ###############
 
-    def _prepare_pay_values(self, amount=0.0, currency=None, reference='', partner=None):
+    def _prepare_pay_values(
+        self, amount=0.0, currency=None, reference="", partner=None
+    ):
         """Prepare basic payment/pay route values
 
         NOTE: needs PaymentCommon to enable fallback values.
@@ -148,11 +155,13 @@ class PaymentHttpCommon(PaymentCommon, HttpCase):
         reference = reference or self.reference
         partner = partner or self.partner
         return {
-            'amount': amount,
-            'currency_id': currency.id,
-            'reference': reference,
-            'partner_id': partner.id,
-            'access_token': self._generate_test_access_token(partner.id, amount, currency.id),
+            "amount": amount,
+            "currency_id": currency.id,
+            "reference": reference,
+            "partner_id": partner.id,
+            "access_token": self._generate_test_access_token(
+                partner.id, amount, currency.id
+            ),
         }
 
     def _portal_pay(self, **route_kwargs):
@@ -161,7 +170,7 @@ class PaymentHttpCommon(PaymentCommon, HttpCase):
         NOTE: must be authenticated before calling method.
         Or an access_token should be specified in route_kwargs
         """
-        uri = '/payment/pay'
+        uri = "/payment/pay"
         url = self._build_url(uri)
         return self._make_http_get_request(url, route_kwargs)
 
@@ -170,7 +179,7 @@ class PaymentHttpCommon(PaymentCommon, HttpCase):
 
         self.assertEqual(response.status_code, 200)
 
-        return self._get_tx_context(response, 'o_payment_checkout')
+        return self._get_tx_context(response, "o_payment_checkout")
 
     # /my/payment_method #
     ######################
@@ -181,7 +190,7 @@ class PaymentHttpCommon(PaymentCommon, HttpCase):
         NOTE: must be authenticated before calling method
             validation flow is restricted to logged users
         """
-        uri = '/my/payment_method'
+        uri = "/my/payment_method"
         url = self._build_url(uri)
         return self._make_http_get_request(url, {})
 
@@ -190,13 +199,13 @@ class PaymentHttpCommon(PaymentCommon, HttpCase):
 
         self.assertEqual(response.status_code, 200)
 
-        return self._get_tx_context(response, 'o_payment_manage')
+        return self._get_tx_context(response, "o_payment_manage")
 
     # payment/transaction #
     #######################
 
     def _prepare_transaction_values(self, payment_option_id, flow):
-        """ Prepare the basic payment/transaction route values.
+        """Prepare the basic payment/transaction route values.
 
         :param int payment_option_id: The payment option handling the transaction, as a
                                       `payment.provider` id or a `payment.token` id
@@ -205,18 +214,18 @@ class PaymentHttpCommon(PaymentCommon, HttpCase):
         :rtype: dict
         """
         return {
-            'amount': self.amount,
-            'currency_id': self.currency.id,
-            'partner_id': self.partner.id,
-            'access_token': self._generate_test_access_token(
+            "amount": self.amount,
+            "currency_id": self.currency.id,
+            "partner_id": self.partner.id,
+            "access_token": self._generate_test_access_token(
                 self.partner.id, self.amount, self.currency.id
             ),
-            'payment_option_id': payment_option_id,
-            'reference_prefix': 'test',
-            'tokenization_requested': True,
-            'landing_route': 'Test',
-            'is_validation': False,
-            'flow': flow,
+            "payment_option_id": payment_option_id,
+            "reference_prefix": "test",
+            "tokenization_requested": True,
+            "landing_route": "Test",
+            "is_validation": False,
+            "flow": flow,
         }
 
     def _portal_transaction(self, **route_kwargs):
@@ -224,7 +233,7 @@ class PaymentHttpCommon(PaymentCommon, HttpCase):
 
         :return: The response to the json request
         """
-        uri = '/payment/transaction'
+        uri = "/payment/transaction"
         url = self._build_url(uri)
         response = self._make_json_rpc_request(url, route_kwargs)
         self.assertEqual(response.status_code, 200)  # Check the request went through.
@@ -237,4 +246,4 @@ class PaymentHttpCommon(PaymentCommon, HttpCase):
         self.assertEqual(response.status_code, 200)
 
         resp_content = json.loads(response.content)
-        return resp_content['result']
+        return resp_content["result"]

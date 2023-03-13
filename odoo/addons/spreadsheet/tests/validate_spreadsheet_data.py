@@ -41,7 +41,7 @@ def odoo_view_links(data):
     urls looks like odoo://view/{... view data...}
     """
     return [
-        json.loads(url[len(odoo_view_link_prefix):])
+        json.loads(url[len(odoo_view_link_prefix) :])
         for url in links_urls(data)
         if url.startswith(odoo_view_link_prefix)
     ]
@@ -123,14 +123,22 @@ def filter_fields(data):
     odoo_version = data.get("odooVersion", 1)
     if odoo_version < 5:
         for filter_definition in data.get("globalFilters", []):
-            for pivot_id, matching in filter_definition.get("pivotFields", dict()).items():
+            for pivot_id, matching in filter_definition.get(
+                "pivotFields", dict()
+            ).items():
                 model = data["pivots"][pivot_id]["model"]
                 fields_by_model[model].add(matching["field"])
-            for list_id, matching in filter_definition.get("listFields", dict()).items():
+            for list_id, matching in filter_definition.get(
+                "listFields", dict()
+            ).items():
                 model = data["lists"][list_id]["model"]
                 fields_by_model[model].add(matching["field"])
-            for chart_id, matching in filter_definition.get("graphFields", dict()).items():
-                chart = next((chart for chart in charts if chart["id"] == chart_id), None)
+            for chart_id, matching in filter_definition.get(
+                "graphFields", dict()
+            ).items():
+                chart = next(
+                    (chart for chart in charts if chart["id"] == chart_id), None
+                )
                 model = chart["metaData"]["resModel"]
                 fields_by_model[model].add(matching["field"])
     else:
@@ -181,9 +189,8 @@ def fields_in_spreadsheet(data):
 
 
 def xml_ids_in_spreadsheet(data):
-
     return set(data.get("chartOdooMenusReferences", {}).values()) | {
-        url[len(xml_id_url_prefix):]
+        url[len(xml_id_url_prefix) :]
         for url in links_urls(data)
         if url.startswith(xml_id_url_prefix)
     }

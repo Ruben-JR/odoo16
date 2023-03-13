@@ -6,10 +6,12 @@ from odoo.osv import expression
 
 
 class Website(models.Model):
-    _inherit = 'website'
+    _inherit = "website"
 
     def sale_product_domain(self):
-        return expression.AND([
-            super(Website, self).sale_product_domain(),
-            [('detailed_type', '!=', 'course')],
-        ])
+        return expression.AND(
+            [
+                super(Website, self).sale_product_domain(),
+                [("detailed_type", "!=", "course")],
+            ]
+        )

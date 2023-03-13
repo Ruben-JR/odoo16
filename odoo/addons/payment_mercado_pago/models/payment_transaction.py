@@ -16,10 +16,10 @@ _logger = logging.getLogger(__name__)
 
 
 class PaymentTransaction(models.Model):
-    _inherit = 'payment.transaction'
+    _inherit = "payment.transaction"
 
     def _get_specific_rendering_values(self, processing_values):
-        """ Override of `payment` to return Mercado Pago-specific rendering values.
+        """Override of `payment` to return Mercado Pago-specific rendering values.
 
         Note: self.ensure_one() from `_get_rendering_values`.
 
@@ -28,7 +28,7 @@ class PaymentTransaction(models.Model):
         :rtype: dict
         """
         res = super()._get_specific_rendering_values(processing_values)
-        if self.provider_code != 'mercado_pago':
+        if self.provider_code != "mercado_pago":
             return res
 
         # Initiate the payment and retrieve the payment link data.
@@ -38,17 +38,17 @@ class PaymentTransaction(models.Model):
             pprint.pformat(payload),
         )
         api_url = self.provider_id._mercado_pago_make_request(
-            '/checkout/preferences', payload=payload
-        )['init_point' if self.provider_id.state == 'enabled' else 'sandbox_init_point']
+            "/checkout/preferences", payload=payload
+        )["init_point" if self.provider_id.state == "enabled" else "sandbox_init_point"]
 
         # Extract the payment link URL and embed it in the redirect form.
         rendering_values = {
-            'api_url': api_url,
+            "api_url": api_url,
         }
         return rendering_values
 
     def _mercado_pago_prepare_preference_request_payload(self):
-        """ Create the payload for the preference request based on the transaction values.
+        """Create the payload for the preference request based on the transaction values.
 
         :return: The request payload.
         :rtype: dict
@@ -56,41 +56,43 @@ class PaymentTransaction(models.Model):
         base_url = self.provider_id.get_base_url()
         return_url = urls.url_join(base_url, MercadoPagoController._return_url)
         webhook_url = urls.url_join(
-            base_url, f'{MercadoPagoController._webhook_url}/{self.reference}'
+            base_url, f"{MercadoPagoController._webhook_url}/{self.reference}"
         )  # Append the reference to identify the transaction from the webhook notification data.
         return {
-            'auto_return': 'all',
-            'back_urls': {
-                'success': return_url,
-                'pending': return_url,
-                'failure': return_url,
+            "auto_return": "all",
+            "back_urls": {
+                "success": return_url,
+                "pending": return_url,
+                "failure": return_url,
             },
-            'external_reference': self.reference,
-            'items': [{
-                'title': self.reference,
-                'quantity': 1,
-                'currency_id': self.currency_id.name,
-                'unit_price': self.amount,
-            }],
-            'notification_url': webhook_url,
-            'payer': {
-                'name': self.partner_name,
-                'email': self.partner_email,
-                'phone': {
-                    'number': self.partner_phone,
+            "external_reference": self.reference,
+            "items": [
+                {
+                    "title": self.reference,
+                    "quantity": 1,
+                    "currency_id": self.currency_id.name,
+                    "unit_price": self.amount,
+                }
+            ],
+            "notification_url": webhook_url,
+            "payer": {
+                "name": self.partner_name,
+                "email": self.partner_email,
+                "phone": {
+                    "number": self.partner_phone,
                 },
-                'address': {
-                    'zip_code': self.partner_zip,
-                    'street_name': self.partner_address,
+                "address": {
+                    "zip_code": self.partner_zip,
+                    "street_name": self.partner_address,
                 },
             },
-            'payment_methods': {
-                'installments': 1,  # Prevent MP from proposing several installments for a payment.
+            "payment_methods": {
+                "installments": 1,  # Prevent MP from proposing several installments for a payment.
             },
         }
 
     def _get_tx_from_notification_data(self, provider_code, notification_data):
-        """ Override of `payment` to find the transaction based on Mercado Pago data.
+        """Override of `payment` to find the transaction based on Mercado Pago data.
 
         :param str provider_code: The code of the provider that handled the transaction.
         :param dict notification_data: The notification data sent by the provider.
@@ -100,22 +102,27 @@ class PaymentTransaction(models.Model):
         :raise ValidationError: If the data match no transaction.
         """
         tx = super()._get_tx_from_notification_data(provider_code, notification_data)
-        if provider_code != 'mercado_pago' or len(tx) == 1:
+        if provider_code != "mercado_pago" or len(tx) == 1:
             return tx
 
-        reference = notification_data.get('external_reference')
+        reference = notification_data.get("external_reference")
         if not reference:
-            raise ValidationError("Mercado Pago: " + _("Received data with missing reference."))
+            raise ValidationError(
+                "Mercado Pago: " + _("Received data with missing reference.")
+            )
 
-        tx = self.search([('reference', '=', reference), ('provider_code', '=', 'mercado_pago')])
+        tx = self.search(
+            [("reference", "=", reference), ("provider_code", "=", "mercado_pago")]
+        )
         if not tx:
             raise ValidationError(
-                "Mercado Pago: " + _("No transaction found matching reference %s.", reference)
+                "Mercado Pago: "
+                + _("No transaction found matching reference %s.", reference)
             )
         return tx
 
     def _process_notification_data(self, notification_data):
-        """ Override of `payment` to process the transaction based on Mercado Pago data.
+        """Override of `payment` to process the transaction based on Mercado Pago data.
 
         Note: self.ensure_one() from `_process_notification_data`
 
@@ -124,34 +131,40 @@ class PaymentTransaction(models.Model):
         :raise ValidationError: If inconsistent data were received.
         """
         super()._process_notification_data(notification_data)
-        if self.provider_code != 'mercado_pago':
+        if self.provider_code != "mercado_pago":
             return
 
-        payment_id = notification_data.get('payment_id')
+        payment_id = notification_data.get("payment_id")
         if not payment_id:
-            raise ValidationError("Mercado Pago: " + _("Received data with missing payment id."))
+            raise ValidationError(
+                "Mercado Pago: " + _("Received data with missing payment id.")
+            )
         self.provider_reference = payment_id
 
         # Verify the notification data.
         verified_payment_data = self.provider_id._mercado_pago_make_request(
-            f'/v1/payments/{self.provider_reference}', method='GET'
+            f"/v1/payments/{self.provider_reference}", method="GET"
         )
 
-        payment_status = verified_payment_data.get('status')
+        payment_status = verified_payment_data.get("status")
         if not payment_status:
-            raise ValidationError("Mercado Pago: " + _("Received data with missing status."))
+            raise ValidationError(
+                "Mercado Pago: " + _("Received data with missing status.")
+            )
 
-        if payment_status in TRANSACTION_STATUS_MAPPING['pending']:
+        if payment_status in TRANSACTION_STATUS_MAPPING["pending"]:
             self._set_pending()
-        elif payment_status in TRANSACTION_STATUS_MAPPING['done']:
+        elif payment_status in TRANSACTION_STATUS_MAPPING["done"]:
             self._set_done()
-        elif payment_status in TRANSACTION_STATUS_MAPPING['canceled']:
+        elif payment_status in TRANSACTION_STATUS_MAPPING["canceled"]:
             self._set_canceled()
         else:  # Classify unsupported payment status as the `error` tx state.
             _logger.warning(
                 "Received data for transaction with reference %s with invalid payment status: %s",
-                self.reference, payment_status
+                self.reference,
+                payment_status,
             )
             self._set_error(
-                "Mercado Pago: " + _("Received data with invalid status: %s", payment_status)
+                "Mercado Pago: "
+                + _("Received data with invalid status: %s", payment_status)
             )

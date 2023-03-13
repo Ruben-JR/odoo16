@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* google_recaptcha
-# 
+#
 # Translators:
 # abc Def <hdogan1974@gmail.com>, 2022
 # Ediz Duman <neps1192@gmail.com>, 2022
@@ -9,7 +9,7 @@
 # Umur Akın <umura@projetgrup.com>, 2022
 # Tugay Hatıl <tugayh@projetgrup.com>, 2022
 # Nadir Gazioglu <nadirgazioglu@gmail.com>, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~14.4\n"

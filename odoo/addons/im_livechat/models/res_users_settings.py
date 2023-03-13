@@ -5,6 +5,8 @@ from odoo import fields, models
 
 
 class ResUsersSettings(models.Model):
-    _inherit = 'res.users.settings'
+    _inherit = "res.users.settings"
 
-    is_discuss_sidebar_category_livechat_open = fields.Boolean("Is category livechat open", default=True)
+    is_discuss_sidebar_category_livechat_open = fields.Boolean(
+        "Is category livechat open", default=True
+    )

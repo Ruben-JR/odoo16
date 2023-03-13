@@ -11,7 +11,7 @@ export class ForecastedHeader extends Component{
 
         this._formatFloat = (num) => formatFloat(num, { digits: this.props.docs.precision });
     }
-    
+
     async _onClickInventory(){
         const templates = this.props.docs.product_templates_ids;
         const variants = this.props.docs.product_variants_ids;
@@ -21,7 +21,7 @@ export class ForecastedHeader extends Component{
         } else {
             context.search_default_product_id = variants;
         }
-        
+
         const action = await this.orm.call('stock.quant', 'action_view_quants', [], {context : context});
         return this.action.doAction(action);
     }

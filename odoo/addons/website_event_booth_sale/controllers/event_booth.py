@@ -8,7 +8,6 @@ from odoo.addons.website_event.controllers.main import WebsiteEventController
 
 
 class WebsiteEventBoothController(WebsiteEventController):
-
     @route()
     def event_booth_main(self, event):
         pricelist = request.website.pricelist_id
@@ -17,16 +16,20 @@ class WebsiteEventBoothController(WebsiteEventController):
         return super(WebsiteEventBoothController, self).event_booth_main(event)
 
     @route()
-    def event_booth_registration_confirm(self, event, booth_category_id, event_booth_ids, **kwargs):
+    def event_booth_registration_confirm(
+        self, event, booth_category_id, event_booth_ids, **kwargs
+    ):
         """Override: Doesn't call the parent method because we go through the checkout
         process which will confirm the booths when receiving the payment."""
         booths = self._get_requested_booths(event, event_booth_ids)
         if not booths:
-            return json.dumps({'error': 'boothError'})
+            return json.dumps({"error": "boothError"})
 
-        booth_category = request.env['event.booth.category'].sudo().browse(int(booth_category_id))
+        booth_category = (
+            request.env["event.booth.category"].sudo().browse(int(booth_category_id))
+        )
         if not booth_category.exists():
-            return json.dumps({'error': 'boothCategoryError'})
+            return json.dumps({"error": "boothCategoryError"})
 
         booth_values = self._prepare_booth_registration_values(event, kwargs)
         order_sudo = request.website.sale_get_order(force_create=True)
@@ -38,10 +41,12 @@ class WebsiteEventBoothController(WebsiteEventController):
         )
         if order_sudo.amount_total:
             if request.env.user._is_public():
-                order_sudo.partner_id = booth_values['partner_id']
-            return json.dumps({'redirect': '/shop/cart'})
+                order_sudo.partner_id = booth_values["partner_id"]
+            return json.dumps({"redirect": "/shop/cart"})
         elif order_sudo:
             order_sudo.action_confirm()
             request.website.sale_reset()
 
-            return self._prepare_booth_registration_success_values(event.name, booth_values)
+            return self._prepare_booth_registration_success_values(
+                event.name, booth_values
+            )

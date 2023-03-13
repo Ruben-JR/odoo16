@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* l10n_multilang
-# 
+#
 # Translators:
 # Hamed Mohammadi <hamed@dehongi.com>, 2023
 # Hamid Darabi, 2023
@@ -9,7 +9,7 @@
 # Farid Hariri <fhari1234@gmail.com>, 2023
 # Hanna Kheradroosta, 2023
 # M.Hossein S.Farvashani <Farvashani@gmail.com>, 2023
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta\n"

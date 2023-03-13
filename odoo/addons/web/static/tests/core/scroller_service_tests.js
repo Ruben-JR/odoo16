@@ -131,7 +131,7 @@ QUnit.test("Rendering with multiple anchors and scrolls", async (assert) => {
                 eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu
                 massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue. Ut
                 in risus volutpat libero pharetra tempor. Cras vestibulum bibendum augue. Praesent
-                egestas leo in pede. Praesent blandit odio eu enim. 
+                egestas leo in pede. Praesent blandit odio eu enim.
             </p>
             <p>
                 Ut velit mauris, egestas sed, gravida nec, ornare ut, mi. Aenean ut orci vel massa
@@ -140,7 +140,7 @@ QUnit.test("Rendering with multiple anchors and scrolls", async (assert) => {
                 nunc et augue. Integer id felis. Curabitur aliquet pellentesque diam. Integer quis
                 metus vitae elit lobortis egestas. Lorem ipsum dolor sit amet, consectetuer adipiscing
                 elit. Morbi vel erat non mauris convallis vehicula. Nulla et sapien. Integer tortor
-                tellus, aliquam faucibus, convallis id, congue eu, quam. 
+                tellus, aliquam faucibus, convallis id, congue eu, quam.
             </p>
             <table>
                 <tbody>
@@ -272,7 +272,7 @@ QUnit.test("clicking anchor when multi levels scrollables", async (assert) => {
                             eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu
                             massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue. Ut
                             in risus volutpat libero pharetra tempor. Cras vestibulum bibendum augue. Praesent
-                            egestas leo in pede. Praesent blandit odio eu enim. 
+                            egestas leo in pede. Praesent blandit odio eu enim.
                         </p>
                 </div>
             </div>
@@ -329,7 +329,7 @@ QUnit.test("Simple scroll to HTML elements", async (assert) => {
     MyComponent.template = xml/* xml */ `
         <div class="o_content">
             <p>
-                Aliquam convallis sollicitudin purus. 
+                Aliquam convallis sollicitudin purus.
             </p>
             <div id="o-div-1">A div is an HTML element</div>
             <p>
@@ -340,7 +340,7 @@ QUnit.test("Simple scroll to HTML elements", async (assert) => {
                 eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu
                 massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue. Ut
                 in risus volutpat libero pharetra tempor. Cras vestibulum bibendum augue. Praesent
-                egestas leo in pede. Praesent blandit odio eu enim. 
+                egestas leo in pede. Praesent blandit odio eu enim.
             </p>
             <p>
                 Ut velit mauris, egestas sed, gravida nec, ornare ut, mi. Aenean ut orci vel massa
@@ -349,7 +349,7 @@ QUnit.test("Simple scroll to HTML elements", async (assert) => {
                 nunc et augue. Integer id felis. Curabitur aliquet pellentesque diam. Integer quis
                 metus vitae elit lobortis egestas. Lorem ipsum dolor sit amet, consectetuer adipiscing
                 elit. Morbi vel erat non mauris convallis vehicula. Nulla et sapien. Integer tortor
-                tellus, aliquam faucibus, convallis id, congue eu, quam. 
+                tellus, aliquam faucibus, convallis id, congue eu, quam.
             </p>
             <div id="o-div-2">A div is an HTML element</div>
             <p>

@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * sale_timesheet
-# 
+#
 # Translators:
 # Martin Trigaux, 2018
 # Alex Yo <omikr0n@hotmail.com>, 2018

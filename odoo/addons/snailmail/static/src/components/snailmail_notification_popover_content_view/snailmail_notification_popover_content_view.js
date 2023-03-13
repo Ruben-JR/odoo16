@@ -21,4 +21,3 @@ Object.assign(SnailmailNotificationPopoverContentView, {
 });
 
 registerMessagingComponent(SnailmailNotificationPopoverContentView);
-

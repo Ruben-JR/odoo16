@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* mrp_subcontracting_dropshipping
-# 
+#
 # Translators:
 # Arnau Ros, 2022
 # Martin Trigaux, 2022
@@ -11,7 +11,7 @@
 # Manel Fernandez Ramirez <manelfera@outlook.com>, 2022
 # Ivan Espinola, 2023
 # Óscar Fonseca <tecnico@extreme-micro.com>, 2023
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"

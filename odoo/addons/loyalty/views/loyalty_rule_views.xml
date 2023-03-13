@@ -5,7 +5,7 @@
         <field name="model">loyalty.rule</field>
         <field name="arch" type="xml">
             <form class="loyalty-rule-form">
-                <field name="program_type" invisible="1"/> 
+                <field name="program_type" invisible="1"/>
                 <field name="user_has_debug" invisible="1"/>
                 <sheet>
                     <group attrs="{'invisible': [('program_type', '!=', 'promo_code')]}">
@@ -38,7 +38,7 @@
                                 <field name="reward_point_name" class="w-auto"/>
                             </div>
                             <label for="reward_point_mode" string=""/>
-                            <field name="reward_point_mode" widget="radio" nolabel="1" attrs="{'invisible': [('program_type', 'not in', ('promotion', 'promo_code', 'next_order_coupons', 'loyalty', 'buy_x_get_y'))]}"/>     
+                            <field name="reward_point_mode" widget="radio" nolabel="1" attrs="{'invisible': [('program_type', 'not in', ('promotion', 'promo_code', 'next_order_coupons', 'loyalty', 'buy_x_get_y'))]}"/>
                         </group>
                     </group>
                 </sheet>

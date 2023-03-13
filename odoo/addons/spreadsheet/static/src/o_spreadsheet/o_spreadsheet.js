@@ -33384,7 +33384,7 @@ day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("A
              * opacity, we filter highlights to remove duplicates.
              */
             const highlights = this.getHighlights();
-            for (let h of highlights.filter((highlight, index) => 
+            for (let h of highlights.filter((highlight, index) =>
             // For every highlight in the sheet, deduplicated by zone
             highlights.findIndex((h) => isEqual(h.zone, highlight.zone) && h.sheetId === sheetId) ===
                 index)) {

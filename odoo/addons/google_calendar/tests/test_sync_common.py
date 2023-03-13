@@ -9,20 +9,26 @@ from odoo.addons.google_calendar.models.res_users import User
 from odoo.addons.google_calendar.models.google_sync import GoogleSync
 from odoo.tests.common import HttpCase
 
+
 def patch_api(func):
-    @patch.object(GoogleSync, '_google_insert', MagicMock(spec=GoogleSync._google_insert))
-    @patch.object(GoogleSync, '_google_delete', MagicMock(spec=GoogleSync._google_delete))
-    @patch.object(GoogleSync, '_google_patch', MagicMock(spec=GoogleSync._google_patch))
+    @patch.object(
+        GoogleSync, "_google_insert", MagicMock(spec=GoogleSync._google_insert)
+    )
+    @patch.object(
+        GoogleSync, "_google_delete", MagicMock(spec=GoogleSync._google_delete)
+    )
+    @patch.object(GoogleSync, "_google_patch", MagicMock(spec=GoogleSync._google_patch))
     def patched(self, *args, **kwargs):
         return func(self, *args, **kwargs)
+
     return patched
 
-@patch.object(User, '_get_google_calendar_token', lambda user: 'dummy-token')
-class TestSyncGoogle(HttpCase):
 
+@patch.object(User, "_get_google_calendar_token", lambda user: "dummy-token")
+class TestSyncGoogle(HttpCase):
     def setUp(self):
         super().setUp()
-        self.google_service = GoogleCalendarService(self.env['google.service'])
+        self.google_service = GoogleCalendarService(self.env["google.service"])
 
     def assertGoogleEventDeleted(self, google_id):
         GoogleSync._google_delete.assert_called()
@@ -34,11 +40,11 @@ class TestSyncGoogle(HttpCase):
 
     def assertGoogleEventInserted(self, values, timeout=None):
         expected_args = (values,)
-        expected_kwargs = {'timeout': timeout} if timeout else {}
+        expected_kwargs = {"timeout": timeout} if timeout else {}
         GoogleSync._google_insert.assert_called_once()
         args, kwargs = GoogleSync._google_insert.call_args
-        args[1:][0].pop('conferenceData', None)
-        self.assertEqual(args[1:], expected_args) # skip Google service arg
+        args[1:][0].pop("conferenceData", None)
+        self.assertEqual(args[1:], expected_args)  # skip Google service arg
         self.assertEqual(kwargs, expected_kwargs)
 
     def assertGoogleEventNotInserted(self):
@@ -46,10 +52,10 @@ class TestSyncGoogle(HttpCase):
 
     def assertGoogleEventPatched(self, google_id, values, timeout=None):
         expected_args = (google_id, values)
-        expected_kwargs = {'timeout': timeout} if timeout else {}
+        expected_kwargs = {"timeout": timeout} if timeout else {}
         GoogleSync._google_patch.assert_called_once()
         args, kwargs = GoogleSync._google_patch.call_args
-        self.assertEqual(args[1:], expected_args) # skip Google service arg
+        self.assertEqual(args[1:], expected_args)  # skip Google service arg
         self.assertEqual(kwargs, expected_kwargs)
 
     def assertGoogleEventNotPatched(self):

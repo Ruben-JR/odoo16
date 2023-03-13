@@ -39,9 +39,7 @@ class WebsocketCase(common.HttpCase):
             websocket_closed_event.set()
 
         self._serve_forever_patch = patch.object(
-            WebsocketConnectionHandler,
-            '_serve_forever',
-            wraps=_mocked_serve_forever
+            WebsocketConnectionHandler, "_serve_forever", wraps=_mocked_serve_forever
         )
         self.startPatcher(self._serve_forever_patch)
 
@@ -65,19 +63,17 @@ class WebsocketCase(common.HttpCase):
         opened with a default session. The created websocket is closed
         at the end of the test.
         """
-        if 'cookie' not in kwargs:
+        if "cookie" not in kwargs:
             self.session = self.authenticate(None, None)
-            kwargs['cookie'] = f'session_id={self.session.sid}'
-        if 'timeout' not in kwargs:
-            kwargs['timeout'] = 5
-        ws = websocket.create_connection(
-            type(self)._WEBSOCKET_URL, *args, **kwargs
-        )
+            kwargs["cookie"] = f"session_id={self.session.sid}"
+        if "timeout" not in kwargs:
+            kwargs["timeout"] = 5
+        ws = websocket.create_connection(type(self)._WEBSOCKET_URL, *args, **kwargs)
         self._websockets.add(ws)
         return ws
 
     def wait_remaining_websocket_connections(self):
-        """ Wait for the websocket connections to terminate. """
+        """Wait for the websocket connections to terminate."""
         for event in self._websocket_events:
             event.wait(5)
 
@@ -88,6 +84,6 @@ class WebsocketCase(common.HttpCase):
         opcode, payload = websocket.recv_data()
         # ensure it's a close frame
         self.assertEqual(opcode, 8)
-        code = struct.unpack('!H', payload[:2])[0]
+        code = struct.unpack("!H", payload[:2])[0]
         # ensure the close code is the one we expected
         self.assertEqual(code, expected_code)

@@ -16,7 +16,7 @@
                             <t t-if="config_names">
                                 <strong>Config names</strong>
                                 <t t-foreach="config_names" t-as="name">
-                                    <t t-esc="name" />, 
+                                    <t t-esc="name" />,
                                 </t>
                             </t>
                         </t>
@@ -70,7 +70,7 @@
                                         <td>
                                             <t t-esc="line['quantity']" />
                                             <t t-if='line["uom"] != "Units"'>
-                                                <t t-esc='line["uom"]' /> 
+                                                <t t-esc='line["uom"]' />
                                             </t>
                                         </td>
                                         <td>
@@ -80,7 +80,7 @@
                                             <t t-else="" >
                                                 <t t-esc='currency["symbol"]' /><t t-esc='line["total_paid"]' t-options="{'widget': 'float', 'precision': currency['precision']}"/>
                                             </t>
-        
+
                                             <t t-if='line["discount"] != 0'>
                                                 Disc: <t t-esc='line["discount"]' />%
                                             </t>
@@ -99,7 +99,7 @@
                                         </t>
                                         <t t-else="" >
                                             <strong><t t-esc='currency["symbol"]' /><t t-esc='products_info["total"]' t-options="{'widget': 'float', 'precision': currency['precision']}"/></strong>
-                                        </t>   
+                                        </t>
                                     </td>
                                 </tr>
                             </tbody>
@@ -124,7 +124,7 @@
                                     <t t-else="" >
                                         <t t-esc='currency["symbol"]' /><t t-esc="tax['tax_amount']" t-options="{'widget': 'float', 'precision': currency['precision']}"/>
                                     </t>
-    
+
                                 </td>
                                 <td>
                                     <t t-if="currency['position']">
@@ -172,7 +172,7 @@
                                         <td>
                                             <t t-esc="line['quantity']" />
                                             <t t-if='line["uom"] != "Units"'>
-                                                <t t-esc='line["uom"]' /> 
+                                                <t t-esc='line["uom"]' />
                                             </t>
                                         </td>
                                         <td>
@@ -182,7 +182,7 @@
                                             <t t-else="" >
                                                 <t t-esc='currency["symbol"]' /><t t-esc='line["total_paid"]' t-options="{'widget': 'float', 'precision': currency['precision']}"/>
                                             </t>
-        
+
                                             <t t-if='line["discount"] != 0'>
                                                 Disc: <t t-esc='line["discount"]' />%
                                             </t>
@@ -201,13 +201,13 @@
                                         </t>
                                         <t t-else="" >
                                             <strong><t t-esc='currency["symbol"]' /><t t-esc='refund_info["total"]' t-options="{'widget': 'float', 'precision': currency['precision']}"/></strong>
-                                        </t>   
+                                        </t>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </t>
-                    
+
 
                     <t t-if="refund_taxes" id="taxe_refunds">
                         <h3>Taxes on refunds</h3>
@@ -227,7 +227,7 @@
                                     <t t-else="" >
                                         <t t-esc='currency["symbol"]' /><t t-esc="tax['tax_amount']" t-options="{'widget': 'float', 'precision': currency['precision']}"/>
                                     </t>
-    
+
                                 </td>
                                 <td>
                                     <t t-if="currency['position']">
@@ -241,9 +241,9 @@
                             </tbody>
                         </table>
                     </t>
-    
+
                     <br/>
-    
+
                     <t t-if="payments" id="payments">
                         <t t-if="payments" id="other_payments">
                             <h3>Payments</h3>
@@ -335,13 +335,13 @@
                 <t t-if="(state == 'closed' or state == 'multiple') and payments" id="closing_session">
                     <h3>Session Control</h3>
                     <br/>
-                    <strong>Total: 
+                    <strong>Total:
                         <t t-if="currency['position']">
                             <t t-esc='currency["total_paid"]' t-options="{'widget': 'float', 'precision': currency['precision']}"/><t t-esc='currency["symbol"]' />
                         </t>
                         <t t-else="" >
                             <t t-esc='currency["symbol"]' /><t t-esc='currency["total_paid"]' t-options="{'widget': 'float', 'precision': currency['precision']}"/>
-                        </t>    
+                        </t>
                     </strong>
                     <br/>
                     <strong>Number of transactions: <t t-esc="nbr_orders" /></strong>

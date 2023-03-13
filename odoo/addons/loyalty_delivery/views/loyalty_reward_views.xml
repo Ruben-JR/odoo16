@@ -23,7 +23,7 @@
 
                     <a>Free shipping <t t-if="record.discount_max_amount.raw_value > 0">( Max <field name="discount_max_amount"/> )</t></a>
                     <br/><br/>
-                </t>                    
+                </t>
             </xpath>
         </field>
     </record>

@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * payment_buckaroo
-# 
+#
 # Translators:
 # Kristoffer Grundström <kristoffer.grundstrom1983@gmail.com>, 2018
 # Anders Wallenquist <anders.wallenquist@vertel.se>, 2018

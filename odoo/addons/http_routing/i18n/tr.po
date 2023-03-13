@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* http_routing
-# 
+#
 # Translators:
 # Umur Akın <umura@projetgrup.com>, 2022
 # Martin Trigaux, 2022
@@ -10,7 +10,7 @@
 # Halil, 2022
 # Murat Kaplan <muratk@projetgrup.com>, 2022
 # Murat Durmuş <muratd@projetgrup.com>, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~15.3\n"

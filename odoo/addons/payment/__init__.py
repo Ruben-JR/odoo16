@@ -10,9 +10,9 @@ from odoo import api, SUPERUSER_ID
 
 def setup_provider(cr, registry, code):
     env = api.Environment(cr, SUPERUSER_ID, {})
-    env['payment.provider']._setup_provider(code)
+    env["payment.provider"]._setup_provider(code)
 
 
 def reset_payment_provider(cr, registry, code):
     env = api.Environment(cr, SUPERUSER_ID, {})
-    env['payment.provider']._remove_provider(code)
+    env["payment.provider"]._remove_provider(code)

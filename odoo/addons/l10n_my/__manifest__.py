@@ -19,8 +19,8 @@ This is the base module to manage the accounting chart for Malaysia in Odoo.
         "data/account_tax_template_data.xml",
         "data/account_chart_template_configure_data.xml",
     ],
-    'demo': [
-        'demo/demo_company.xml',
+    "demo": [
+        "demo/demo_company.xml",
     ],
     "icon": "/base/static/img/country_flags/my.png",
     "post_init_hook": "load_translations",

@@ -3,9 +3,8 @@
 from odoo.tests import HttpCase, tagged
 
 
-@tagged('post_install', '-at_install')
+@tagged("post_install", "-at_install")
 class TestAddToCartSnippet(HttpCase):
-
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -16,21 +15,25 @@ class TestAddToCartSnippet(HttpCase):
             <input type="hidden" name="user_id" t-att-value="user_id.id"/>
         </form>
         """
-        redirect_form = cls.env['ir.ui.view'].create({
-            'name': "Dummy Redirect Form",
-            'type': 'qweb',
-            'arch': arch,
-        })
-        cls.dummy_provider = cls.env['payment.provider'].create({
-            'name': "Dummy Provider",
-            'code': 'none',
-            'state': 'test',
-            'is_published': True,
-            'allow_tokenization': True,
-            'redirect_form_view_id': redirect_form.id,
-        })
+        redirect_form = cls.env["ir.ui.view"].create(
+            {
+                "name": "Dummy Redirect Form",
+                "type": "qweb",
+                "arch": arch,
+            }
+        )
+        cls.dummy_provider = cls.env["payment.provider"].create(
+            {
+                "name": "Dummy Provider",
+                "code": "none",
+                "state": "test",
+                "is_published": True,
+                "allow_tokenization": True,
+                "redirect_form_view_id": redirect_form.id,
+            }
+        )
 
     def test_configure_product(self):
         # Reset the company country id, which ensure that no country dependant fields are blocking the address form.
-        self.env.company.country_id = self.env.ref('base.us')
-        self.start_tour("/", 'add_to_cart_snippet_tour', login="admin")
+        self.env.company.country_id = self.env.ref("base.us")
+        self.start_tour("/", "add_to_cart_snippet_tour", login="admin")

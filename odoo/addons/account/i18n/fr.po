@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* account
-# 
+#
 # Translators:
 # 5cad1b0f1319985f8413d48b70c3c192_b038c35, 2022
 # Fabien Pinckaers <fp@openerp.com>, 2022
@@ -17,7 +17,7 @@
 # sig-odoo Odoo, 2023
 # Rémi CAZENAVE, 2023
 # Jolien De Paepe, 2023
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"

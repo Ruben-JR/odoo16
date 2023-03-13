@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* crm
-# 
+#
 # Translators:
 # JH CHOI <hwangtog@gmail.com>, 2022
 # Heesoo Choi, 2022
@@ -9,7 +9,7 @@
 # jay Lee, 2022
 # Martin Trigaux, 2022
 # Sarah Park, 2023
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta\n"

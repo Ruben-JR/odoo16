@@ -13,4 +13,3 @@ Arnaud Willem arnaud@strong.blue https://github.com/a-willem
 List of contributors:
 
 Arnaud Willem arnaud@strong.blue https://github.com/a-willem
-

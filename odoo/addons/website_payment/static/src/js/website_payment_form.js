@@ -21,7 +21,7 @@ checkoutForm.include({
     //--------------------------------------------------------------------------
 
     /**
-     * Perform some validations for donations before performing payment 
+     * Perform some validations for donations before performing payment
      *
      * @override method from payment.payment_form_mixin
      * @private

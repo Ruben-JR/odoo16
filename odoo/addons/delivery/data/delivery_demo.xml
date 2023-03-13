@@ -92,7 +92,7 @@
                 'location_dest_id': ref('stock.stock_location_customers'),
             })]"/>
         </record>
-        
+
         <record id="outgoing_shipment_with_carrier_assigned_1" model="stock.picking">
             <field name="picking_type_id" ref="stock.picking_type_out"/>
             <field name="origin">outgoing shipment</field>
@@ -112,7 +112,7 @@
                 'location_dest_id': ref('stock.stock_location_customers'),
             })]"/>
         </record>
-        
+
         <record id="outgoing_shipment_with_carrier_done_1" model="stock.picking">
             <field name="picking_type_id" ref="stock.picking_type_out"/>
             <field name="origin">outgoing shipment</field>

@@ -3,11 +3,15 @@
 
 from odoo import fields, models
 
-class LoyaltyCard(models.Model):
-    _inherit = 'loyalty.card'
 
-    source_pos_order_id = fields.Many2one('pos.order', "PoS Order Reference",
-        help="PoS order where this coupon was generated.")
+class LoyaltyCard(models.Model):
+    _inherit = "loyalty.card"
+
+    source_pos_order_id = fields.Many2one(
+        "pos.order",
+        "PoS Order Reference",
+        help="PoS order where this coupon was generated.",
+    )
 
     def _has_source_order(self):
         return super()._has_source_order() or bool(self.source_pos_order_id)
@@ -15,7 +19,7 @@ class LoyaltyCard(models.Model):
     def _get_default_template(self):
         self.ensure_one()
         if self.source_pos_order_id:
-            return self.env.ref('pos_loyalty.mail_coupon_template', False)
+            return self.env.ref("pos_loyalty.mail_coupon_template", False)
         return super()._get_default_template()
 
     def _get_mail_partner(self):
@@ -26,8 +30,11 @@ class LoyaltyCard(models.Model):
 
     def _compute_use_count(self):
         super()._compute_use_count()
-        read_group_res = self.env['pos.order.line']._read_group(
-            [('coupon_id', 'in', self.ids)], ['id'], ['coupon_id'])
-        count_per_coupon = {r['coupon_id'][0]: r['coupon_id_count'] for r in read_group_res}
+        read_group_res = self.env["pos.order.line"]._read_group(
+            [("coupon_id", "in", self.ids)], ["id"], ["coupon_id"]
+        )
+        count_per_coupon = {
+            r["coupon_id"][0]: r["coupon_id_count"] for r in read_group_res
+        }
         for card in self:
             card.use_count += count_per_coupon.get(card.id, 0)

@@ -5,16 +5,15 @@ import inspect
 from odoo.tests.common import TransactionCase, tagged
 
 DEPRECATED_MODEL_ATTRIBUTES = [
-    'view_init',
-    '_needaction',
-    '_sql',
-    '_execute_sql',
+    "view_init",
+    "_needaction",
+    "_sql",
+    "_execute_sql",
 ]
 
 
-@tagged('-at_install', 'post_install', 'deprecation')
+@tagged("-at_install", "post_install", "deprecation")
 class TestModelDeprecations(TransactionCase):
-
     def test_model_attributes(self):
         for model_name, Model in self.registry.items():
             for attr in DEPRECATED_MODEL_ATTRIBUTES:

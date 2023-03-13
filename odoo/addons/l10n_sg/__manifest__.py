@@ -4,11 +4,11 @@
 # Copyright (C) 2014 Tech Receptives (<http://techreceptives.com>)
 
 {
-    'name': 'Singapore - Accounting',
-    'author': 'Tech Receptives',
-    'version': '2.1',
-    'category': 'Accounting/Localizations/Account Charts',
-    'description': """
+    "name": "Singapore - Accounting",
+    "author": "Tech Receptives",
+    "version": "2.1",
+    "category": "Accounting/Localizations/Account Charts",
+    "description": """
 Singapore accounting chart and localization.
 =======================================================
 
@@ -18,20 +18,20 @@ This module add, for accounting:
  - Field PermitNo and PermitNoDate on invoice
 
     """,
-    'depends': ['base', 'account'],
-    'data': [
-        'data/l10n_sg_chart_data.xml',
-        'data/account_tax_group_data.xml',
-        'data/account_tax_report_data.xml',
-        'data/account_tax_data.xml',
-        'data/account_chart_template_data.xml',
-        'views/account_invoice_view.xml',
-        'views/res_company_view.xml',
-        'views/res_partner_view.xml',
+    "depends": ["base", "account"],
+    "data": [
+        "data/l10n_sg_chart_data.xml",
+        "data/account_tax_group_data.xml",
+        "data/account_tax_report_data.xml",
+        "data/account_tax_data.xml",
+        "data/account_chart_template_data.xml",
+        "views/account_invoice_view.xml",
+        "views/res_company_view.xml",
+        "views/res_partner_view.xml",
     ],
-    'demo': [
-        'demo/demo_company.xml',
+    "demo": [
+        "demo/demo_company.xml",
     ],
-    'post_init_hook': '_preserve_tag_on_taxes',
-    'license': 'LGPL-3',
+    "post_init_hook": "_preserve_tag_on_taxes",
+    "license": "LGPL-3",
 }

@@ -8,38 +8,44 @@ from odoo.exceptions import UserError
 class FetchmailServer(models.Model):
     """Add the Outlook OAuth authentication on the incoming mail servers."""
 
-    _name = 'fetchmail.server'
-    _inherit = ['fetchmail.server', 'microsoft.outlook.mixin']
+    _name = "fetchmail.server"
+    _inherit = ["fetchmail.server", "microsoft.outlook.mixin"]
 
-    _OUTLOOK_SCOPE = 'https://outlook.office.com/IMAP.AccessAsUser.All'
+    _OUTLOOK_SCOPE = "https://outlook.office.com/IMAP.AccessAsUser.All"
 
-    server_type = fields.Selection(selection_add=[('outlook', 'Outlook OAuth Authentication')], ondelete={'outlook': 'set default'})
+    server_type = fields.Selection(
+        selection_add=[("outlook", "Outlook OAuth Authentication")],
+        ondelete={"outlook": "set default"},
+    )
 
     def _compute_server_type_info(self):
-        outlook_servers = self.filtered(lambda server: server.server_type == 'outlook')
+        outlook_servers = self.filtered(lambda server: server.server_type == "outlook")
         outlook_servers.server_type_info = _(
-            'Connect your personal Outlook account using OAuth. \n'
-            'You will be redirected to the Outlook login page to accept '
-            'the permissions.')
+            "Connect your personal Outlook account using OAuth. \n"
+            "You will be redirected to the Outlook login page to accept "
+            "the permissions."
+        )
         super(FetchmailServer, self - outlook_servers)._compute_server_type_info()
 
-    @api.depends('server_type')
+    @api.depends("server_type")
     def _compute_is_microsoft_outlook_configured(self):
-        outlook_servers = self.filtered(lambda server: server.server_type == 'outlook')
+        outlook_servers = self.filtered(lambda server: server.server_type == "outlook")
         (self - outlook_servers).is_microsoft_outlook_configured = False
-        super(FetchmailServer, outlook_servers)._compute_is_microsoft_outlook_configured()
+        super(
+            FetchmailServer, outlook_servers
+        )._compute_is_microsoft_outlook_configured()
 
-    @api.constrains('server_type', 'is_ssl')
+    @api.constrains("server_type", "is_ssl")
     def _check_use_microsoft_outlook_service(self):
         for server in self:
-            if server.server_type == 'outlook' and not server.is_ssl:
-                raise UserError(_('SSL is required for the server %r.', server.name))
+            if server.server_type == "outlook" and not server.is_ssl:
+                raise UserError(_("SSL is required for the server %r.", server.name))
 
-    @api.onchange('server_type')
+    @api.onchange("server_type")
     def onchange_server_type(self):
         """Set the default configuration for a IMAP Outlook server."""
-        if self.server_type == 'outlook':
-            self.server = 'imap.outlook.com'
+        if self.server_type == "outlook":
+            self.server = "imap.outlook.com"
             self.is_ssl = True
             self.port = 993
         else:
@@ -54,10 +60,10 @@ class FetchmailServer(models.Model):
         If the mail server is Outlook, we use the OAuth2 authentication protocol.
         """
         self.ensure_one()
-        if self.server_type == 'outlook':
+        if self.server_type == "outlook":
             auth_string = self._generate_outlook_oauth2_string(self.user)
-            connection.authenticate('XOAUTH2', lambda x: auth_string)
-            connection.select('INBOX')
+            connection.authenticate("XOAUTH2", lambda x: auth_string)
+            connection.select("INBOX")
         else:
             super()._imap_login(connection)
 
@@ -66,4 +72,6 @@ class FetchmailServer(models.Model):
         The Outlook mail server used an IMAP connection.
         """
         self.ensure_one()
-        return 'imap' if self.server_type == 'outlook' else super()._get_connection_type()
+        return (
+            "imap" if self.server_type == "outlook" else super()._get_connection_type()
+        )

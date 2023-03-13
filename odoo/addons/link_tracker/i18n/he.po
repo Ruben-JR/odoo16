@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* link_tracker
-# 
+#
 # Translators:
 # Yihya Hugirat <hugirat@gmail.com>, 2022
 # ExcaliberX <excaliberx@gmail.com>, 2022
@@ -10,7 +10,7 @@
 # Martin Trigaux, 2022
 # Lilach Gilliam <lilach.gilliam@gmail.com>, 2022
 # ZVI BLONDER <ZVIBLONDER@gmail.com>, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~14.4\n"

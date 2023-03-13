@@ -12,16 +12,21 @@ import zipfile
 from os.path import join as opj
 
 
-WINDOWS_RESERVED = re.compile(r'''
+WINDOWS_RESERVED = re.compile(
+    r"""
     ^
     # forbidden stems: reserved keywords
     (:?CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])
     # even with an extension this is recommended against
     (:?\..*)?
     $
-''', flags=re.IGNORECASE | re.VERBOSE)
-def clean_filename(name, replacement=''):
-    """ Strips or replaces possibly problematic or annoying characters our of
+""",
+    flags=re.IGNORECASE | re.VERBOSE,
+)
+
+
+def clean_filename(name, replacement=""):
+    """Strips or replaces possibly problematic or annoying characters our of
     the input string, in order to make it a valid filename in most operating
     systems (including dropping reserved Windows filenames).
 
@@ -49,7 +54,8 @@ def clean_filename(name, replacement=''):
     """
     if WINDOWS_RESERVED.match(name):
         return "Untitled"
-    return re.sub(r'[^\w_.()\[\] -]+', replacement, name).lstrip('.-') or "Untitled"
+    return re.sub(r"[^\w_.()\[\] -]+", replacement, name).lstrip(".-") or "Untitled"
+
 
 def listdir(dir, recursive=False):
     """Allow to recursively get the file listing following symlinks, returns
@@ -57,7 +63,9 @@ def listdir(dir, recursive=False):
     it follows leaves `dir`...
     """
     assert recursive, "use `os.listdir` or `pathlib.Path.iterdir`"
-    warnings.warn("Since 16.0, use os.walk or a recursive glob", DeprecationWarning, stacklevel=2)
+    warnings.warn(
+        "Since 16.0, use os.walk or a recursive glob", DeprecationWarning, stacklevel=2
+    )
     dir = os.path.normpath(dir)
 
     res = []
@@ -66,7 +74,8 @@ def listdir(dir, recursive=False):
         yield from (opj(r, f) for f in files)
     return res
 
-def zip_dir(path, stream, include_dir=True, fnct_sort=None):      # TODO add ignore list
+
+def zip_dir(path, stream, include_dir=True, fnct_sort=None):  # TODO add ignore list
     """
     : param fnct_sort : Function to be passed to "key" parameter of built-in
                         python sorted() to provide flexibility of sorting files
@@ -77,19 +86,21 @@ def zip_dir(path, stream, include_dir=True, fnct_sort=None):      # TODO add ign
     if len_prefix:
         len_prefix += 1
 
-    with zipfile.ZipFile(stream, 'w', compression=zipfile.ZIP_DEFLATED, allowZip64=True) as zipf:
+    with zipfile.ZipFile(
+        stream, "w", compression=zipfile.ZIP_DEFLATED, allowZip64=True
+    ) as zipf:
         for dirpath, dirnames, filenames in os.walk(path):
             filenames = sorted(filenames, key=fnct_sort)
             for fname in filenames:
                 bname, ext = os.path.splitext(fname)
                 ext = ext or bname
-                if ext not in ['.pyc', '.pyo', '.swp', '.DS_Store']:
+                if ext not in [".pyc", ".pyo", ".swp", ".DS_Store"]:
                     path = os.path.normpath(os.path.join(dirpath, fname))
                     if os.path.isfile(path):
                         zipf.write(path, path[len_prefix:])
 
 
-if os.name != 'nt':
+if os.name != "nt":
     is_running_as_nt_service = lambda: False
 else:
     import win32service as ws
@@ -107,9 +118,13 @@ else:
                 ws.CloseServiceHandle(srv)
 
         try:
-            with close_srv(ws.OpenSCManager(None, None, ws.SC_MANAGER_ALL_ACCESS)) as hscm:
-                with close_srv(wsu.SmartOpenService(hscm, nt_service_name, ws.SERVICE_ALL_ACCESS)) as hs:
+            with close_srv(
+                ws.OpenSCManager(None, None, ws.SC_MANAGER_ALL_ACCESS)
+            ) as hscm:
+                with close_srv(
+                    wsu.SmartOpenService(hscm, nt_service_name, ws.SERVICE_ALL_ACCESS)
+                ) as hs:
                     info = ws.QueryServiceStatusEx(hs)
-                    return info['ProcessId'] == os.getppid()
+                    return info["ProcessId"] == os.getppid()
         except Exception:
             return False

@@ -8,7 +8,7 @@ from odoo.exceptions import UserError
 class Pricelist(models.Model):
     _name = "product.pricelist"
     _description = "Pricelist"
-    _rec_names_search = ['name', 'currency_id']  # TODO check if should be removed
+    _rec_names_search = ["name", "currency_id"]  # TODO check if should be removed
     _order = "sequence asc, id desc"
 
     def _default_currency_id(self):
@@ -19,39 +19,44 @@ class Pricelist(models.Model):
     active = fields.Boolean(
         string="Active",
         default=True,
-        help="If unchecked, it will allow you to hide the pricelist without removing it.")
+        help="If unchecked, it will allow you to hide the pricelist without removing it.",
+    )
     sequence = fields.Integer(default=16)
 
     currency_id = fields.Many2one(
-        comodel_name='res.currency',
-        default=_default_currency_id,
-        required=True)
+        comodel_name="res.currency", default=_default_currency_id, required=True
+    )
 
-    company_id = fields.Many2one(
-        comodel_name='res.company')
+    company_id = fields.Many2one(comodel_name="res.company")
     country_group_ids = fields.Many2many(
-        comodel_name='res.country.group',
-        relation='res_country_group_pricelist_rel',
-        column1='pricelist_id',
-        column2='res_country_group_id',
-        string="Country Groups")
+        comodel_name="res.country.group",
+        relation="res_country_group_pricelist_rel",
+        column1="pricelist_id",
+        column2="res_country_group_id",
+        string="Country Groups",
+    )
 
     discount_policy = fields.Selection(
         selection=[
-            ('with_discount', "Discount included in the price"),
-            ('without_discount', "Show public price & discount to the customer"),
+            ("with_discount", "Discount included in the price"),
+            ("without_discount", "Show public price & discount to the customer"),
         ],
-        default='with_discount',
-        required=True)
+        default="with_discount",
+        required=True,
+    )
 
     item_ids = fields.One2many(
-        comodel_name='product.pricelist.item',
-        inverse_name='pricelist_id',
+        comodel_name="product.pricelist.item",
+        inverse_name="pricelist_id",
         string="Pricelist Rules",
-        copy=True)
+        copy=True,
+    )
 
     def name_get(self):
-        return [(pricelist.id, '%s (%s)' % (pricelist.name, pricelist.currency_id.name)) for pricelist in self]
+        return [
+            (pricelist.id, "%s (%s)" % (pricelist.name, pricelist.currency_id.name))
+            for pricelist in self
+        ]
 
     def _get_products_price(self, products, quantity, uom=None, date=False, **kwargs):
         """Compute the pricelist prices for the specified products, qty & uom.
@@ -65,11 +70,7 @@ class Pricelist(models.Model):
         return {
             product_id: res_tuple[0]
             for product_id, res_tuple in self._compute_price_rule(
-                products,
-                quantity,
-                uom=uom,
-                date=date,
-                **kwargs
+                products, quantity, uom=uom, date=date, **kwargs
             ).items()
         }
 
@@ -86,7 +87,9 @@ class Pricelist(models.Model):
             product, quantity, uom=uom, date=date, **kwargs
         )[product.id][0]
 
-    def _get_product_price_rule(self, product, quantity, uom=None, date=False, **kwargs):
+    def _get_product_price_rule(
+        self, product, quantity, uom=None, date=False, **kwargs
+    ):
         """Compute the pricelist price & rule for the specified product, qty & uom.
 
         Note: self.ensure_one()
@@ -95,7 +98,9 @@ class Pricelist(models.Model):
         :rtype: tuple(float, int)
         """
         self.ensure_one()
-        return self._compute_price_rule(product, quantity, uom=uom, date=date, **kwargs)[product.id]
+        return self._compute_price_rule(
+            product, quantity, uom=uom, date=date, **kwargs
+        )[product.id]
 
     def _get_product_rule(self, product, quantity, uom=None, date=False, **kwargs):
         """Compute the pricelist price & rule for the specified product, qty & uom.
@@ -111,7 +116,7 @@ class Pricelist(models.Model):
         )[product.id][1]
 
     def _compute_price_rule(self, products, qty, uom=None, date=False, **kwargs):
-        """ Low-level method - Mono pricelist, multi products
+        """Low-level method - Mono pricelist, multi products
         Returns: dict{product_id: (price, suitable_rule) for the given pricelist}
 
         :param products: recordset of products (product.product/product.template)
@@ -138,15 +143,19 @@ class Pricelist(models.Model):
 
         results = {}
         for product in products:
-            suitable_rule = self.env['product.pricelist.item']
+            suitable_rule = self.env["product.pricelist.item"]
 
             product_uom = product.uom_id
-            target_uom = uom or product_uom  # If no uom is specified, fall back on the product uom
+            target_uom = (
+                uom or product_uom
+            )  # If no uom is specified, fall back on the product uom
 
             # Compute quantity in product uom because pricelist rules are specified
             # w.r.t product default UoM (min_quantity, price_surchage, ...)
             if target_uom != product_uom:
-                qty_in_product_uom = target_uom._compute_quantity(qty, product_uom, raise_if_failure=False)
+                qty_in_product_uom = target_uom._compute_quantity(
+                    qty, product_uom, raise_if_failure=False
+                )
             else:
                 qty_in_product_uom = qty
 
@@ -155,8 +164,10 @@ class Pricelist(models.Model):
                     suitable_rule = rule
                     break
 
-            kwargs['pricelist'] = self
-            price = suitable_rule._compute_price(product, qty, target_uom, date=date, currency=self.currency_id)
+            kwargs["pricelist"] = self
+            price = suitable_rule._compute_price(
+                product, qty, target_uom, date=date, currency=self.currency_id
+            )
             results[product.id] = (price, suitable_rule.id)
 
         return results
@@ -167,36 +178,55 @@ class Pricelist(models.Model):
         # Do not filter out archived pricelist items, since it means current pricelist is also archived
         # We do not want the computation of prices for archived pricelist to always fallback on the Sales price
         # because no rule was found (thanks to the automatic orm filtering on active field)
-        return self.env['product.pricelist.item'].with_context(active_test=False).search(
-            self._get_applicable_rules_domain(products=products, date=date, **kwargs)
+        return (
+            self.env["product.pricelist.item"]
+            .with_context(active_test=False)
+            .search(
+                self._get_applicable_rules_domain(
+                    products=products, date=date, **kwargs
+                )
+            )
         )
 
     def _get_applicable_rules_domain(self, products, date, **kwargs):
-        if products._name == 'product.template':
-            templates_domain = ('product_tmpl_id', 'in', products.ids)
-            products_domain = ('product_id.product_tmpl_id', 'in', products.ids)
+        if products._name == "product.template":
+            templates_domain = ("product_tmpl_id", "in", products.ids)
+            products_domain = ("product_id.product_tmpl_id", "in", products.ids)
         else:
-            templates_domain = ('product_tmpl_id', 'in', products.product_tmpl_id.ids)
-            products_domain = ('product_id', 'in', products.ids)
+            templates_domain = ("product_tmpl_id", "in", products.product_tmpl_id.ids)
+            products_domain = ("product_id", "in", products.ids)
 
         return [
-            ('pricelist_id', '=', self.id),
-            '|', ('categ_id', '=', False), ('categ_id', 'parent_of', products.categ_id.ids),
-            '|', ('product_tmpl_id', '=', False), templates_domain,
-            '|', ('product_id', '=', False), products_domain,
-            '|', ('date_start', '=', False), ('date_start', '<=', date),
-            '|', ('date_end', '=', False), ('date_end', '>=', date),
+            ("pricelist_id", "=", self.id),
+            "|",
+            ("categ_id", "=", False),
+            ("categ_id", "parent_of", products.categ_id.ids),
+            "|",
+            ("product_tmpl_id", "=", False),
+            templates_domain,
+            "|",
+            ("product_id", "=", False),
+            products_domain,
+            "|",
+            ("date_start", "=", False),
+            ("date_start", "<=", date),
+            "|",
+            ("date_end", "=", False),
+            ("date_end", ">=", date),
         ]
 
     # Multi pricelists price|rule computation
     def _price_get(self, product, qty, **kwargs):
-        """ Multi pricelist, mono product - returns price per pricelist """
+        """Multi pricelist, mono product - returns price per pricelist"""
         return {
             key: price[0]
-            for key, price in self._compute_price_rule_multi(product, qty, **kwargs)[product.id].items()}
+            for key, price in self._compute_price_rule_multi(product, qty, **kwargs)[
+                product.id
+            ].items()
+        }
 
     def _compute_price_rule_multi(self, products, qty, uom=None, date=False, **kwargs):
-        """ Low-level method - Multi pricelist, multi products
+        """Low-level method - Multi pricelist, multi products
         Returns: dict{product_id: dict{pricelist_id: (price, suitable_rule)} }"""
         if not self.ids:
             pricelists = self.search([])
@@ -204,7 +234,9 @@ class Pricelist(models.Model):
             pricelists = self
         results = {}
         for pricelist in pricelists:
-            subres = pricelist._compute_price_rule(products, qty, uom=uom, date=date, **kwargs)
+            subres = pricelist._compute_price_rule(
+                products, qty, uom=uom, date=date, **kwargs
+            )
             for product_id, price in subres.items():
                 results.setdefault(product_id, {})
                 results[product_id][pricelist.id] = price
@@ -213,7 +245,7 @@ class Pricelist(models.Model):
     # res.partner.property_product_pricelist field computation
     @api.model
     def _get_partner_pricelist_multi(self, partner_ids):
-        """ Retrieve the applicable pricelist for given partners in a given company.
+        """Retrieve the applicable pricelist for given partners in a given company.
 
         It will return the first found pricelist in this order:
         First, the pricelist of the specific property (res_id set), this one
@@ -229,63 +261,84 @@ class Pricelist(models.Model):
         """
         # `partner_ids` might be ID from inactive users. We should use active_test
         # as we will do a search() later (real case for website public user).
-        Partner = self.env['res.partner'].with_context(active_test=False)
+        Partner = self.env["res.partner"].with_context(active_test=False)
         company_id = self.env.company.id
 
-        Property = self.env['ir.property'].with_company(company_id)
-        Pricelist = self.env['product.pricelist']
+        Property = self.env["ir.property"].with_company(company_id)
+        Pricelist = self.env["product.pricelist"]
         pl_domain = self._get_partner_pricelist_multi_search_domain_hook(company_id)
 
         # if no specific property, try to find a fitting pricelist
-        result = Property._get_multi('property_product_pricelist', Partner._name, partner_ids)
+        result = Property._get_multi(
+            "property_product_pricelist", Partner._name, partner_ids
+        )
 
-        remaining_partner_ids = [pid for pid, val in result.items() if not val or
-                                 not val._get_partner_pricelist_multi_filter_hook()]
+        remaining_partner_ids = [
+            pid
+            for pid, val in result.items()
+            if not val or not val._get_partner_pricelist_multi_filter_hook()
+        ]
         if remaining_partner_ids:
             # get fallback pricelist when no pricelist for a given country
             pl_fallback = (
-                Pricelist.search(pl_domain + [('country_group_ids', '=', False)], limit=1) or
-                Property._get('property_product_pricelist', 'res.partner') or
-                Pricelist.search(pl_domain, limit=1)
+                Pricelist.search(
+                    pl_domain + [("country_group_ids", "=", False)], limit=1
+                )
+                or Property._get("property_product_pricelist", "res.partner")
+                or Pricelist.search(pl_domain, limit=1)
             )
             # group partners by country, and find a pricelist for each country
-            domain = [('id', 'in', remaining_partner_ids)]
-            groups = Partner.read_group(domain, ['country_id'], ['country_id'])
+            domain = [("id", "in", remaining_partner_ids)]
+            groups = Partner.read_group(domain, ["country_id"], ["country_id"])
             for group in groups:
-                country_id = group['country_id'] and group['country_id'][0]
-                pl = Pricelist.search(pl_domain + [('country_group_ids.country_ids', '=', country_id)], limit=1)
+                country_id = group["country_id"] and group["country_id"][0]
+                pl = Pricelist.search(
+                    pl_domain + [("country_group_ids.country_ids", "=", country_id)],
+                    limit=1,
+                )
                 pl = pl or pl_fallback
-                for pid in Partner.search(group['__domain']).ids:
+                for pid in Partner.search(group["__domain"]).ids:
                     result[pid] = pl
 
         return result
 
     def _get_partner_pricelist_multi_search_domain_hook(self, company_id):
         return [
-            ('active', '=', True),
-            ('company_id', 'in', [company_id, False]),
+            ("active", "=", True),
+            ("company_id", "in", [company_id, False]),
         ]
 
     def _get_partner_pricelist_multi_filter_hook(self):
-        return self.filtered('active')
+        return self.filtered("active")
 
     @api.model
     def get_import_templates(self):
-        return [{
-            'label': _('Import Template for Pricelists'),
-            'template': '/product/static/xls/product_pricelist.xls'
-        }]
+        return [
+            {
+                "label": _("Import Template for Pricelists"),
+                "template": "/product/static/xls/product_pricelist.xls",
+            }
+        ]
 
     @api.ondelete(at_uninstall=False)
     def _unlink_except_used_as_rule_base(self):
-        linked_items = self.env['product.pricelist.item'].sudo().with_context(active_test=False).search([
-            ('base', '=', 'pricelist'),
-            ('base_pricelist_id', 'in', self.ids),
-            ('pricelist_id', 'not in', self.ids),
-        ])
+        linked_items = (
+            self.env["product.pricelist.item"]
+            .sudo()
+            .with_context(active_test=False)
+            .search(
+                [
+                    ("base", "=", "pricelist"),
+                    ("base_pricelist_id", "in", self.ids),
+                    ("pricelist_id", "not in", self.ids),
+                ]
+            )
+        )
         if linked_items:
-            raise UserError(_(
-                'You cannot delete those pricelist(s):\n(%s)\n, they are used in other pricelist(s):\n%s',
-                '\n'.join(linked_items.base_pricelist_id.mapped('display_name')),
-                '\n'.join(linked_items.pricelist_id.mapped('display_name'))
-            ))
+            raise UserError(
+                _(
+                    "You cannot delete those pricelist(s):\n(%s)\n, they are used in other pricelist(s):\n%s",
+                    "\n".join(linked_items.base_pricelist_id.mapped("display_name")),
+                    "\n".join(linked_items.pricelist_id.mapped("display_name")),
+                )
+            )

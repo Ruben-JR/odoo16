@@ -4,8 +4,7 @@ from odoo.http import Controller, route, request
 
 
 class View(Controller):
-
-    @route('/web/view/edit_custom', type='json', auth="user")
+    @route("/web/view/edit_custom", type="json", auth="user")
     def edit_custom(self, custom_id, arch):
         """
         Edit a custom view
@@ -14,6 +13,6 @@ class View(Controller):
         :param str arch: the edited arch of the custom view
         :returns: dict with acknowledged operation (result set to True)
         """
-        custom_view = request.env['ir.ui.view.custom'].browse(custom_id)
-        custom_view.write({'arch': arch})
-        return {'result': True}
+        custom_view = request.env["ir.ui.view.custom"].browse(custom_id)
+        custom_view.write({"arch": arch})
+        return {"result": True}

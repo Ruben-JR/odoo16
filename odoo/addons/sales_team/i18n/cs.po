@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* sales_team
-# 
+#
 # Translators:
 # Jakub Snášel <jakub@potisk-tricek.cz>, 2022
 # Jaroslav Helemik Nemec <nemec@helemik.cz>, 2022
@@ -11,7 +11,7 @@
 # trendspotter <jirka.p@volny.cz>, 2022
 # Michal Veselý <michal@veselyberanek.net>, 2022
 # Martin Trigaux, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta\n"

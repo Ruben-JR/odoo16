@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* payment_paypal
-# 
+#
 # Translators:
 # Mustafa Rawi <mustafa@cubexco.com>, 2019
 # Mustafa J. Kadhem <safi2266@gmail.com>, 2019
 # Osama Ahmaro <osamaahmaro@gmail.com>, 2019
 # Shaima Safar <shaima.safar@open-inside.com>, 2019
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5\n"

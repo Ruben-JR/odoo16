@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* privacy_lookup
-# 
+#
 # Translators:
 # oscaryuu, 2022
 # Josep Anton Belchi, 2022
@@ -12,7 +12,7 @@
 # Martin Trigaux, 2022
 # Quim - eccit <quim@eccit.com>, 2022
 # Ivan Espinola, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~15.4\n"

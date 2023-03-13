@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* sale_product_matrix
-# 
+#
 # Translators:
 # Hamid Darabi, 2023
 # Mohsen Mohammadi <iammohsen.123@gmail.com>, 2023
 # Martin Trigaux, 2023
 # Hanna Kheradroosta, 2023
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta\n"

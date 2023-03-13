@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* stock_sms
-# 
+#
 # Translators:
 # Martin Trigaux, 2022
 # Manuela Silva <mmsrs@sky.com>, 2022
@@ -9,7 +9,7 @@
 # Pedro Filipe <pedro2.10@hotmail.com>, 2022
 # Pedro Castro Silva <pedrocs@exo.pt>, 2022
 # Nuno Silva <nuno.silva@arxi.pt>, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.5alpha1\n"

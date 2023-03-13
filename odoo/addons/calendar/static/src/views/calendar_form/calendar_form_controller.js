@@ -17,7 +17,7 @@ export class CalendarFormController extends FormController {
             );
         });
     }
-    
+
     /**
      * @override
      */

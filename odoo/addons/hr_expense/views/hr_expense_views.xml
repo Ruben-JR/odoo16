@@ -526,8 +526,8 @@
                             </group>
                             <group string="Accounting">
                                 <field name="property_account_expense_id" groups="account.group_account_readonly"/>
-                                <field name="supplier_taxes_id" widget="many2many_tags" 
-                                       context="{'default_type_tax_use':'purchase', 'default_price_include': 1}" 
+                                <field name="supplier_taxes_id" widget="many2many_tags"
+                                       context="{'default_type_tax_use':'purchase', 'default_price_include': 1}"
                                        options="{'no_quick_create': True}"/>
                             </group>
                         </group>
@@ -744,7 +744,7 @@
                                     mode="tree,kanban"
                                     domain="[('state', '=', 'draft'), ('employee_id', '=', employee_id), ('company_id', '=', company_id)]"
                                     options="{'reload_on_button': True}"
-                                    context="{'form_view_ref' : 'hr_expense.hr_expense_view_form_without_header', 'default_company_id': company_id, 'default_employee_id': employee_id}" 
+                                    context="{'form_view_ref' : 'hr_expense.hr_expense_view_form_without_header', 'default_company_id': company_id, 'default_employee_id': employee_id}"
                                     attrs="{'readonly': [('is_editable', '=', False)]}"
                                     force_save="1">
                                 <tree decoration-danger="is_refused" editable="bottom" class="o_expense_line_list">

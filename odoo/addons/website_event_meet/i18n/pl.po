@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* website_event_meet
-# 
+#
 # Translators:
 # Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2022
 # Wojciech Warczakowski <w.warczakowski@gmail.com>, 2022
@@ -18,7 +18,7 @@
 # Dawid Prus, 2022
 # Maksym <ms@myodoo.pl>, 2022
 # Paweł Wodyński <pw@myodoo.pl>, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta\n"

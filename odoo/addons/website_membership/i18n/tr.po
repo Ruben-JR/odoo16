@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* website_membership
-# 
+#
 # Translators:
 # İmat Yahya Çataklı <yahya.catakli@soluto.com.tr>, 2022
 # Ramiz Deniz Öner <deniz@denizoner.com>, 2022
@@ -9,7 +9,7 @@
 # abc Def <hdogan1974@gmail.com>, 2022
 # Murat Kaplan <muratk@projetgrup.com>, 2022
 # Martin Trigaux, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.5alpha1\n"

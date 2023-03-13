@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* website_mass_mailing
-# 
+#
 # Translators:
 # Kari Lindgren <kari.lindgren@emsystems.fi>, 2022
 # Veikko Väätäjä <veikko.vaataja@gmail.com>, 2022
@@ -9,7 +9,7 @@
 # Miika Nissi <miika.nissi@tawasta.fi>, 2022
 # Teija Hölttä <teija.holtta@gmail.com>, 2022
 # Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.5alpha1\n"

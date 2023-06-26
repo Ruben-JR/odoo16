@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mylab_hospital_mylab_hospital,mylab_hospital.mylab_hospital,model_mylab_hospital_mylab_hospital,base.group_user,1,1,1,1

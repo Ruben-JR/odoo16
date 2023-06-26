@@ -1,5 +1,5 @@
 {
-    "name": "Login/signup reCAPTCHA",
+    "name": "MyLab Login/signup reCAPTCHA",
     "version": "12.0.1.0.0",
     "summary": """Protect robot login and signup with reCAPTCHA""",
     "description": """CAPTCHA helps you detect abusive traffic on your website without any user friction.

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 {
-    "name": "health_signup_verification",
+    "name": "MyLab Signup Verification",
     "summary": """User signUp email and number vefication""",
     "description": """After user create an account he need to confirm email and phone number to proceed to login""",
     "author": "Ruben de Pina",
-    "website": "https://www.health.cv",
-    "category": "Health",
+    "website": "",
+    "category": "",
     "version": "0.1",
     "depends": [
         "base",

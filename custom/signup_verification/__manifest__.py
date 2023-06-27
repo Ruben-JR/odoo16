@@ -4,6 +4,7 @@
     "summary": """User signUp email and number vefication""",
     "description": """After user create an account he need to confirm email and phone number to proceed to login""",
     "author": "Ruben de Pina",
+    "sequence": -97,
     "website": "",
     "category": "Extra Tools",
     "version": "0.1",

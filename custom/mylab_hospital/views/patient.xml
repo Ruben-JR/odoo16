@@ -1,5 +1,6 @@
 <odoo>
   <data>
+    <!-- tree view -->
     <record model="ir.ui.view" id="demographic_tree">
       <field name="name">hospital.patient.tree</field>
       <field name="model">hospital.patient</field>
@@ -13,6 +14,7 @@
       </field>
     </record>
 
+    <!-- form view -->
     <record model="ir.ui.view" id="demographic_form">
       <field name="name">hospital.patient.form</field>
       <field name="model">hospital.patient</field>
@@ -29,6 +31,7 @@
       </field>
     </record>
 
+    <!-- search view -->
     <record model="ir.ui.view" id="demographic_search">
       <field name="name">hospital.patient.search</field>
       <field name="model">hospital.patient</field>
@@ -36,6 +39,13 @@
         <search>
           <field name="ref" string="Reference" />
           <field name="name" string="Patient Name" filter_domain="['|', ('name','ilike',self), ('ref','=like',str(self)+'%')]" />
+          <filter name="filter_male" string="Male" domain="[('gender','=','m')]" /> <!-- filter by male gender -->
+          <filter name="filter_female" string="Female" domain="[('gender','=','f')]" /> <!-- filter by female gender -->
+          <separator /> <!-- Condition and to separate filter -->
+          <filter name="filter_kids" string="Kids" domain="[('age','&lt;=', 5)]" /> <!-- filter by female gender -->
+          <group expand="0" string="Group By">
+            <filter string="Gender" name="group_by_gender" context="{'group_by':'gender'}" />
+          </group>
         </search>
       </field>
     </record>

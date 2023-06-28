@@ -11,3 +11,4 @@ class hospitalPatient(models.Model):
     name = fields.Char()
     age = fields.Integer()
     gender = fields.Selection([("m", "Male"), ("f", "Female")])
+    active = fields.Boolean(default=True)

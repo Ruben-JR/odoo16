@@ -20,7 +20,9 @@
         <form>
           <sheet>
             <group>
+              <field name="ref" string="Reference" />
               <field name="name" string="Patient Name" />
+              <field name="date_of_birth" string="Date of birth"/>
               <field name="age" string="Age" />
               <field name="gender" string="Gender" />
               <field name="active" string="Active" />
@@ -45,7 +47,7 @@
           <filter name="filter_male" string="Male" domain="[('gender','=','m')]" />
           <filter name="filter_female" string="Female" domain="[('gender','=','f')]" />
           <separator />
-          <filter name="filter_kids" string="Kids" domain="[('age','&lt;=', 5)]" />
+          <!-- <filter name="filter_kids" string="Kids" domain="[('age','&lt;=', 5)]" /> -->
           <group expand="0" string="Group By">
             <filter string="Gender" name="group_by_gender" context="{'group_by':'gender'}" />
           </group>

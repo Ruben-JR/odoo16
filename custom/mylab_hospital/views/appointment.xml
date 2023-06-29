@@ -5,9 +5,11 @@
       <field name="model">hospital.appointment</field>
       <field name="arch" type="xml">
         <tree>
+          <field name="ref" string="Reference"/>
           <field name="patient_id" placeholder="Patient name"/>
-          <field name="appoint_time" placeholder="Appointment time"/>
-          <field name="book_date" placeholder="Book date"/>
+          <field name="gender" string="Gender"/>
+          <field name="appoint_time" string="Appointment time"/>
+          <field name="book_date" string="Book date"/>
         </tree>
       </field>
     </record>
@@ -19,9 +21,11 @@
         <form>
           <sheet>
             <group>
+              <field name="ref" string="Reference"/>
               <field name="patient_id" placeholder="Patient name"/>
-              <field name="appoint_time" placeholder="Appointment time"/>
-              <field name="book_date" placeholder="Book date"/>
+              <field name="gender" string="Gender"/>
+              <field name="appoint_time" string="Appointment time"/>
+              <field name="book_date" string="Book date"/>
             </group>
           </sheet>
           <div class="oe_chatter">

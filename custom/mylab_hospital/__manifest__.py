@@ -17,6 +17,7 @@
     "data": [
         "security/ir.model.access.csv",
         "views/patient.xml",
+        "views/appointment.xml",
         "views/menu.xml",
         # "views/templates.xml",
     ],

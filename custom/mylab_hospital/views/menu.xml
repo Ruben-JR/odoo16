@@ -30,5 +30,13 @@
             sequence="1"
             action="action_female_demographic_info"
         />
+
+        <menuitem
+            id="menu_appointment"
+            name="Appointment"
+            parent="menu_hospital_root"
+            sequence="1"
+            action="action_appointment"
+        />
     </data>
 </odoo>

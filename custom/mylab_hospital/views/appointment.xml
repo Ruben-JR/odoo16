@@ -4,7 +4,7 @@
       <field name="name">hospital.appointment.tree</field>
       <field name="model">hospital.appointment</field>
       <field name="arch" type="xml">
-        <tree>
+        <tree delete="0">
           <field name="ref" string="Reference"/>
           <field name="patient_id" placeholder="Patient name"/>
           <field name="gender" string="Gender"/>
@@ -18,15 +18,38 @@
       <field name="name">hospital.appointment.form</field>
       <field name="model">hospital.appointment</field>
       <field name="arch" type="xml">
-        <form>
+        <form create="0">
+          <header>
+              <field name="state" widget="statusbar" nolabel="1" options="{'clickable': '1'}"/>
+          </header>
           <sheet>
+            <div class="oe_title">
+              <h1 class="d-flex">
+                  <field name="priority" widget="priority" class="me-3"/>
+              </h1>
+            </div>
             <group>
-              <field name="ref" string="Reference"/>
-              <field name="patient_id" placeholder="Patient name"/>
-              <field name="gender" string="Gender"/>
-              <field name="appoint_time" string="Appointment time"/>
-              <field name="book_date" string="Book date"/>
+              <group>
+                <field name="ref" string="Reference"/>
+                <field name="patient_id" placeholder="Patient name"/>
+                <field name="gender" string="Gender"/>
+              </group>
+              <group>
+                <field name="book_date" string="Book date"/>
+                <field name="appoint_time" string="Appointment time"/>
+              </group>
             </group>
+            <notebook>
+              <page string="Prescription" name="precription">
+                <group>
+                  <field name="prescription" placeholder="Enter your prescription" />
+                </group>
+              </page>
+              <page string="Pharmacy" name="pharmacy">
+                <group>
+                </group>
+              </page>
+            </notebook>
           </sheet>
           <div class="oe_chatter">
               <field name="message_follower_ids"/>

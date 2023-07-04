@@ -20,7 +20,7 @@
       <field name="arch" type="xml">
         <form create="0">
           <header>
-              <field name="state" widget="statusbar" nolabel="1" options="{'clickable': '1'}"/>
+              <field name="state" widget="statusbar" nolabel="1" options="{'clickable': '1'}" statusbar_visible="draft,in_cusultation,done"/>
           </header>
           <sheet>
             <div class="oe_title">
@@ -37,6 +37,17 @@
               <group>
                 <field name="book_date" string="Book date"/>
                 <field name="appoint_time" string="Appointment time"/>
+                <button
+                  class="oe_highlight"
+                  type="object"
+                  name="object_button"
+                  string="Object button" />
+                <button
+                  class="oe_highlight"
+                  type="action"
+                  confirm="Are you sure?"
+                  name="%(mylab_hospital.action_demographic_info)d"
+                  string="Action button" />
               </group>
             </group>
             <notebook>

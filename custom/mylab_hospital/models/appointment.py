@@ -35,3 +35,6 @@ class hospitalAppointment(models.Model):
     def _onchange_patient_id(self):
         for rec in self:
             rec.ref = rec.patient_id.ref
+
+    def object_button(self):
+        print("")

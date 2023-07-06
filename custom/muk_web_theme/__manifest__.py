@@ -23,7 +23,6 @@
         "templates/webclient.xml",
         "views/res_config_settings.xml",
         "views/res_users.xml",
-        "views/ir_filters_myLab.xml",
     ],
     "assets": {
         "web._assets_primary_variables": [

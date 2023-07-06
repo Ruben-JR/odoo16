@@ -20,8 +20,8 @@
     "data": ["templates/assets.xml", "views/res_config_settings_views.xml"],
     "assets": {
         "web.assets_backend": [
-            "/web_pwa_oca/static/src/js/pwa_manager.js",
-            "/web_pwa_oca/static/src/js/webclient.js",
+            "/mylab_web_pwa/static/src/js/pwa_manager.js",
+            "/mylab_web_pwa/static/src/js/webclient.js",
         ]
     },
     "images": ["static/description/pwa.png"],

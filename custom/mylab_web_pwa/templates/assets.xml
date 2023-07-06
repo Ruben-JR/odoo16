@@ -7,7 +7,7 @@
     >
         <xpath expr="//t[@t-call-assets='web.assets_common']" position="before">
             <!-- Add link rel manifest -->
-            <link rel="manifest" t-attf-href="/web_pwa_oca/manifest.webmanifest" />
+            <link rel="manifest" t-attf-href="/mylab_web_pwa/manifest.webmanifest" />
             <!-- Add iOS meta tags and icons -->
             <meta name="apple-mobile-web-app-capable" content="yes" />
             <meta name="apple-mobile-web-app-status-bar-style" content="black" />
@@ -18,7 +18,7 @@
             <meta name="apple-mobile-web-app-title" t-att-content="pwa_name" />
             <link
                 rel="apple-touch-icon"
-                href="/web_pwa_oca/static/img/icons/icon-152x152.png"
+                href="/mylab_web_pwa/static/img/icons/icon-152x152.png"
             />
             <!-- Add meta theme-color -->
             <t

@@ -2,10 +2,10 @@
 /* Copyright 2022 Tecnativa - Sergio Teruel
  * License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). */
 
-odoo.define("web_pwa_oca.pwa_launch", function (require) {
+odoo.define("mylab_web_pwa.pwa_launch", function (require) {
     "use strict";
     var core = require("web.core");
-    var PWAManager = require("web_pwa_oca.PWAManager");
+    var PWAManager = require("mylab_web_pwa.PWAManager");
 
     core.bus.on("web_client_ready", null, function () {
         this.pwa_manager = new PWAManager(this);

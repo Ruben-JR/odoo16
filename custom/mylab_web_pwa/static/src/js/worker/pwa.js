@@ -8,7 +8,7 @@
  * this class is instantiated.
  */
 
-odoo.define("web_pwa_oca.PWA", function (require) {
+odoo.define("mylab_web_pwa.PWA", function (require) {
     "use strict";
 
     const OdooClass = require("web.Class");

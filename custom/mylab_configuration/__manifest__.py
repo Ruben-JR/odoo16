@@ -18,7 +18,7 @@
         # csv file
         # 'security/ir.model.access.csv',
         # data file
-        "data/ir_filters_myLab.xml",
+        "views/ir_filters_myLab.xml",
         # view file
         # 'views/views.xml',
         # 'views/templates.xml',

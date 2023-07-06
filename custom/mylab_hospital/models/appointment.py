@@ -37,4 +37,10 @@ class hospitalAppointment(models.Model):
             rec.ref = rec.patient_id.ref
 
     def object_button(self):
-        print("Object button clicked")
+        return {
+            "effect": {
+                "fadeout": "slow",
+                "message": "Click sucessfull",
+                "type": "rainbow_man",
+            }
+        }

@@ -40,6 +40,7 @@
                 <button
                   class="oe_highlight"
                   type="object"
+                  confirm="Are you sure?"
                   name="object_button"
                   string="Object button"
                   help="A message will be printed in the log" />

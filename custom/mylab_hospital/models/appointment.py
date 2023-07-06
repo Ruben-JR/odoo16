@@ -37,4 +37,4 @@ class hospitalAppointment(models.Model):
             rec.ref = rec.patient_id.ref
 
     def object_button(self):
-        print("")
+        print("Object button clicked")

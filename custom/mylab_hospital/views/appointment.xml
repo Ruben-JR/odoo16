@@ -6,7 +6,7 @@
       <field name="arch" type="xml">
         <tree delete="0">
           <field name="ref" string="Reference"/>
-          <field name="patient_id" placeholder="Patient name"/>
+          <field name="patient_id" placeholder="Patient name" />
           <field name="gender" string="Gender"/>
           <field name="appoint_time" string="Appointment time"/>
           <field name="book_date" string="Book date"/>
@@ -31,7 +31,7 @@
             <group>
               <group>
                 <field name="ref" string="Reference"/>
-                <field name="patient_id" placeholder="Patient name"/>
+                <field name="patient_id" placeholder="Patient name" help="Choose a patient records"/>
                 <field name="gender" string="Gender"/>
               </group>
               <group>
@@ -41,13 +41,15 @@
                   class="oe_highlight"
                   type="object"
                   name="object_button"
-                  string="Object button" />
+                  string="Object button"
+                  help="A message will be printed in the log" />
                 <button
                   class="oe_highlight"
                   type="action"
                   confirm="Are you sure?"
                   name="%(mylab_hospital.action_demographic_info)d"
-                  string="Action button" />
+                  string="Action button"
+                  help="On click this button, you will be directed to patients records" />
               </group>
             </group>
             <notebook>

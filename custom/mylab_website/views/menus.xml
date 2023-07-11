@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data noupdate="1">
+    <data>
         <record id="menu_appointment" model="website.menu">
-            <field name="name">Appointment</field>
-            <field name="url">/appointment</field>
-            <field name="page_id" ref="health_website.appointments_page"/>
+            <field name="name">Appointments</field>
+            <field name="page_id" ref="mylab_website.appointments_page"/>
             <field name="parent_id" ref="website.main_menu" />
-            <!-- <field name="group_ids" eval="[(4, ref('base.group_user'))]" /> -->
             <field name="sequence">55</field>
         </record>
     </data>

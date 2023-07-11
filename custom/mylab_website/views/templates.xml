@@ -5,7 +5,10 @@
         <t t-call="website.layout">
           <t t-set="pageName" t-value="'homepage'" />
           <div id="wrap" class="oe_structure oe_empty">
-            <section class="s_cover parallax s_parallax_is_fixed bg-black-50 pt96 pb96 o_colored_level" data-scroll-background-ratio="1" data-snippet="s_cover" data-name="Cover" style="background-image: none;">
+            <section
+              class="s_cover parallax s_parallax_is_fixed bg-black-50 pt96 pb96 o_colored_level"
+              data-scroll-background-ratio="1" data-snippet="s_cover" data-name="Cover"
+              style="background-image: none;">
               <div class="o_we_bg_filter bg-black-50" />
               <div class="container s_allow_columns">
                 <h1 style="text-align: center;">
@@ -15,7 +18,354 @@
                 </h1>
               </div>
             </section>
+            <section
+              class="s_text_image pt32 pb32 o_colored_level o_we_force_no_transition"
+              data-snippet="s_text_image" data-name="Text - Image"
+              style="background-image: none;" data-original-title="" title=""
+              aria-describedby="tooltip560474">
+              <div class="container">
+                <div class="row align-items-center">
+                  <div class="col-lg-6 pt16 pb16 o_colored_level">
+                    <h2>Ruben de Pina<br /></h2>
+                    <p>My name is Ruben de Pina, from Cap Verd (cape_verde), student of systems
+                      engineering and informatics. I want to be a Full stack developer, so i study
+                      and create every day projects to code and pratices my knowledge to make me
+                      better developer. I love apply my knowledge to solve problems and create
+                      amazing products. I am using the odoo tutorial in the youtube to improve and
+                      leran more about this ERP and expand my knowledge<br /></p>
+                    <p data-original-title="" title="" aria-describedby="tooltip489014">&amp;nbsp;</p>
+                  </div>
+                  <div class="col-lg-6 pt16 pb16 o_colored_level">
+                    <img src="/mylab_website/static/img/Djarmay.png" class="img img-fluid mx-auto"
+                      alt="djarmay logo" data-resize-width="100" />
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section class="s_numbers o_cc o_cc2 pt24 pb24" data-snippet="s_numbers"
+              data-name="Numbers">
+              <div class="container">
+                <div class="row">
+                  <div class="col-lg-3 text-center pt24 pb24">
+                    <span class="s_number display-4">4</span>
+                    <br />
+                    <h6>Operating system learned</h6>
+                  </div>
+                  <div class="col-lg-3 text-center pt24 pb24">
+                    <span class="s_number display-4">6</span>
+                    <br />
+                    <h6>Programmer language learned</h6>
+                  </div>
+                  <div class="col-lg-3 text-center pt24 pb24">
+                    <span class="s_number display-4">6</span>
+                    <br />
+                    <h6>Framework learned</h6>
+                  </div>
+                  <div class="col-lg-3 text-center pt24 pb24">
+                    <span class="s_number display-4">2</span>
+                    <br />
+                    <h6>Databases</h6>
+                  </div>
+                </div>
+              </div>
+            </section>
           </div>
+        </t>
+      </xpath>
+    </template>
+
+    <template id="custom_footer" inherit_id="website.layout" name="Custom Footer">
+      <xpath expr="//footer" position="replace">
+        <footer>
+          <div class="container py-5 border-top">
+            <div class="row">
+              <div class="col-lg-5">
+                <p class="py-3"></p>
+
+                <div class="s_share text-left no_icon_color" data-snippet="s_share"
+                  data-name="Social Media">
+                  <h5 class="s_share_title d-none">Follow me</h5>
+                  <a href="/website/social/facebook/https://www.facebook.com/ruben.junior99/"
+                    class="s_share_facebook" target="_blank">
+                    <i class="fa fa-facebook m-1 rounded-circle border" />
+                  </a>
+                  <a href="/website/social/twitter/https://twitter.com/RubenPina99"
+                    class="s_share_twitter" target="_blank">
+                    <i class="fa fa-twitter m-1 rounded-circle border" />
+                  </a>
+                  <a
+                    href="/website/social/linkedin/https://www.linkedin.com/in/ruben-pina-3851b4235/"
+                    class="s_share_linkedin" target="_blank">
+                    <i class="fa fa-linkedin m-1 rounded-circle border" />
+                  </a>
+                  <a href="/website/social/instagram/https://www.instagram.com/ruben.jr__/"
+                    class="s_share_instagram" target="_blank">
+                    <i class="fa fa-instagram m-1 rounded-circle border" />
+                  </a>
+                </div>
+              </div>
+              <div class="col-lg-2">
+                <h5 style="color: rgb(255, 255, 255)">Links</h5>
+                <ul class="list-unstyled">
+                  <li>
+                    <a href="/home" style="color: rgb(255, 255, 255)">Home</a>
+                  </li>
+                  <li>
+                    <a href="/contactus" style="color: rgb(255, 255, 255)">Contact me</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-lg-3">
+                <p class="m-0" style="color: rgb(255, 255, 255)">Contact me</p>
+                <p>
+                  <a href="rubenpina758@gmail.com" style="color: rgb(255, 255, 255)">
+                    rubenpina758@gmail.com</a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </xpath>
+    </template>
+
+    <template id="portal_my_details_inherit" inherit_id="portal.portal_my_details" name="User Deatails Inherit">
+      <xpath expr="//t[@t-call='portal.portal_layout']" position="replace">
+        <t t-call="website.layout">
+          <t t-set="pageName" t-value="'homepage'" />
+          <h1 style="text-align: center; margin-top: 30px;">
+            <font style="font-size: 30px; font-weight: bold;">
+              <span style="color: #000000">Demographic information</span>
+            </font>
+            <br />
+          </h1>
+          <form action="/my/account" method="POST" enctype="multipart/form-data"
+            class="o_mark_required" data-mark="*" data-model_name=""
+            data-success-page="">
+            <!-- patient information -->
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+            <div class="info-container"
+              style="display: flex; flex-direction: column; margin: 100px">
+              <ul class="nav nav-tabs">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="#">Personal Information</a>
+                </li>
+              </ul>
+
+              <div class="nome-p">
+                <div class="mb-3">
+                  <label for="name" class="form-label"
+                    style="font-size: 15px; font-weight: bold; margin-top: 30px;">Name</label>
+                  <input type="text" class="form-control" style="width: 50%" name="name"
+                    required="1" t-att-value="partner.name" placeholder="Joana Monteiro" />
+                </div>
+              </div>
+              <div style="display: inline-block;">
+                <!-- Informacoes pessoais -->
+                <div class="row g-3"
+                  style="display: flex; flex-direction: column; align-items: flex-start; margin-top: 50px; float:left; width: 400px;">
+                  <h3 style="text-align: center; display: flex, margin-top: 50px;">
+                    <font style="font-size: 20px; font-weight: bold;">
+                      <span style="color: #000000; margin-left: 15px;">Personal Information</span>
+                    </font>
+                    <br />
+                  </h3>
+
+                  <!-- <div class="col-md-6" style="max-width: 100%">
+                                        <label for="identification_type" class="form-label" style="padding-top: 10px">Doc.
+                  Identification</label>
+                                        <select class="form-control" name="identification_type" required="1" >
+                                            <option value="identification_card" t-att-selected="partner.identification_type ==
+                  partner.identification_type">
+                                                <t t-if="partner.identification_type == 'identification_card'">Cédula</t>
+                                                <t t-if="partner.identification_type == 'bi'">BI</t>
+                                                <t t-if="partner.identification_type == 'passport'">Passport</t>
+                                                <t t-if="partner.identification_type == 'cni'">CNI</t>
+                                            </option>
+                                            <option value="identification_card">Cédula</option>
+                                            <option value="bi">BI</option>
+                                            <option value="passport">Passport</option>
+                                            <option value="cni">CNI</option>
+                                        </select>
+                                    </div> -->
+                  <!-- <div class="col-md-6" style="max-width: 100%">
+                                        <label for="identification_id" class="form-label" style="padding-top: 10px">Num.
+                  Identification</label>
+                                        <input type="tex" class="form-control" name="identification_id" required="1"
+                  t-att-value="partner.identification_id" />
+                                    </div> -->
+                </div>
+
+                <!-- Contactos -->
+                <div class="row g-3"
+                  style="display: flex; flex-direction: column; align-items: flex-start; margin-top: 50px; margin-left: 800px; width: 400px;">
+                  <h3 style="text-align: center; display: flex, margin-top: 50px;">
+                    <font style="font-size: 20px; font-weight: bold;">
+                      <span style="color: #000000; margin-left: 15px;">Contact</span>
+                    </font>
+                    <br />
+                  </h3>
+
+                  <div class="col-md-6" style="max-width: 100%">
+                    <label for="movel" class="form-label"
+                      style="padding-top: 10px">Mobile Phone</label>
+                    <input type="text" class="form-control" name="mobile" required="1"
+                      t-att-value="partner.mobile" />
+                  </div>
+                  <div class="col-md-6" style="max-width: 100%">
+                    <label for="email" class="form-label"
+                      style="padding-top: 10px">Email</label>
+                    <input type="email" class="form-control" name="email" readonly="1"
+                      t-att-value="partner.email" placeholder="nome@gmail.com" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Informacoes basicas  -->
+              <div style="display: inline-block;">
+                <div class="row g-3"
+                  style="display: flex; flex-direction: column; align-items: flex-start; margin-top: 50px; float:left; width: 400px;">
+                  <h3 style="text-align: center; display: flex, margin-top: 50px;">
+                    <font style="font-size: 20px; font-weight: bold;">
+                      <span style="color: #000000; margin-left: 15px;">Basic informations</span>
+                    </font>
+                    <br />
+                  </h3>
+
+                  <!-- <div class="col-md-6" style="max-width: 100%">
+                                        <label for="date_of_birth" class="form-label"
+                                            style="padding-top: 10px">Date of Birth</label>
+                                        <input type="date" class="form-control" name="date_of_birth" required="1"
+                  t-att-value="partner.date_of_birth" />
+                                    </div> -->
+                  <!-- <div class="col-md-6" style="max-width: 100%">
+                                        <label for="sex" class="form-label"
+                                            style="padding-top: 10px">Sex</label>
+                                        <select class="form-control" name="sex" id="sex" required="1">
+                                            <option t-att-value="partner.sex" t-att-selected="partner.sex == partner.sex">
+                                                <t t-if="partner.sex == 'm'">Male</t>
+                                                <t t-if="partner.sex == 'f'">Female</t>
+                                                <t t-if="partner.sex == 'o'">Others</t>
+                                                <t t-if="partner.sex == 'd'">Unknown</t>
+                                                <t t-if="partner.sex == 'n'">Did Not Want to Specify</t>
+                                            </option>
+                                            <option value="m">Male</option>
+                                            <option value="f">Female</option>
+                                            <option value="o">Others</option>
+                                            <option value="d">Unknown</option>
+                                            <option value="n">Did Not Want to Specify</option>
+                                        </select>
+                                    </div> -->
+                  <!-- <div class="col-md-6" style="max-width: 100%">
+                                        <label for="marital_status" class="form-label" style="padding-top: 10px">Marital Status</label>
+                                        <select class="form-control" name="marital_status" id="civil">
+                                            <option t-att-value="partner.marital_status" t-att-selected="partner.marital_status ==
+                  partner.marital_status">
+                                                <t t-if="partner.marital_status == 's'">Single</t>
+                                                <t t-if="partner.marital_status == 'm'">Married</t>
+                                                <t t-if="partner.marital_status == 'w'">Widow(er)</t>
+                                                <t t-if="partner.marital_status == 'd'">Divorced</t>
+                                                <t t-if="partner.marital_status == 'x'">Separated</t>
+                                            </option>
+                                            <option value="s">Single</option>
+                                            <option value="m">Married</option>
+                                            <option value="w">Widow(er)</option>
+                                            <option value="d">Divorced</option>
+                                            <option value="x">Separated</option>
+                                        </select>
+                                    </div> -->
+                  <!-- <div class="col-md-6" style="max-width: 100%">
+                                        <label for="patient_profession" class="form-label"
+                                            style="padding-top: 10px">Profession</label>
+                                        <input type="text" class="form-control" name="patient_profession"
+                  t-att-value="partner.patient_profession" />
+                                    </div> -->
+                </div>
+
+                <!-- Morada -->
+                <div class="row g-3"
+                  style="display: flex; flex-direction: column; align-items: flex-start; margin-top: 50px; margin-left: 800px; width: 400px;">
+                  <h3 style="text-align: center; display: flex, margin-top: 50px;">
+                    <font style="font-size: 20px; font-weight: bold;">
+                      <span style="color: #000000; margin-left: 15px;">Address</span>
+                    </font>
+                    <br />
+                  </h3>
+
+                  <div class="col-md-6" style="max-width: 100%">
+                    <label for="pais" class="form-label"
+                      style="padding-top: 10px">Country</label>
+                    <select class="form-control" name="country_id" required="1">
+                      <t t-foreach="countries" t-as="country_id">
+                        <option t-att-value="partner.country_id.id"
+                          t-att-selected="partner.country_id.id == partner.country_id.id">
+                          <t t-esc="partner.country_id.name" />
+                        </option>
+                        <option t-esc="country_id.name" t-att-value="country_id.id" />
+                      </t>
+                    </select>
+                  </div>
+                  <div class="col-md-6" style="max-width: 100%">
+                    <label for="state_id" class="form-label"
+                      style="padding-top: 10px">Island/State</label>
+                    <select class="form-control" name="state_id" required="1">
+                      <t t-foreach="states" t-as="state_id">
+                        <option t-att-value="partner.state_id.id"
+                          t-att-selected="partner.state_id.id == partner.state_id.id">
+                          <t t-esc="partner.state_id.name" />
+                        </option>
+                        <option t-esc="state_id.name" t-att-value="state_id.id" />
+                      </t>
+                    </select>
+                  </div>
+                  <div class="col-md-6" style="max-width: 100%">
+                    <label for="city" class="form-label" style="padding-top: 10px">City</label>
+                    <input type="text" class="form-control" name="city" t-att-value="partner.city" />
+                  </div>
+                  <!-- <div class="col-md-6" style="max-width: 100%">
+                                        <label for="county" class="form-label"
+                                            style="padding-top: 10px">Council</label>
+                                        <select class="form-control" name="county">
+                                            <t t-foreach="county" t-as="county">
+                                                <option t-att-value="partner.county.id" t-att-selected="partner.county.id == partner.county.id">
+                                                    <t t-esc="partner.county.name" />
+                                                </option>
+                                                <option t-esc="county.name" t-att-value="county.id" />
+                                            </t>
+                                        </select>
+                                    </div> -->
+                  <!-- <div class="col-md-6" style="max-width: 100%">
+                                        <label for="zone" class="form-label" style="padding-top: 10px">Zone</label>
+                                        <select class="form-control" name="zone">
+                                            <t t-foreach="zone" t-as="zone">
+                                                <option t-att-value="partner.zone.id" t-att-selected="partner.zone.id == partner.zone.id">
+                                                    <t t-esc="partner.zone.name" />
+                                                </option>
+                                                <option t-esc="zone.name" t-att-value="zone.id" />
+                                            </t>
+                                        </select>
+                                    </div> -->
+                  <div class="col-md-6" style="max-width: 100%">
+                    <label for="street2" class="form-label" style="padding-top: 10px">Street</label>
+                    <input type="text" class="form-control" name="street2"
+                      t-att-value="partner.street2" />
+                  </div>
+                  <div class="col-md-6" style="max-width: 100%">
+                    <label for="zip" class="form-label" style="padding-top: 10px">Zip Code</label>
+                    <input type="text" class="form-control" name="zip" t-att-value="partner.zip" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group col-12 s_website_form_submit"
+              data-name="Submit Button">
+              <button type="submit" class="btn btn-primary" style="margin-left: 100px">Confirm</button>
+            </div>
+          </form>
+          <script type="text/javascript"
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+            crossorigin="anonymous" />
         </t>
       </xpath>
     </template>

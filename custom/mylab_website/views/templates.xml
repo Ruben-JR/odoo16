@@ -128,7 +128,8 @@
       </xpath>
     </template>
 
-    <template id="portal_my_details_inherit" inherit_id="portal.portal_my_details" name="User Deatails Inherit">
+    <template id="portal_my_details_inherit" inherit_id="portal.portal_my_details"
+      name="User Deatails Inherit">
       <xpath expr="//t[@t-call='portal.portal_layout']" position="replace">
         <t t-call="website.layout">
           <t t-set="pageName" t-value="'homepage'" />
@@ -139,226 +140,34 @@
             <br />
           </h1>
           <form action="/my/account" method="POST" enctype="multipart/form-data"
-            class="o_mark_required" data-mark="*" data-model_name=""
-            data-success-page="">
+            class="o_mark_required" data-mark="*" data-model_name="" data-success-page="">
             <!-- patient information -->
             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
-            <div class="info-container"
-              style="display: flex; flex-direction: column; margin: 100px">
-              <ul class="nav nav-tabs">
-                <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="#">Personal Information</a>
-                </li>
-              </ul>
-
-              <div class="nome-p">
-                <div class="mb-3">
-                  <label for="name" class="form-label"
-                    style="font-size: 15px; font-weight: bold; margin-top: 30px;">Name</label>
-                  <input type="text" class="form-control" style="width: 50%" name="name"
-                    required="1" t-att-value="partner.name" placeholder="Joana Monteiro" />
-                </div>
-              </div>
-              <div style="display: inline-block;">
-                <!-- Informacoes pessoais -->
-                <div class="row g-3"
-                  style="display: flex; flex-direction: column; align-items: flex-start; margin-top: 50px; float:left; width: 400px;">
-                  <h3 style="text-align: center; display: flex, margin-top: 50px;">
-                    <font style="font-size: 20px; font-weight: bold;">
-                      <span style="color: #000000; margin-left: 15px;">Personal Information</span>
-                    </font>
-                    <br />
-                  </h3>
-
-                  <!-- <div class="col-md-6" style="max-width: 100%">
-                                        <label for="identification_type" class="form-label" style="padding-top: 10px">Doc.
-                  Identification</label>
-                                        <select class="form-control" name="identification_type" required="1" >
-                                            <option value="identification_card" t-att-selected="partner.identification_type ==
-                  partner.identification_type">
-                                                <t t-if="partner.identification_type == 'identification_card'">Cédula</t>
-                                                <t t-if="partner.identification_type == 'bi'">BI</t>
-                                                <t t-if="partner.identification_type == 'passport'">Passport</t>
-                                                <t t-if="partner.identification_type == 'cni'">CNI</t>
-                                            </option>
-                                            <option value="identification_card">Cédula</option>
-                                            <option value="bi">BI</option>
-                                            <option value="passport">Passport</option>
-                                            <option value="cni">CNI</option>
-                                        </select>
-                                    </div> -->
-                  <!-- <div class="col-md-6" style="max-width: 100%">
-                                        <label for="identification_id" class="form-label" style="padding-top: 10px">Num.
-                  Identification</label>
-                                        <input type="tex" class="form-control" name="identification_id" required="1"
-                  t-att-value="partner.identification_id" />
-                                    </div> -->
-                </div>
-
-                <!-- Contactos -->
-                <div class="row g-3"
-                  style="display: flex; flex-direction: column; align-items: flex-start; margin-top: 50px; margin-left: 800px; width: 400px;">
-                  <h3 style="text-align: center; display: flex, margin-top: 50px;">
-                    <font style="font-size: 20px; font-weight: bold;">
-                      <span style="color: #000000; margin-left: 15px;">Contact</span>
-                    </font>
-                    <br />
-                  </h3>
-
-                  <div class="col-md-6" style="max-width: 100%">
-                    <label for="movel" class="form-label"
-                      style="padding-top: 10px">Mobile Phone</label>
-                    <input type="text" class="form-control" name="mobile" required="1"
-                      t-att-value="partner.mobile" />
-                  </div>
-                  <div class="col-md-6" style="max-width: 100%">
-                    <label for="email" class="form-label"
-                      style="padding-top: 10px">Email</label>
-                    <input type="email" class="form-control" name="email" readonly="1"
-                      t-att-value="partner.email" placeholder="nome@gmail.com" />
-                  </div>
-                </div>
+            <div class="info-container" style="display: flex; flex-direction: column; margin: 100px">
+              <div class="mb-3">
+                <label for="name" class="form-label" style="font-size: 15px; font-weight: bold; margin-top: 30px;">Patient Name</label>
+                <input type="text" class="form-control" style="width: 50%" name="name" required="1" t-att-value="partner.name" placeholder="Joana Monteiro" />
               </div>
 
-              <!-- Informacoes basicas  -->
-              <div style="display: inline-block;">
-                <div class="row g-3"
-                  style="display: flex; flex-direction: column; align-items: flex-start; margin-top: 50px; float:left; width: 400px;">
-                  <h3 style="text-align: center; display: flex, margin-top: 50px;">
-                    <font style="font-size: 20px; font-weight: bold;">
-                      <span style="color: #000000; margin-left: 15px;">Basic informations</span>
-                    </font>
-                    <br />
-                  </h3>
+              <div class="mb-3">
+                <label for="date_of_birth" class="form-label" style="font-size: 15px; font-weight: bold; margin-top: 30px;">Date of Birthday</label>
+                <input type="date" class="form-control" style="width: 50%" name="date_of_birth" required="1" t-att-value="partner.date_of_birth" />
+              </div>
 
-                  <!-- <div class="col-md-6" style="max-width: 100%">
-                                        <label for="date_of_birth" class="form-label"
-                                            style="padding-top: 10px">Date of Birth</label>
-                                        <input type="date" class="form-control" name="date_of_birth" required="1"
-                  t-att-value="partner.date_of_birth" />
-                                    </div> -->
-                  <!-- <div class="col-md-6" style="max-width: 100%">
-                                        <label for="sex" class="form-label"
-                                            style="padding-top: 10px">Sex</label>
-                                        <select class="form-control" name="sex" id="sex" required="1">
-                                            <option t-att-value="partner.sex" t-att-selected="partner.sex == partner.sex">
-                                                <t t-if="partner.sex == 'm'">Male</t>
-                                                <t t-if="partner.sex == 'f'">Female</t>
-                                                <t t-if="partner.sex == 'o'">Others</t>
-                                                <t t-if="partner.sex == 'd'">Unknown</t>
-                                                <t t-if="partner.sex == 'n'">Did Not Want to Specify</t>
-                                            </option>
-                                            <option value="m">Male</option>
-                                            <option value="f">Female</option>
-                                            <option value="o">Others</option>
-                                            <option value="d">Unknown</option>
-                                            <option value="n">Did Not Want to Specify</option>
-                                        </select>
-                                    </div> -->
-                  <!-- <div class="col-md-6" style="max-width: 100%">
-                                        <label for="marital_status" class="form-label" style="padding-top: 10px">Marital Status</label>
-                                        <select class="form-control" name="marital_status" id="civil">
-                                            <option t-att-value="partner.marital_status" t-att-selected="partner.marital_status ==
-                  partner.marital_status">
-                                                <t t-if="partner.marital_status == 's'">Single</t>
-                                                <t t-if="partner.marital_status == 'm'">Married</t>
-                                                <t t-if="partner.marital_status == 'w'">Widow(er)</t>
-                                                <t t-if="partner.marital_status == 'd'">Divorced</t>
-                                                <t t-if="partner.marital_status == 'x'">Separated</t>
-                                            </option>
-                                            <option value="s">Single</option>
-                                            <option value="m">Married</option>
-                                            <option value="w">Widow(er)</option>
-                                            <option value="d">Divorced</option>
-                                            <option value="x">Separated</option>
-                                        </select>
-                                    </div> -->
-                  <!-- <div class="col-md-6" style="max-width: 100%">
-                                        <label for="patient_profession" class="form-label"
-                                            style="padding-top: 10px">Profession</label>
-                                        <input type="text" class="form-control" name="patient_profession"
-                  t-att-value="partner.patient_profession" />
-                                    </div> -->
-                </div>
-
-                <!-- Morada -->
-                <div class="row g-3"
-                  style="display: flex; flex-direction: column; align-items: flex-start; margin-top: 50px; margin-left: 800px; width: 400px;">
-                  <h3 style="text-align: center; display: flex, margin-top: 50px;">
-                    <font style="font-size: 20px; font-weight: bold;">
-                      <span style="color: #000000; margin-left: 15px;">Address</span>
-                    </font>
-                    <br />
-                  </h3>
-
-                  <div class="col-md-6" style="max-width: 100%">
-                    <label for="pais" class="form-label"
-                      style="padding-top: 10px">Country</label>
-                    <select class="form-control" name="country_id" required="1">
-                      <t t-foreach="countries" t-as="country_id">
-                        <option t-att-value="partner.country_id.id"
-                          t-att-selected="partner.country_id.id == partner.country_id.id">
-                          <t t-esc="partner.country_id.name" />
-                        </option>
-                        <option t-esc="country_id.name" t-att-value="country_id.id" />
-                      </t>
-                    </select>
-                  </div>
-                  <div class="col-md-6" style="max-width: 100%">
-                    <label for="state_id" class="form-label"
-                      style="padding-top: 10px">Island/State</label>
-                    <select class="form-control" name="state_id" required="1">
-                      <t t-foreach="states" t-as="state_id">
-                        <option t-att-value="partner.state_id.id"
-                          t-att-selected="partner.state_id.id == partner.state_id.id">
-                          <t t-esc="partner.state_id.name" />
-                        </option>
-                        <option t-esc="state_id.name" t-att-value="state_id.id" />
-                      </t>
-                    </select>
-                  </div>
-                  <div class="col-md-6" style="max-width: 100%">
-                    <label for="city" class="form-label" style="padding-top: 10px">City</label>
-                    <input type="text" class="form-control" name="city" t-att-value="partner.city" />
-                  </div>
-                  <!-- <div class="col-md-6" style="max-width: 100%">
-                                        <label for="county" class="form-label"
-                                            style="padding-top: 10px">Council</label>
-                                        <select class="form-control" name="county">
-                                            <t t-foreach="county" t-as="county">
-                                                <option t-att-value="partner.county.id" t-att-selected="partner.county.id == partner.county.id">
-                                                    <t t-esc="partner.county.name" />
-                                                </option>
-                                                <option t-esc="county.name" t-att-value="county.id" />
-                                            </t>
-                                        </select>
-                                    </div> -->
-                  <!-- <div class="col-md-6" style="max-width: 100%">
-                                        <label for="zone" class="form-label" style="padding-top: 10px">Zone</label>
-                                        <select class="form-control" name="zone">
-                                            <t t-foreach="zone" t-as="zone">
-                                                <option t-att-value="partner.zone.id" t-att-selected="partner.zone.id == partner.zone.id">
-                                                    <t t-esc="partner.zone.name" />
-                                                </option>
-                                                <option t-esc="zone.name" t-att-value="zone.id" />
-                                            </t>
-                                        </select>
-                                    </div> -->
-                  <div class="col-md-6" style="max-width: 100%">
-                    <label for="street2" class="form-label" style="padding-top: 10px">Street</label>
-                    <input type="text" class="form-control" name="street2"
-                      t-att-value="partner.street2" />
-                  </div>
-                  <div class="col-md-6" style="max-width: 100%">
-                    <label for="zip" class="form-label" style="padding-top: 10px">Zip Code</label>
-                    <input type="text" class="form-control" name="zip" t-att-value="partner.zip" />
-                  </div>
-                </div>
+              <div class="col-md-6" style="max-width: 100%">
+                <label for="gender" class="form-label" style="padding-top: 10px">Gender</label>
+                <select class="form-control" name="gender" id="gender" required="1">
+                    <option t-att-value="partner.gender" t-att-selected="partner.gender == partner.gender">
+                        <t t-if="partner.gender == 'm'">Male</t>
+                        <t t-if="partner.gender == 'f'">Female</t>
+                    </option>
+                    <option value="m">Male</option>
+                    <option value="f">Female</option>
+                </select>
               </div>
             </div>
 
-            <div class="form-group col-12 s_website_form_submit"
-              data-name="Submit Button">
+            <div class="form-group col-12 s_website_form_submit" data-name="Submit Button">
               <button type="submit" class="btn btn-primary" style="margin-left: 100px">Confirm</button>
             </div>
           </form>

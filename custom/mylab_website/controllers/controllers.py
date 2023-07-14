@@ -6,18 +6,8 @@ from odoo import http, _
 
 
 class CustomerPortalInherit(CustomerPortal):
-    MANDATORY_BILLING_FIELDS = ["name", "email", "state_id"]
-    OPTIONAL_BILLING_FIELDS = [
-        "mobile",
-        "civil",
-        "patient_profession",
-        "country_id",
-        "city",
-        "street2",
-        "county",
-        "zone",
-        "zip",
-    ]
+    MANDATORY_BILLING_FIELDS = ["name", "date_of_birth", "gender"]
+    # OPTIONAL_BILLING_FIELDS = ["mobile", "civil", "country_id", "city", "street2", "county", "zone", "zip"]
 
     @route(["/my/account"], type="http", auth="user", website=True)
     def account(self, redirect=None, **post):
@@ -38,21 +28,21 @@ class CustomerPortalInherit(CustomerPortal):
             print("Xcn...... ii a", values)
             if not error:
                 form_values = {key: post[key] for key in self.MANDATORY_BILLING_FIELDS}
-                form_values.update(
-                    {
-                        key: post[key]
-                        for key in self.OPTIONAL_BILLING_FIELDS
-                        if key in post
-                    }
-                )
+                # form_values.update(
+                #     {
+                #         key: post[key]
+                #         for key in self.OPTIONAL_BILLING_FIELDS
+                #         if key in post
+                #     }
+                # )
                 for field in set(["country_id", "state_id"]) & set(form_values.keys()):
                     try:
                         form_values[field] = int(form_values[field])
                     except:
                         form_values[field] = False
 
-                # form_values.update({'is_patient': True, 'is_person': True})
-                # partner.sudo().write(form_values)
+                form_values.update({"is_patient": True})
+                partner.sudo().write(form_values)
 
                 companies = request.env["res.company"].sudo().search([])
                 company_ids = [(4, comp.id) for comp in companies]
@@ -64,15 +54,11 @@ class CustomerPortalInherit(CustomerPortal):
 
         countries = request.env["res.country"].sudo().search([])
         states = request.env["res.country.state"].sudo().search([])
-        # county = request.env['res.country.state.county'].sudo().search([])
-        # zone = request.env['res.country.state.county.parish.zone'].sudo().search([])
         values.update(
             {
                 "partner": partner,
                 "countries": countries,
                 "states": states,
-                # 'county': county,
-                # 'zone': zone,
                 "has_check_vat": hasattr(request.env["res.partner"], "check_vat"),
                 "redirect": redirect,
                 "page_name": "my_details",

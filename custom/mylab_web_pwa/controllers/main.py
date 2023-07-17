@@ -12,18 +12,18 @@ class PWA(Controller):
         """Scripts to be imported in the service worker (Order is important)"""
         return [
             "/web/static/lib/underscore/underscore.js",
-            "/web_pwa_oca/static/src/js/worker/jquery-sw-compat.js",
+            "/mylab_web_pwa/static/src/js/worker/jquery-sw-compat.js",
             "/web/static/src/legacy/js/promise_extension.js",
             "/web/static/src/boot.js",
             "/web/static/src/legacy/js/core/class.js",
-            "/web_pwa_oca/static/src/js/worker/pwa.js",
+            "/mylab_web_pwa/static/src/js/worker/pwa.js",
         ]
 
     @route("/service-worker.js", type="http", auth="public")
     def render_service_worker(self):
         """Route to register the service worker in the 'main' scope ('/')"""
         return request.render(
-            "web_pwa_oca.service_worker",
+            "mylab_web_pwa.service_worker",
             {
                 "pwa_scripts": self._get_pwa_scripts(),
                 "pwa_params": self._get_pwa_params(),
@@ -48,7 +48,7 @@ class PWA(Controller):
             ]:
                 icons.append(
                     {
-                        "src": "/web_pwa_oca/static/img/icons/icon-%sx%s.png"
+                        "src": "/mylab_web_pwa/static/img/icons/icon-%sx%s.png"
                         % (str(size[0]), str(size[1])),
                         "sizes": "{}x{}".format(str(size[0]), str(size[1])),
                         "type": "image/png",
@@ -61,11 +61,11 @@ class PWA(Controller):
                 .sudo()
                 .search(
                     [
-                        ("url", "like", "/web_pwa_oca/icon"),
+                        ("url", "like", "/mylab_web_pwa/icon"),
                         (
                             "url",
                             "not like",
-                            "/web_pwa_oca/icon.",
+                            "/mylab_web_pwa/icon.",
                         ),  # Get only resized icons
                     ]
                 )
@@ -95,7 +95,7 @@ class PWA(Controller):
         pwa_icon = (
             request.env["ir.attachment"]
             .sudo()
-            .search([("url", "like", "/web_pwa_oca/icon.")])
+            .search([("url", "like", "/mylab_web_pwa/icon.")])
         )
         background_color = config_param_sudo.get_param(
             "pwa.manifest.background_color", "#2E69B5"
@@ -111,7 +111,7 @@ class PWA(Controller):
             "theme_color": theme_color,
         }
 
-    @route("/web_pwa_oca/manifest.webmanifest", type="http", auth="public")
+    @route("/mylab_web_pwa/manifest.webmanifest", type="http", auth="public")
     def pwa_manifest(self):
         """Returns the manifest used to install the page as app"""
         return request.make_response(

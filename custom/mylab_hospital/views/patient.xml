@@ -6,7 +6,7 @@
       <field name="arch" type="xml">
         <tree>
           <field name="ref" string="Reference" />
-          <field name="name" string="Patient Name" />
+          <field name="patient_id" string="Patient Name" />
           <field name="age" string="Age" />
           <field name="gender" string="Gender" />
         </tree>
@@ -21,7 +21,7 @@
           <sheet>
             <group>
               <field name="ref" string="Reference" />
-              <field name="name" string="Patient Name" />
+              <field name="patient_id" string="Patient Name" />
               <field name="date_of_birth" string="Date of birth"/>
               <field name="age" string="Age" />
               <field name="gender" string="Gender" />
@@ -43,7 +43,7 @@
       <field name="arch" type="xml">
         <search>
           <field name="ref" string="Reference" />
-          <field name="name" string="Patient Name" filter_domain="['|', ('name','ilike',self), ('ref','=like',str(self)+'%')]" />
+          <field name="patient_id" string="Patient Name" filter_domain="['|', ('patient_id','ilike',self), ('ref','=like',str(self)+'%')]" />
           <filter name="filter_male" string="Male" domain="[('gender','=','m')]" />
           <filter name="filter_female" string="Female" domain="[('gender','=','f')]" />
           <separator />

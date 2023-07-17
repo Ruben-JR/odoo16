@@ -28,7 +28,7 @@ class ServiceWorker(PWA):
     JS_PWA_MAIN = """
         self.importScripts(...{pwa_scripts});
 
-        odoo.define("web_pwa_oca.ServiceWorker", function (require) {{
+        odoo.define("mylab_web_pwa.ServiceWorker", function (require) {{
             "use strict";
 
             {pwa_requires}
@@ -42,7 +42,7 @@ class ServiceWorker(PWA):
 
     def _get_js_pwa_requires(self):
         return """
-            const PWA = require('web_pwa_oca.PWA');
+            const PWA = require('mylab_web_pwa.PWA');
         """
 
     def _get_js_pwa_init(self):

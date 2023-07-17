@@ -1,1 +1,1 @@
-from . import test_web_pwa_oca_controller
+from . import test_mylab_web_pwa_controller

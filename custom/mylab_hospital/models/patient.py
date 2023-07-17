@@ -10,11 +10,16 @@ class hospitalPatient(models.Model):
     _description = "Hospital Patient"
 
     ref = fields.Char()
-    name = fields.Char(tracking=True, required=True)
-    date_of_birth = fields.Date()
+    patient_id = fields.Many2one("res.partner", tracking=True, required=True)
+    name = fields.Char(related="patient_id.name", tracking=True, required=True)
+    date_of_birth = fields.Date(related="patient_id.date_of_birth")
     age = fields.Integer(compute="_calc_age", tracking=True)
     gender = fields.Selection(
-        [("m", "Male"), ("f", "Female")], tracking=True, default="m"
+        [("m", "Male"), ("f", "Female")],
+        tracking=True,
+        default="m",
+        related="patient_id.gender",
+        store=True,
     )
     active = fields.Boolean(default=True)
 

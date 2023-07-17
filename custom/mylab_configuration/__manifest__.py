@@ -12,14 +12,19 @@
     "sequence": -94,
     "version": "0.1",
     # any module necessary for this one to work correctly
-    "depends": ["base"],
+    "depends": [
+        "base",
+        "mail",
+        "website",
+    ],
     # always loaded
     "data": [
         # csv file
         # 'security/ir.model.access.csv',
         # data file
-        "data/ir_filters_myLab.xml",
+        "views/ir_filters_myLab.xml",
         # view file
+        "views/menus.xml",
         # 'views/views.xml',
         # 'views/templates.xml',
     ],

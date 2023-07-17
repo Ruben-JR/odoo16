@@ -9,9 +9,15 @@ class hospitalAppointment(models.Model):
     _description = "Hospital Appointment"
     _rec_name = "patient_id"
 
-    patient_id = fields.Many2one("hospital.patient")
+    patient_id = fields.Many2one("hospital.patient", tracking=True, required=True)
     ref = fields.Char(readonly=True, related="patient_id.ref")
-    gender = fields.Selection(related="patient_id.gender")
+    gender = fields.Selection(
+        [("m", "Male"), ("f", "Female")],
+        tracking=True,
+        related="patient_id.gender",
+        default="m",
+        store=True,
+    )
     appoint_time = fields.Datetime(default=fields.Datetime.now)
     book_date = fields.Date(default=fields.Date.context_today)
     prescription = fields.Html(string="Prescription")
